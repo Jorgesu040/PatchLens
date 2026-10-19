@@ -3,11 +3,9 @@ from copy import deepcopy
 from pathlib import Path
 
 
-FUNCTION_FIELDS = ("name", "address", "code", "sig")
-FUNCTION_RELATIONSHIPS = (("callees", "called"), ("callers", "calling"))
+OPTIONAL_FUNCTION_FIELDS = {"sig": "sig", "callees": "called", "callers": "calling"}
 REQUIRED_FUNCTION_FIELDS = ("name", "address", "code")
 CHANGE_FIELDS = ("diff", "match_types")
-REQUIRED_CHANGE_FIELDS = ("diff", "match_types")
 FUNCTION_GROUPS = ("added", "deleted", "modified")
 METADATA_FIELDS = {
     "program_name": "Program Name",
@@ -18,37 +16,28 @@ METADATA_FIELDS = {
 }
 
 
-def _copy_function(source, warnings, context):
+def _copy_required(source, fields, warnings, context):
     if not isinstance(source, dict):
         raise TypeError(f"{context} debe ser un objeto JSON")
 
-    function = {}
-    for field in FUNCTION_FIELDS:
-        if field in source:
-            function[field] = deepcopy(source[field])
-        elif field in REQUIRED_FUNCTION_FIELDS:
-            function[field] = None
+    for field in fields:
+        if field not in source:
             warnings.append(f"Falta el campo obligatorio '{field}' en {context}")
+    return deepcopy({field: source.get(field) for field in fields})
 
-    for output_field, input_field in FUNCTION_RELATIONSHIPS:
-        if input_field in source:
-            function[output_field] = deepcopy(source[input_field])
 
+def _copy_function(source, warnings, context):
+    function = _copy_required(source, REQUIRED_FUNCTION_FIELDS, warnings, context)
+    for output, field in OPTIONAL_FUNCTION_FIELDS.items():
+        if field in source:
+            function[output] = deepcopy(source[field])
     return function
 
 
-def _copy_change_details(source, warnings):
-    details = {}
-    for field in CHANGE_FIELDS:
-        if field in source:
-            details[field] = deepcopy(source[field])
-        elif field in REQUIRED_CHANGE_FIELDS:
-            details[field] = None
-            warnings.append(f"Falta el campo obligatorio '{field}' en change_details")
-    return details
-
-
 def get_functions(function_data, change_type, json_file, json_path):
+    if change_type not in FUNCTION_GROUPS:
+        raise ValueError(f"Tipo de cambio desconocido: {change_type}")
+
     changes = []
 
     for index, item in enumerate(function_data):
@@ -65,27 +54,23 @@ def get_functions(function_data, change_type, json_file, json_path):
         }
 
         try:
-            if change_type == "added":
-                change["new_function"] = _copy_function(
-                    item, change["warnings"], "función añadida"
-                )
-            elif change_type == "deleted":
-                change["old_function"] = _copy_function(
-                    item, change["warnings"], "función eliminada"
-                )
-            elif change_type == "modified":
-                change["old_function"] = _copy_function(
-                    item["old"], change["warnings"], "función anterior"
-                )
-                change["new_function"] = _copy_function(
-                    item["new"], change["warnings"], "función nueva"
-                )
-                change["change_details"] = _copy_change_details(
-                    item, change["warnings"]
+            if change_type == "modified":
+                for side, context in (("old", "función anterior"), ("new", "función nueva")):
+                    change[f"{side}_function"] = _copy_function(
+                        item[side], change["warnings"], context
+                    )
+                change["change_details"] = _copy_required(
+                    item, CHANGE_FIELDS, change["warnings"], "change_details"
                 )
             else:
-                raise ValueError(f"Tipo de cambio desconocido: {change_type}")
-        except (KeyError, TypeError, ValueError) as error:
+                side, context = {
+                    "added": ("new", "función añadida"),
+                    "deleted": ("old", "función eliminada"),
+                }[change_type]
+                change[f"{side}_function"] = _copy_function(
+                    item, change["warnings"], context
+                )
+        except (KeyError, TypeError) as error:
             change["warnings"].append(
                 f"Error al procesar {change_type} en el índice {index}: {error}"
             )
@@ -110,26 +95,13 @@ def get_modifications(modified_data, json_file, json_path='$["functions"]["modif
 def _validate_functions(data):
     if not isinstance(data, dict):
         raise ValueError("El informe debe ser un objeto JSON")
-    if "functions" not in data:
-        raise ValueError("El informe no contiene la sección obligatoria 'functions'")
-
-    functions = data["functions"]
+    functions = data.get("functions")
     if not isinstance(functions, dict):
-        raise ValueError("La sección 'functions' debe ser un objeto JSON")
+        raise ValueError("La sección obligatoria 'functions' debe ser un objeto JSON")
 
-    missing_groups = [group for group in FUNCTION_GROUPS if group not in functions]
-    if missing_groups:
-        raise ValueError(
-            f"La sección 'functions' no contiene: {', '.join(missing_groups)}"
-        )
-
-    invalid_groups = [
-        group for group in FUNCTION_GROUPS if not isinstance(functions[group], list)
-    ]
-    if invalid_groups:
-        raise ValueError(
-            f"Las secciones de funciones deben ser listas: {', '.join(invalid_groups)}"
-        )
+    for group in FUNCTION_GROUPS:
+        if not isinstance(functions.get(group), list):
+            raise ValueError(f"La sección 'functions.{group}' debe existir y ser una lista")
     return functions
 
 

@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from GridriffParser import get_changes
+from GridriffParser import get_changes, get_functions
 
 
 class GridriffParserTests(unittest.TestCase):
@@ -121,6 +121,32 @@ class GridriffParserTests(unittest.TestCase):
         self.assertIsNone(function["code"])
         self.assertTrue(any("address" in warning for warning in warnings))
         self.assertTrue(any("code" in warning for warning in warnings))
+
+    def test_malformed_record_does_not_discard_following_records(self):
+        self.report["functions"]["added"].insert(0, None)
+        changes = get_changes(self.report, self.json_file)["functions"]["added"]
+        self.assertTrue(changes[0]["warnings"])
+        self.assertIsNone(changes[0]["new_function"])
+        self.assertEqual(changes[1]["new_function"]["name"], "added_fn")
+
+    def test_missing_change_details_are_null_with_warnings(self):
+        item = self.report["functions"]["modified"][0]
+        del item["diff"]
+        del item["match_types"]
+        change = get_changes(self.report, self.json_file)["functions"]["modified"][0]
+        self.assertEqual(change["change_details"], {"diff": None, "match_types": None})
+        self.assertEqual(len(change["warnings"]), 2)
+
+    def test_output_does_not_share_mutable_values_with_input(self):
+        result = get_changes(self.report, self.json_file)
+        result["functions"]["added"][0]["new_function"]["callees"].append("extra")
+        result["analysis"]["stats"]["modified_funcs_len"] = 99
+        self.assertEqual(self.report["functions"]["added"][0]["called"], ["callee"])
+        self.assertEqual(self.report["stats"]["modified_funcs_len"], 1)
+
+    def test_unknown_change_type_fails_even_with_no_records(self):
+        with self.assertRaises(ValueError):
+            get_functions([], "unknown", self.json_file, "$")
 
     def test_removed_fields_are_not_normalized(self):
         function = get_changes(self.report, self.json_file)["functions"]["added"][0]["new_function"]
