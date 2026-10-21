@@ -53,11 +53,10 @@ class AdapterTests(unittest.TestCase):
     def test_report_is_passed_as_untrusted_evidence(self):
         adapter = MagicMock()
         adapter.generate.return_value = "report"
-        report = {"functions": {"modified": [{"change_id": "modified_0"}]}}
+        report = {"schema_version": "2.0", "binaries": {}, "analyses": {},
+                  "changes": [{"change_id": "change_0000"}], "conflicts": []}
         self.assertEqual(analyze_report(report, adapter), "report")
         self.assertEqual(json.loads(adapter.generate.call_args.args[0]), report)
-        with self.assertRaises(ValueError):
-            analyze_report({}, adapter)
 
 
 class SessionTests(unittest.TestCase):

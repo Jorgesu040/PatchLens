@@ -1,161 +1,95 @@
+import copy
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
-from GridriffParser import get_changes, get_functions
+from GridriffParser import get_changes, get_functions, parse_json
 
 
 class GridriffParserTests(unittest.TestCase):
-    """Synthetic fixture tests; this data is not a Ghidriff output."""
+    """Fixtures sintéticas para el único parser; no son salidas de Ghidriff."""
 
     def setUp(self):
-        self.json_file = Path("synthetic-ghidriff-report.json")
+        old = {"name": "changed_fn", "address": "00101020", "code": "return 0;",
+               "sig": "int changed_fn(void)", "called": ["old_callee"], "calling": ["old_caller"]}
+        new = {**old, "address": "00101030", "code": "return 1;",
+               "called": ["new_callee"], "calling": ["new_caller"]}
         self.report = {
-            "old_meta": {
-                "Program Name": "old-bin",
-                "Executable SHA256": "old-sha",
-                "Executable Format": "ELF",
-                "Language ID": "x86:LE:64:default (4.6)",
-                "Created With Ghidra Version": "12.0.4",
-            },
-            "new_meta": {
-                "Program Name": "new-bin",
-                "Executable SHA256": "new-sha",
-                "Executable Format": "ELF",
-                "Language ID": "x86:LE:64:default (4.6)",
-                "Created With Ghidra Version": "12.0.4",
-            },
+            "old_meta": {"Program Name": "old-bin", "Executable SHA256": "old-sha",
+                         "Executable Format": "ELF", "Language ID": "x86:LE:64",
+                         "Created With Ghidra Version": "12.0.4"},
+            "new_meta": {"Program Name": "new-bin", "Executable SHA256": "new-sha",
+                         "Executable Format": "ELF", "Language ID": "x86:LE:64",
+                         "Created With Ghidra Version": "12.0.4"},
             "functions": {
-                "added": [
-                    {
-                        "name": "added_fn",
-                        "address": "00101000",
-                        "code": "return 1;",
-                        "sig": "int added_fn(void)",
-                        "called": ["callee"],
-                        "calling": ["caller"],
-                    }
-                ],
-                "deleted": [
-                    {
-                        "name": "deleted_fn",
-                        "address": "00101010",
-                        "code": "return 0;",
-                        "sig": "int deleted_fn(void)",
-                        "called": [],
-                        "calling": [],
-                    }
-                ],
-                "modified": [
-                    {
-                        "old": {
-                            "name": "changed_fn",
-                            "address": "00101020",
-                            "code": "return 0;",
-                            "sig": "int changed_fn(void)",
-                            "called": ["old_callee"],
-                            "calling": ["old_caller"],
-                        },
-                        "new": {
-                            "name": "changed_fn",
-                            "address": "00101030",
-                            "code": "return 1;",
-                            "sig": "int changed_fn(void)",
-                            "called": ["new_callee"],
-                            "calling": ["new_caller"],
-                        },
-                        "diff": "-return 0;\n+return 1;",
-                        "match_types": "FullName:Param",
-                        "ratio": 0.5,
-                    }
-                ],
+                "added": [{**new, "address": "00101000", "name": "added_fn"}],
+                "deleted": [{**old, "address": "00101010", "name": "deleted_fn"}],
+                "modified": [{"old": old, "new": new, "diff_type": ["code"],
+                              "diff": ["-return 0;", "+return 1;"],
+                              "match_types": ["FullName:Param"], "ratio": 0.5}],
             },
             "stats": {"modified_funcs_len": 1},
-            "symbols": {"added": [{"name": "symbol"}], "deleted": []},
-            "strings": {"added": [{"name": "new string"}], "deleted": []},
         }
 
     def test_normalizes_added_deleted_and_modified(self):
-        result = get_changes(self.report, self.json_file)
-        added = result["functions"]["added"][0]
-        deleted = result["functions"]["deleted"][0]
-        modified = result["functions"]["modified"][0]
-
+        added, deleted, modified = get_changes(self.report, "SimpleDiff")
+        self.assertEqual([added["type"], deleted["type"], modified["type"]],
+                         ["added", "deleted", "modified"])
         self.assertIsNone(added["old_function"])
-        self.assertEqual(added["new_function"]["callees"], ["callee"])
-        self.assertEqual(added["new_function"]["callers"], ["caller"])
         self.assertIsNone(deleted["new_function"])
-        self.assertEqual(modified["change_details"], {
-            "diff": "-return 0;\n+return 1;",
-            "match_types": "FullName:Param",
-        })
-        self.assertEqual(
-            modified["evidence"]["json_path"],
-            '$["functions"]["modified"][0]',
-        )
+        self.assertEqual(modified["old_function"]["code"], "return 0;")
+        self.assertEqual(modified["new_function"]["code"], "return 1;")
+        self.assertEqual(modified["aspects"], ["code"])
 
-    def test_empty_function_lists_are_valid(self):
-        report = dict(self.report)
-        report["functions"] = {"added": [], "deleted": [], "modified": []}
-        result = get_changes(report, self.json_file)
-        self.assertEqual(result["functions"], {
-            "added": [], "deleted": [], "modified": []
-        })
+    def test_preserves_provenance_and_normalizes_matching(self):
+        modified = get_changes(self.report, "SimpleDiff")[2]
+        self.assertEqual(modified["sources"], [{
+            "analysis": "SimpleDiff", "json_path": "$.functions.modified[0]",
+            "aspects": ["code"], "match_types": ["FullName:Param"],
+            "diff": ["-return 0;", "+return 1;"],
+        }])
 
-    def test_missing_or_invalid_functions_section_fails(self):
-        for report in ({}, {"functions": []}, {"functions": {"added": []}}):
-            with self.subTest(report=report):
-                with self.assertRaises(ValueError):
-                    get_changes(report, self.json_file)
-
-    def test_missing_address_or_code_is_preserved_as_null_with_warning(self):
-        report = dict(self.report)
-        report["functions"] = {
-            "added": [{"name": "incomplete", "sig": "void incomplete(void)"}],
-            "deleted": [],
-            "modified": [],
-        }
-        result = get_changes(report, self.json_file)
-        function = result["functions"]["added"][0]["new_function"]
-        warnings = result["functions"]["added"][0]["warnings"]
-        self.assertIsNone(function["address"])
-        self.assertIsNone(function["code"])
-        self.assertTrue(any("address" in warning for warning in warnings))
-        self.assertTrue(any("code" in warning for warning in warnings))
-
-    def test_malformed_record_does_not_discard_following_records(self):
-        self.report["functions"]["added"].insert(0, None)
-        changes = get_changes(self.report, self.json_file)["functions"]["added"]
-        self.assertTrue(changes[0]["warnings"])
-        self.assertIsNone(changes[0]["new_function"])
-        self.assertEqual(changes[1]["new_function"]["name"], "added_fn")
-
-    def test_missing_change_details_are_null_with_warnings(self):
-        item = self.report["functions"]["modified"][0]
-        del item["diff"]
-        del item["match_types"]
-        change = get_changes(self.report, self.json_file)["functions"]["modified"][0]
-        self.assertEqual(change["change_details"], {"diff": None, "match_types": None})
-        self.assertEqual(len(change["warnings"]), 2)
+    def test_preserves_original_call_relationship_names(self):
+        modified = get_changes(self.report, "SimpleDiff")[2]
+        self.assertEqual(modified["old_function"]["called"], ["old_callee"])
+        self.assertEqual(modified["new_function"]["calling"], ["new_caller"])
+        self.assertNotIn("callees", modified["new_function"])
+        self.assertNotIn("callers", modified["new_function"])
 
     def test_output_does_not_share_mutable_values_with_input(self):
-        result = get_changes(self.report, self.json_file)
-        result["functions"]["added"][0]["new_function"]["callees"].append("extra")
-        result["analysis"]["stats"]["modified_funcs_len"] = 99
-        self.assertEqual(self.report["functions"]["added"][0]["called"], ["callee"])
-        self.assertEqual(self.report["stats"]["modified_funcs_len"], 1)
+        before = copy.deepcopy(self.report)
+        modified = get_changes(self.report, "SimpleDiff")[2]
+        modified["new_function"]["called"].append("extra")
+        modified["aspects"].append("length")
+        modified["sources"][0]["diff"].append("extra")
+        self.assertEqual(self.report, before)
 
-    def test_unknown_change_type_fails_even_with_no_records(self):
+    def test_empty_groups_are_valid(self):
+        self.report["functions"] = {kind: [] for kind in ("added", "deleted", "modified")}
+        self.assertEqual(get_changes(self.report, "SimpleDiff"), [])
+
+    def test_optional_fields_can_be_absent_and_empty_code_is_kept(self):
+        added = {"name": "fn", "address": "100", "code": ""}
+        result = get_functions([added], "added", "SimpleDiff")[0]
+        self.assertEqual(result["new_function"], added)
+        self.assertEqual(result["sources"][0]["match_types"], [])
+
+    def test_unknown_change_type_is_rejected_when_normalizing_a_record(self):
         with self.assertRaises(ValueError):
-            get_functions([], "unknown", self.json_file, "$")
+            get_functions([{"name": "fn", "address": "100", "code": ""}], "unknown", "SimpleDiff")
 
-    def test_removed_fields_are_not_normalized(self):
-        function = get_changes(self.report, self.json_file)["functions"]["added"][0]["new_function"]
-        self.assertEqual(
-            set(function), {"name", "address", "code", "sig", "callees", "callers"}
-        )
-        self.assertNotIn("ratio", get_changes(self.report, self.json_file)["functions"]["modified"][0]["change_details"])
-        self.assertEqual(get_changes(self.report, self.json_file)["metadata"]["old"]["program_name"], "old-bin")
-        self.assertEqual(get_changes(self.report, self.json_file)["analysis"]["stats"], {"modified_funcs_len": 1})
+    def test_reads_metadata_and_reduces_function_fields(self):
+        self.report["functions"]["modified"][0]["new"]["unused"] = "do not send"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "report.json"
+            path.write_text(json.dumps(self.report), encoding="utf-8")
+            result = parse_json(path, "SimpleDiff")
+            self.assertEqual(result["analysis"]["report"], str(path.resolve()))
+        self.assertEqual(result["binaries"]["old"]["sha256"], "old-sha")
+        self.assertEqual(result["binaries"]["new"]["name"], "new-bin")
+        self.assertEqual(result["analysis"]["stats"], self.report["stats"])
+        self.assertNotIn("unused", result["changes"][2]["new_function"])
 
 
 if __name__ == "__main__":

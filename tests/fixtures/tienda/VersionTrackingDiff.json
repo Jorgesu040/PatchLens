@@ -1,0 +1,1283 @@
+{
+  "program_options": {
+    "tienda-v1": {
+      "Decompiler": {
+        "Prototype Evaluation": "__stdcall"
+      },
+      "Specification Extensions": {
+        "FormatVersion": "0",
+        "VersionCounter": "0"
+      },
+      "Analyzers": {
+        "ASCII Strings": "true",
+        "ASCII Strings.Create Strings Containing Existing Strings": "true",
+        "ASCII Strings.Create Strings Containing References": "true",
+        "ASCII Strings.Force Model Reload": "false",
+        "ASCII Strings.Minimum String Length": "LEN_5",
+        "ASCII Strings.Model File": "StringModel.sng",
+        "ASCII Strings.Require Null Termination for String": "true",
+        "ASCII Strings.Search Only in Accessible Memory Blocks": "true",
+        "ASCII Strings.String Start Alignment": "ALIGN_1",
+        "ASCII Strings.String end alignment": "4",
+        "Aggressive Instruction Finder": "false",
+        "Aggressive Instruction Finder.Create Analysis Bookmarks": "true",
+        "Apply Data Archives": "true",
+        "Apply Data Archives.Archive Chooser": "[Auto-Detect]",
+        "Apply Data Archives.Create Analysis Bookmarks": "true",
+        "Apply Data Archives.GDT User File Archive Path": null,
+        "Apply Data Archives.User Project Archive Path": null,
+        "Call Convention ID": "true",
+        "Call Convention ID.Analysis Decompiler Timeout (sec)": "60",
+        "Call-Fixup Installer": "true",
+        "Condense Filler Bytes": "false",
+        "Condense Filler Bytes.Filler Value": "Auto",
+        "Condense Filler Bytes.Minimum number of sequential bytes": "1",
+        "Create Address Tables": "true",
+        "Create Address Tables.Allow Offcut References": "false",
+        "Create Address Tables.Auto Label Table": "false",
+        "Create Address Tables.Create Analysis Bookmarks": "true",
+        "Create Address Tables.Maxmimum Pointer Distance": "16777215",
+        "Create Address Tables.Minimum Pointer Address": "4132",
+        "Create Address Tables.Minimum Table Size": "2",
+        "Create Address Tables.Pointer Alignment": "1",
+        "Create Address Tables.Relocation Table Guide": "true",
+        "Create Address Tables.Table Alignment": "4",
+        "DWARF": "true",
+        "DWARF.Add Inlined Functions Comments": "false",
+        "DWARF.Add Lexical Block Comments": "false",
+        "DWARF.Copy External Debug File Symbols": "true",
+        "DWARF.Create Enums from Macros": "IGNORE_COMMAND_LINE",
+        "DWARF.Create Function Signatures": "true",
+        "DWARF.Debug Strings Charset": "",
+        "DWARF.Default Calling Convention": "",
+        "DWARF.Ignore Parameter Storage Info": "false",
+        "DWARF.Import Data Types": "true",
+        "DWARF.Import Functions": "true",
+        "DWARF.Import Local Variable Info": "true",
+        "DWARF.Import Source Line Info": "true",
+        "DWARF.Maximum Source Map Entry Length": "2000",
+        "DWARF.Output DWARF DIE Info": "false",
+        "DWARF.Output Source Info": "false",
+        "DWARF.Output Storage Info": "false",
+        "DWARF.Try To Pack Structs": "true",
+        "Data Reference": "true",
+        "Data Reference.Address Table Alignment": "1",
+        "Data Reference.Address Table Minimum Size": "2",
+        "Data Reference.Align End of Strings": "false",
+        "Data Reference.Ascii String References": "true",
+        "Data Reference.Create Address Tables": "false",
+        "Data Reference.Minimum String Length": "5",
+        "Data Reference.References to Pointers": "true",
+        "Data Reference.Relocation Table Guide": "true",
+        "Data Reference.Respect Execute Flag": "true",
+        "Data Reference.Subroutine References": "true",
+        "Data Reference.Switch Table References": "false",
+        "Data Reference.Unicode String References": "true",
+        "Decompiler Parameter ID": "false",
+        "Decompiler Parameter ID.Analysis Clear Level": "ANALYSIS",
+        "Decompiler Parameter ID.Analysis Decompiler Timeout (sec)": "60",
+        "Decompiler Parameter ID.Commit Data Types": "true",
+        "Decompiler Parameter ID.Commit Void Return Values": "false",
+        "Decompiler Parameter ID.Prototype Evaluation": "__stdcall",
+        "Decompiler Switch Analysis": "true",
+        "Decompiler Switch Analysis.Analysis Decompiler Timeout (sec)": "60",
+        "Demangler GNU": "true",
+        "Demangler GNU.Apply Function Calling Conventions": "true",
+        "Demangler GNU.Apply Function Signatures": "true",
+        "Demangler GNU.Demangle Only Known Mangled Symbols": "false",
+        "Demangler GNU.Demangler Format": "AUTO",
+        "Demangler GNU.Timeout (seconds)": "3",
+        "Demangler GNU.Use Deprecated Demangler": "false",
+        "Demangler GNU.Use Standard Text Replacements": "true",
+        "Disassemble Entry Points": "true",
+        "Disassemble Entry Points.Respect Execute Flag": "true",
+        "ELF Scalar Operand References": "true",
+        "ELF Scalar Operand References.Relocation Table Guide": "true",
+        "Embedded Media": "true",
+        "Embedded Media.Create Analysis Bookmarks": "true",
+        "External Entry References": "true",
+        "External Symbol Resolver": "true",
+        "Function ID": "true",
+        "Function ID.Always Apply FID Labels": "false",
+        "Function ID.Create Analysis Bookmarks": "true",
+        "Function ID.Instruction Count Threshold": "14.6",
+        "Function ID.Multiple Match Threshold": "30.0",
+        "Function Start Pre Search": "true",
+        "Function Start Pre Search.Bookmark Functions": "false",
+        "Function Start Pre Search.Search Data Blocks": "false",
+        "Function Start Search": "true",
+        "Function Start Search After Code": "true",
+        "Function Start Search After Code.Bookmark Functions": "false",
+        "Function Start Search After Code.Search Data Blocks": "false",
+        "Function Start Search After Data": "true",
+        "Function Start Search After Data.Bookmark Functions": "false",
+        "Function Start Search After Data.Search Data Blocks": "false",
+        "Function Start Search.Bookmark Functions": "false",
+        "Function Start Search.Search Data Blocks": "false",
+        "GCC Exception Handlers": "true",
+        "GCC Exception Handlers.Create Try Catch Comments": "true",
+        "Non-Returning Functions - Discovered": "true",
+        "Non-Returning Functions - Discovered.Create Analysis Bookmarks": "true",
+        "Non-Returning Functions - Discovered.Function Non-return Threshold": "3",
+        "Non-Returning Functions - Discovered.Repair Flow Damage": "true",
+        "Non-Returning Functions - Known": "true",
+        "Non-Returning Functions - Known.Create Analysis Bookmarks": "true",
+        "Reference": "true",
+        "Reference.Address Table Alignment": "1",
+        "Reference.Address Table Minimum Size": "2",
+        "Reference.Align End of Strings": "false",
+        "Reference.Ascii String References": "true",
+        "Reference.Create Address Tables": "false",
+        "Reference.Minimum String Length": "5",
+        "Reference.References to Pointers": "true",
+        "Reference.Relocation Table Guide": "true",
+        "Reference.Respect Execute Flag": "true",
+        "Reference.Subroutine References": "true",
+        "Reference.Switch Table References": "false",
+        "Reference.Unicode String References": "true",
+        "Shared Return Calls": "true",
+        "Shared Return Calls.Allow Conditional Jumps": "false",
+        "Shared Return Calls.Assume Contiguous Functions Only": "true",
+        "Stack": "true",
+        "Stack.Create Local Variables": "true",
+        "Stack.Create Param Variables": "false",
+        "Stack.Max Threads": "2",
+        "Subroutine References": "true",
+        "Subroutine References.Create Thunks Early": "true",
+        "Variadic Function Signature Override": "false",
+        "Variadic Function Signature Override.Create Analysis Bookmarks": "false",
+        "x86 Constant Reference Analyzer": "true",
+        "x86 Constant Reference Analyzer.Create Data from pointer": "false",
+        "x86 Constant Reference Analyzer.Function parameter/return Pointer analysis": "true",
+        "x86 Constant Reference Analyzer.Max Threads": "2",
+        "x86 Constant Reference Analyzer.Min absolute reference": "4",
+        "x86 Constant Reference Analyzer.Require pointer param data type": "false",
+        "x86 Constant Reference Analyzer.Speculative reference max": "256",
+        "x86 Constant Reference Analyzer.Speculative reference min": "1024",
+        "x86 Constant Reference Analyzer.Stored Value Pointer analysis": "true",
+        "x86 Constant Reference Analyzer.Trust values read from writable memory": "true"
+      },
+      "Program Information": {
+        "Analyzed": "true",
+        "Compiler": "unknown",
+        "Created With Ghidra Version": "12.0.4",
+        "DWARF Loaded": "true",
+        "Date Created": "Wed Oct 21 00:30:05 CEST 2026",
+        "ELF File Type": "shared object",
+        "ELF GNU Program Prop[processor opt 0xc0000002]": "03 00 00 00",
+        "ELF GNU Program Prop[processor opt 0xc0008002]": "01 00 00 00",
+        "ELF Note[GNU BuildId]": "6ad51dffb6708703b28f2733e811a488e130a23b",
+        "ELF Note[required kernel ABI]": "Linux 3.2.0",
+        "ELF Original Image Base": "0x0",
+        "ELF Prelinked": "false",
+        "ELF Source File [   0]": "Scrt1.o",
+        "ELF Source File [   1]": "crtstuff.c",
+        "ELF Source File [   2]": "tienda-v1.c",
+        "ELF Source File [   3]": "crtstuff.c",
+        "ELF Source File [   4]": "",
+        "Elf Comment[0]": "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "Executable Format": "Executable and Linking Format (ELF)",
+        "Executable Location": "/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1",
+        "Executable MD5": "6425c4dc3ec921816bb2cdc91e22d088",
+        "Executable SHA256": "a1d1d64eee7f3e090385a8b6dbde27b4a9f29b128325b1f9bcb59c9299c599f7",
+        "FSRL": "file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1?MD5=6425c4dc3ec921816bb2cdc91e22d088",
+        "Preferred Root Namespace Category": "",
+        "Relocatable": "true",
+        "Required Library [    0]": "libc.so.6",
+        "Should Ask To Analyze": "false"
+      }
+    },
+    "tienda-v2": {
+      "Decompiler": {
+        "Prototype Evaluation": "__stdcall"
+      },
+      "Specification Extensions": {
+        "FormatVersion": "0",
+        "VersionCounter": "0"
+      },
+      "Analyzers": {
+        "ASCII Strings": "true",
+        "ASCII Strings.Create Strings Containing Existing Strings": "true",
+        "ASCII Strings.Create Strings Containing References": "true",
+        "ASCII Strings.Force Model Reload": "false",
+        "ASCII Strings.Minimum String Length": "LEN_5",
+        "ASCII Strings.Model File": "StringModel.sng",
+        "ASCII Strings.Require Null Termination for String": "true",
+        "ASCII Strings.Search Only in Accessible Memory Blocks": "true",
+        "ASCII Strings.String Start Alignment": "ALIGN_1",
+        "ASCII Strings.String end alignment": "4",
+        "Aggressive Instruction Finder": "false",
+        "Aggressive Instruction Finder.Create Analysis Bookmarks": "true",
+        "Apply Data Archives": "true",
+        "Apply Data Archives.Archive Chooser": "[Auto-Detect]",
+        "Apply Data Archives.Create Analysis Bookmarks": "true",
+        "Apply Data Archives.GDT User File Archive Path": null,
+        "Apply Data Archives.User Project Archive Path": null,
+        "Call Convention ID": "true",
+        "Call Convention ID.Analysis Decompiler Timeout (sec)": "60",
+        "Call-Fixup Installer": "true",
+        "Condense Filler Bytes": "false",
+        "Condense Filler Bytes.Filler Value": "Auto",
+        "Condense Filler Bytes.Minimum number of sequential bytes": "1",
+        "Create Address Tables": "true",
+        "Create Address Tables.Allow Offcut References": "false",
+        "Create Address Tables.Auto Label Table": "false",
+        "Create Address Tables.Create Analysis Bookmarks": "true",
+        "Create Address Tables.Maxmimum Pointer Distance": "16777215",
+        "Create Address Tables.Minimum Pointer Address": "4132",
+        "Create Address Tables.Minimum Table Size": "2",
+        "Create Address Tables.Pointer Alignment": "1",
+        "Create Address Tables.Relocation Table Guide": "true",
+        "Create Address Tables.Table Alignment": "4",
+        "DWARF": "true",
+        "DWARF.Add Inlined Functions Comments": "false",
+        "DWARF.Add Lexical Block Comments": "false",
+        "DWARF.Copy External Debug File Symbols": "true",
+        "DWARF.Create Enums from Macros": "IGNORE_COMMAND_LINE",
+        "DWARF.Create Function Signatures": "true",
+        "DWARF.Debug Strings Charset": "",
+        "DWARF.Default Calling Convention": "",
+        "DWARF.Ignore Parameter Storage Info": "false",
+        "DWARF.Import Data Types": "true",
+        "DWARF.Import Functions": "true",
+        "DWARF.Import Local Variable Info": "true",
+        "DWARF.Import Source Line Info": "true",
+        "DWARF.Maximum Source Map Entry Length": "2000",
+        "DWARF.Output DWARF DIE Info": "false",
+        "DWARF.Output Source Info": "false",
+        "DWARF.Output Storage Info": "false",
+        "DWARF.Try To Pack Structs": "true",
+        "Data Reference": "true",
+        "Data Reference.Address Table Alignment": "1",
+        "Data Reference.Address Table Minimum Size": "2",
+        "Data Reference.Align End of Strings": "false",
+        "Data Reference.Ascii String References": "true",
+        "Data Reference.Create Address Tables": "false",
+        "Data Reference.Minimum String Length": "5",
+        "Data Reference.References to Pointers": "true",
+        "Data Reference.Relocation Table Guide": "true",
+        "Data Reference.Respect Execute Flag": "true",
+        "Data Reference.Subroutine References": "true",
+        "Data Reference.Switch Table References": "false",
+        "Data Reference.Unicode String References": "true",
+        "Decompiler Parameter ID": "false",
+        "Decompiler Parameter ID.Analysis Clear Level": "ANALYSIS",
+        "Decompiler Parameter ID.Analysis Decompiler Timeout (sec)": "60",
+        "Decompiler Parameter ID.Commit Data Types": "true",
+        "Decompiler Parameter ID.Commit Void Return Values": "false",
+        "Decompiler Parameter ID.Prototype Evaluation": "__stdcall",
+        "Decompiler Switch Analysis": "true",
+        "Decompiler Switch Analysis.Analysis Decompiler Timeout (sec)": "60",
+        "Demangler GNU": "true",
+        "Demangler GNU.Apply Function Calling Conventions": "true",
+        "Demangler GNU.Apply Function Signatures": "true",
+        "Demangler GNU.Demangle Only Known Mangled Symbols": "false",
+        "Demangler GNU.Demangler Format": "AUTO",
+        "Demangler GNU.Timeout (seconds)": "3",
+        "Demangler GNU.Use Deprecated Demangler": "false",
+        "Demangler GNU.Use Standard Text Replacements": "true",
+        "Disassemble Entry Points": "true",
+        "Disassemble Entry Points.Respect Execute Flag": "true",
+        "ELF Scalar Operand References": "true",
+        "ELF Scalar Operand References.Relocation Table Guide": "true",
+        "Embedded Media": "true",
+        "Embedded Media.Create Analysis Bookmarks": "true",
+        "External Entry References": "true",
+        "External Symbol Resolver": "true",
+        "Function ID": "true",
+        "Function ID.Always Apply FID Labels": "false",
+        "Function ID.Create Analysis Bookmarks": "true",
+        "Function ID.Instruction Count Threshold": "14.6",
+        "Function ID.Multiple Match Threshold": "30.0",
+        "Function Start Pre Search": "true",
+        "Function Start Pre Search.Bookmark Functions": "false",
+        "Function Start Pre Search.Search Data Blocks": "false",
+        "Function Start Search": "true",
+        "Function Start Search After Code": "true",
+        "Function Start Search After Code.Bookmark Functions": "false",
+        "Function Start Search After Code.Search Data Blocks": "false",
+        "Function Start Search After Data": "true",
+        "Function Start Search After Data.Bookmark Functions": "false",
+        "Function Start Search After Data.Search Data Blocks": "false",
+        "Function Start Search.Bookmark Functions": "false",
+        "Function Start Search.Search Data Blocks": "false",
+        "GCC Exception Handlers": "true",
+        "GCC Exception Handlers.Create Try Catch Comments": "true",
+        "Non-Returning Functions - Discovered": "true",
+        "Non-Returning Functions - Discovered.Create Analysis Bookmarks": "true",
+        "Non-Returning Functions - Discovered.Function Non-return Threshold": "3",
+        "Non-Returning Functions - Discovered.Repair Flow Damage": "true",
+        "Non-Returning Functions - Known": "true",
+        "Non-Returning Functions - Known.Create Analysis Bookmarks": "true",
+        "Reference": "true",
+        "Reference.Address Table Alignment": "1",
+        "Reference.Address Table Minimum Size": "2",
+        "Reference.Align End of Strings": "false",
+        "Reference.Ascii String References": "true",
+        "Reference.Create Address Tables": "false",
+        "Reference.Minimum String Length": "5",
+        "Reference.References to Pointers": "true",
+        "Reference.Relocation Table Guide": "true",
+        "Reference.Respect Execute Flag": "true",
+        "Reference.Subroutine References": "true",
+        "Reference.Switch Table References": "false",
+        "Reference.Unicode String References": "true",
+        "Shared Return Calls": "true",
+        "Shared Return Calls.Allow Conditional Jumps": "false",
+        "Shared Return Calls.Assume Contiguous Functions Only": "true",
+        "Stack": "true",
+        "Stack.Create Local Variables": "true",
+        "Stack.Create Param Variables": "false",
+        "Stack.Max Threads": "2",
+        "Subroutine References": "true",
+        "Subroutine References.Create Thunks Early": "true",
+        "Variadic Function Signature Override": "false",
+        "Variadic Function Signature Override.Create Analysis Bookmarks": "false",
+        "x86 Constant Reference Analyzer": "true",
+        "x86 Constant Reference Analyzer.Create Data from pointer": "false",
+        "x86 Constant Reference Analyzer.Function parameter/return Pointer analysis": "true",
+        "x86 Constant Reference Analyzer.Max Threads": "2",
+        "x86 Constant Reference Analyzer.Min absolute reference": "4",
+        "x86 Constant Reference Analyzer.Require pointer param data type": "false",
+        "x86 Constant Reference Analyzer.Speculative reference max": "256",
+        "x86 Constant Reference Analyzer.Speculative reference min": "1024",
+        "x86 Constant Reference Analyzer.Stored Value Pointer analysis": "true",
+        "x86 Constant Reference Analyzer.Trust values read from writable memory": "true"
+      },
+      "Program Information": {
+        "Analyzed": "true",
+        "Compiler": "unknown",
+        "Created With Ghidra Version": "12.0.4",
+        "DWARF Loaded": "true",
+        "Date Created": "Wed Oct 21 00:30:06 CEST 2026",
+        "ELF File Type": "shared object",
+        "ELF GNU Program Prop[processor opt 0xc0000002]": "03 00 00 00",
+        "ELF GNU Program Prop[processor opt 0xc0008002]": "01 00 00 00",
+        "ELF Note[GNU BuildId]": "c7f409fd4175c2e5fc7899ca1183c5efe9510719",
+        "ELF Note[required kernel ABI]": "Linux 3.2.0",
+        "ELF Original Image Base": "0x0",
+        "ELF Prelinked": "false",
+        "ELF Source File [   0]": "Scrt1.o",
+        "ELF Source File [   1]": "crtstuff.c",
+        "ELF Source File [   2]": "tienda-v2.c",
+        "ELF Source File [   3]": "crtstuff.c",
+        "ELF Source File [   4]": "",
+        "Elf Comment[0]": "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "Executable Format": "Executable and Linking Format (ELF)",
+        "Executable Location": "/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2",
+        "Executable MD5": "ffce812e10dae4d29309efb74cfe4e72",
+        "Executable SHA256": "c09cfc150e9706aebadd116667f4b2a74bcb5438e3a1c5d95442ffc7c1444113",
+        "FSRL": "file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2?MD5=ffce812e10dae4d29309efb74cfe4e72",
+        "Preferred Root Namespace Category": "",
+        "Relocatable": "true",
+        "Required Library [    0]": "libc.so.6",
+        "Should Ask To Analyze": "false"
+      }
+    }
+  },
+  "matches": {
+    "address_matches": {
+      "EXTERNAL:00000005": [
+        [
+          "EXTERNAL:00000005",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "00101189": [
+        [
+          "00101189",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ],
+        [
+          "00101213",
+          [
+            "Implied Match"
+          ]
+        ]
+      ],
+      "00101180": [
+        [
+          "00101180",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "00101000": [
+        [
+          "00101000",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "EXTERNAL:00000004": [
+        [
+          "EXTERNAL:00000004",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "001010d0": [
+        [
+          "001010d0",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "EXTERNAL:00000006": [
+        [
+          "EXTERNAL:00000006",
+          [
+            "SymbolsHash",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "EXTERNAL:00000001": [
+        [
+          "EXTERNAL:00000001",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "00101324": [
+        [
+          "00101460",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "00101100": [
+        [
+          "00101100",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "EXTERNAL:00000002": [
+        [
+          "EXTERNAL:00000002",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "EXTERNAL:00000008": [
+        [
+          "EXTERNAL:00000008",
+          [
+            "SymbolsHash",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "001010a0": [
+        [
+          "001010a0",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "00101140": [
+        [
+          "00101140",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "00101213": [
+        [
+          "00101242",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "001011e7": [
+        [
+          "001011e7",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "EXTERNAL:00000007": [
+        [
+          "EXTERNAL:00000007",
+          [
+            "SymbolsHash",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "001012a2": [
+        [
+          "001013e0",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "EXTERNAL:00000003": [
+        [
+          "EXTERNAL:00000003",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "00101020": [
+        [
+          "00101020",
+          [
+            "ExactBytesFunctionHasher",
+            "BSIM"
+          ]
+        ]
+      ]
+    },
+    "name_matches": {
+      "<EXTERNAL>::__cxa_finalize": [
+        [
+          "<EXTERNAL>::__cxa_finalize",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "calcular_subtotal": [
+        [
+          "calcular_subtotal",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ],
+        [
+          "calcular_descuento",
+          [
+            "Implied Match"
+          ]
+        ]
+      ],
+      "frame_dummy": [
+        [
+          "frame_dummy",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "_init": [
+        [
+          "_init",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "<EXTERNAL>::printf": [
+        [
+          "<EXTERNAL>::printf",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "deregister_tm_clones": [
+        [
+          "deregister_tm_clones",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "<EXTERNAL>::_ITM_deregisterTMCloneTable": [
+        [
+          "<EXTERNAL>::_ITM_deregisterTMCloneTable",
+          [
+            "SymbolsHash",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "<EXTERNAL>::__libc_start_main": [
+        [
+          "<EXTERNAL>::__libc_start_main",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "_fini": [
+        [
+          "_fini",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "register_tm_clones": [
+        [
+          "register_tm_clones",
+          [
+            "SymbolsHash"
+          ]
+        ]
+      ],
+      "<EXTERNAL>::puts": [
+        [
+          "<EXTERNAL>::puts",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "<EXTERNAL>::__gmon_start__": [
+        [
+          "<EXTERNAL>::__gmon_start__",
+          [
+            "SymbolsHash",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "_start": [
+        [
+          "_start",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "__do_global_dtors_aux": [
+        [
+          "__do_global_dtors_aux",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "mostrar_pedido": [
+        [
+          "mostrar_pedido",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "calcular_envio": [
+        [
+          "calcular_envio",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "<EXTERNAL>::_ITM_registerTMCloneTable": [
+        [
+          "<EXTERNAL>::_ITM_registerTMCloneTable",
+          [
+            "SymbolsHash",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "main": [
+        [
+          "main",
+          [
+            "SymbolsHash",
+            "BSIM"
+          ]
+        ]
+      ],
+      "<EXTERNAL>::__stack_chk_fail": [
+        [
+          "<EXTERNAL>::__stack_chk_fail",
+          [
+            "SymbolsHash",
+            "BSIM",
+            "ExternalsName"
+          ]
+        ]
+      ],
+      "FUN_00101020": [
+        [
+          "FUN_00101020",
+          [
+            "ExactBytesFunctionHasher",
+            "BSIM"
+          ]
+        ]
+      ]
+    }
+  },
+  "stats": {
+    "added_funcs_len": 0,
+    "deleted_funcs_len": 1,
+    "modified_funcs_len": 3,
+    "added_symbols_len": 0,
+    "deleted_symbols_len": 0,
+    "diff_time": 24.87279963493347,
+    "deleted_strings_len": 2,
+    "added_strings_len": 8,
+    "match_types": {
+      "SymbolsHash": 19,
+      "BSIM": 13,
+      "ExternalsName": 8,
+      "ExactBytesFunctionHasher": 1,
+      "Implied Match": 1
+    },
+    "items_to_process": 4,
+    "diff_types": {
+      "code": 3,
+      "length": 3,
+      "address": 3,
+      "called": 2,
+      "name": 1,
+      "fullname": 1,
+      "sig": 1
+    },
+    "unmatched_funcs_len": 1,
+    "total_funcs_len": 66,
+    "matched_funcs_len": 65,
+    "matched_funcs_with_code_changes_len": 3,
+    "matched_funcs_with_non_code_changes_len": 0,
+    "matched_funcs_no_changes_len": 62,
+    "match_func_similarity_percent": "95.3846%",
+    "func_match_overall_percent": "98.4848%",
+    "first_matches": {
+      "SymbolsHash": 19,
+      "ExactBytesFunctionHasher": 1,
+      "Implied Match": 1
+    }
+  },
+  "symbols": {
+    "added": [],
+    "deleted": []
+  },
+  "strings": {
+    "added": [
+      {
+        "name": "s_Envio:_%.2f_EUR_00102088",
+        "fullname": "s_Envio:_%.2f_EUR_00102088",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mostrar_pedido"
+        ],
+        "address": "00102088",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_Pedido_vacio_00102008",
+        "fullname": "s_Pedido_vacio_00102008",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mostrar_pedido"
+        ],
+        "address": "00102008",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_Descuento:_%.2f_EUR_00102073",
+        "fullname": "s_Descuento:_%.2f_EUR_00102073",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mostrar_pedido"
+        ],
+        "address": "00102073",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_Subtotal:_%.2f_EUR_0010205f",
+        "fullname": "s_Subtotal:_%.2f_EUR_0010205f",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mostrar_pedido"
+        ],
+        "address": "0010205f",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_Productos:_%zu_0010204f",
+        "fullname": "s_Productos:_%zu_0010204f",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mostrar_pedido"
+        ],
+        "address": "0010204f",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_Resumen_del_pedido_0010203c",
+        "fullname": "s_Resumen_del_pedido_0010203c",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mostrar_pedido"
+        ],
+        "address": "0010203c",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_Precio_invalido_en_el_producto_%_00102018",
+        "fullname": "s_Precio_invalido_en_el_producto_%_00102018",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mostrar_pedido"
+        ],
+        "address": "00102018",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_/home/jorge/PatchLens/ghidriff-m_.debug_line_str__00000000",
+        "fullname": "s_/home/jorge/PatchLens/ghidriff-m_.debug_line_str__00000000",
+        "parent": null,
+        "refcount": 1,
+        "reftypes": [
+          "DATA"
+        ],
+        "calling": [],
+        "address": ".debug_line_str::00000000",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      }
+    ],
+    "deleted": [
+      {
+        "name": "s_Bienvenido_a_la_tienda_00102019",
+        "fullname": "s_Bienvenido_a_la_tienda_00102019",
+        "parent": null,
+        "refcount": 2,
+        "reftypes": [
+          "DATA",
+          "PARAM"
+        ],
+        "calling": [
+          "mensaje_bienvenida"
+        ],
+        "address": "00102019",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      },
+      {
+        "name": "s_tienda-v1.c_.debug_line_str__00000000",
+        "fullname": "s_tienda-v1.c_.debug_line_str__00000000",
+        "parent": null,
+        "refcount": 1,
+        "reftypes": [
+          "DATA"
+        ],
+        "calling": [],
+        "address": ".debug_line_str::00000000",
+        "sym_type": "Label",
+        "sym_source": "DEFAULT",
+        "external": false
+      }
+    ]
+  },
+  "functions": {
+    "added": [],
+    "deleted": [
+      {
+        "name": "mensaje_bienvenida",
+        "fullname": "mensaje_bienvenida",
+        "parent": "Global",
+        "refcount": 4,
+        "length": 26,
+        "called": [
+          "<EXTERNAL>::puts"
+        ],
+        "calling": [
+          "main"
+        ],
+        "paramcount": 0,
+        "address": "00101288",
+        "sig": "void mensaje_bienvenida(void)",
+        "code": "\n/* WARNING: Unknown calling convention -- yet parameter storage is locked */\n\nvoid mensaje_bienvenida(void)\n\n{\n  puts(\"Bienvenido a la tienda\");\n  return;\n}\n\n",
+        "instructions": 8261280657788559095,
+        "mnemonics": 915103973913424535,
+        "blocks": -6156420246360657215,
+        "sym_type": "Function",
+        "sym_source": "IMPORTED",
+        "external": false
+      }
+    ],
+    "modified": [
+      {
+        "old": {
+          "name": "mostrar_pedido",
+          "fullname": "mostrar_pedido",
+          "parent": "Global",
+          "refcount": 4,
+          "length": 117,
+          "called": [
+            "<EXTERNAL>::printf",
+            "calcular_envio",
+            "calcular_subtotal"
+          ],
+          "calling": [
+            "main"
+          ],
+          "paramcount": 3,
+          "address": "00101213",
+          "sig": "void __stdcall mostrar_pedido(double * precios, size_t cantidad, int cliente_vip)",
+          "code": "\nvoid mostrar_pedido(double *precios,size_t cantidad,int cliente_vip)\n\n{\n  double subtotal_00;\n  double dVar1;\n  int cliente_vip_local;\n  size_t cantidad_local;\n  double *precios_local;\n  double subtotal;\n  double envio;\n  \n  subtotal_00 = calcular_subtotal(precios,cantidad);\n  dVar1 = calcular_envio(subtotal_00);\n  printf(\"Total: %.2f EUR\\n\",subtotal_00 + dVar1);\n  return;\n}\n\n",
+          "instructions": -7687607295443516294,
+          "mnemonics": 3837188880580035008,
+          "blocks": 8108992847899939730,
+          "sym_type": "Function",
+          "sym_source": "IMPORTED",
+          "external": false
+        },
+        "new": {
+          "name": "mostrar_pedido",
+          "fullname": "mostrar_pedido",
+          "parent": "Global",
+          "refcount": 4,
+          "length": 414,
+          "called": [
+            "<EXTERNAL>::printf",
+            "<EXTERNAL>::puts",
+            "calcular_descuento",
+            "calcular_envio",
+            "calcular_subtotal"
+          ],
+          "calling": [
+            "main"
+          ],
+          "paramcount": 3,
+          "address": "00101242",
+          "sig": "void __stdcall mostrar_pedido(double * precios, size_t cantidad, int cliente_vip)",
+          "code": "\nvoid mostrar_pedido(double *precios,size_t cantidad,int cliente_vip)\n\n{\n  double subtotal_00;\n  double dVar1;\n  double dVar2;\n  int cliente_vip_local;\n  size_t cantidad_local;\n  double *precios_local;\n  size_t i;\n  double subtotal;\n  double descuento;\n  double envio;\n  double total;\n  \n  if ((precios == (double *)0x0) || (cantidad == 0)) {\n    puts(\"Pedido vacio\");\n  }\n  else {\n    for (i = 0; i < cantidad; i = i + 1) {\n      if (precios[i] < 0.0) {\n        printf(\"Precio invalido en el producto %zu\\n\",i + 1);\n        return;\n      }\n    }\n    subtotal_00 = calcular_subtotal(precios,cantidad);\n    dVar1 = calcular_descuento(subtotal_00,cliente_vip);\n    dVar2 = calcular_envio(subtotal_00);\n    puts(\"Resumen del pedido\");\n    printf(\"Productos: %zu\\n\",cantidad);\n    printf(\"Subtotal: %.2f EUR\\n\",subtotal_00);\n    printf(\"Descuento: %.2f EUR\\n\",dVar1);\n    printf(\"Envio: %.2f EUR\\n\",dVar2);\n    printf(\"Total: %.2f EUR\\n\",(subtotal_00 - dVar1) + dVar2);\n  }\n  return;\n}\n\n",
+          "instructions": -4013903029849269886,
+          "mnemonics": -3024473320115621612,
+          "blocks": 2287782848364498844,
+          "sym_type": "Function",
+          "sym_source": "IMPORTED",
+          "external": false
+        },
+        "diff": "--- mostrar_pedido\n+++ mostrar_pedido\n@@ -1,18 +1,39 @@\n \n void mostrar_pedido(double *precios,size_t cantidad,int cliente_vip)\n \n {\n   double subtotal_00;\n   double dVar1;\n+  double dVar2;\n   int cliente_vip_local;\n   size_t cantidad_local;\n   double *precios_local;\n+  size_t i;\n   double subtotal;\n+  double descuento;\n   double envio;\n+  double total;\n   \n-  subtotal_00 = calcular_subtotal(precios,cantidad);\n-  dVar1 = calcular_envio(subtotal_00);\n-  printf(\"Total: %.2f EUR\\n\",subtotal_00 + dVar1);\n+  if ((precios == (double *)0x0) || (cantidad == 0)) {\n+    puts(\"Pedido vacio\");\n+  }\n+  else {\n+    for (i = 0; i < cantidad; i = i + 1) {\n+      if (precios[i] < 0.0) {\n+        printf(\"Precio invalido en el producto %zu\\n\",i + 1);\n+        return;\n+      }\n+    }\n+    subtotal_00 = calcular_subtotal(precios,cantidad);\n+    dVar1 = calcular_descuento(subtotal_00,cliente_vip);\n+    dVar2 = calcular_envio(subtotal_00);\n+    puts(\"Resumen del pedido\");\n+    printf(\"Productos: %zu\\n\",cantidad);\n+    printf(\"Subtotal: %.2f EUR\\n\",subtotal_00);\n+    printf(\"Descuento: %.2f EUR\\n\",dVar1);\n+    printf(\"Envio: %.2f EUR\\n\",dVar2);\n+    printf(\"Total: %.2f EUR\\n\",(subtotal_00 - dVar1) + dVar2);\n+  }\n   return;\n }\n \n",
+        "diff_type": [
+          "code",
+          "length",
+          "address",
+          "called"
+        ],
+        "ratio": 0.47,
+        "i_ratio": 0.25,
+        "m_ratio": 0.48,
+        "b_ratio": 0.4,
+        "match_types": [
+          "SymbolsHash",
+          "BSIM"
+        ]
+      },
+      {
+        "old": {
+          "name": "main",
+          "fullname": "main",
+          "parent": "Global",
+          "refcount": 4,
+          "length": 130,
+          "called": [
+            "<EXTERNAL>::__stack_chk_fail",
+            "mensaje_bienvenida",
+            "mostrar_pedido"
+          ],
+          "calling": [],
+          "paramcount": 0,
+          "address": "001012a2",
+          "sig": "int main(void)",
+          "code": "\n/* WARNING: Unknown calling convention -- yet parameter storage is locked */\n\nint main(void)\n\n{\n  long lVar1;\n  long in_FS_OFFSET;\n  size_t cantidad;\n  double precios [3];\n  \n  lVar1 = *(long *)(in_FS_OFFSET + 0x28);\n  mensaje_bienvenida();\n  precios[0] = 20.0;\n  precios[1] = 15.0;\n  precios[2] = 25.0;\n  mostrar_pedido(precios,3,1);\n  if (lVar1 != *(long *)(in_FS_OFFSET + 0x28)) {\n                    /* WARNING: Subroutine does not return */\n    __stack_chk_fail();\n  }\n  return 0;\n}\n\n",
+          "instructions": -752852564898983850,
+          "mnemonics": 7405969070164047593,
+          "blocks": 4662170393991161449,
+          "sym_type": "Function",
+          "sym_source": "IMPORTED",
+          "external": false
+        },
+        "new": {
+          "name": "main",
+          "fullname": "main",
+          "parent": "Global",
+          "refcount": 4,
+          "length": 125,
+          "called": [
+            "<EXTERNAL>::__stack_chk_fail",
+            "mostrar_pedido"
+          ],
+          "calling": [],
+          "paramcount": 0,
+          "address": "001013e0",
+          "sig": "int main(void)",
+          "code": "\n/* WARNING: Unknown calling convention -- yet parameter storage is locked */\n\nint main(void)\n\n{\n  long lVar1;\n  long in_FS_OFFSET;\n  size_t cantidad;\n  double precios [3];\n  \n  lVar1 = *(long *)(in_FS_OFFSET + 0x28);\n  precios[0] = 20.0;\n  precios[1] = 15.0;\n  precios[2] = 25.0;\n  mostrar_pedido(precios,3,1);\n  if (lVar1 != *(long *)(in_FS_OFFSET + 0x28)) {\n                    /* WARNING: Subroutine does not return */\n    __stack_chk_fail();\n  }\n  return 0;\n}\n\n",
+          "instructions": -6759124061539117939,
+          "mnemonics": 335716707551479234,
+          "blocks": -8301508524697326512,
+          "sym_type": "Function",
+          "sym_source": "IMPORTED",
+          "external": false
+        },
+        "diff": "--- main\n+++ main\n@@ -1,24 +1,23 @@\n \n /* WARNING: Unknown calling convention -- yet parameter storage is locked */\n \n int main(void)\n \n {\n   long lVar1;\n   long in_FS_OFFSET;\n   size_t cantidad;\n   double precios [3];\n   \n   lVar1 = *(long *)(in_FS_OFFSET + 0x28);\n-  mensaje_bienvenida();\n   precios[0] = 20.0;\n   precios[1] = 15.0;\n   precios[2] = 25.0;\n   mostrar_pedido(precios,3,1);\n   if (lVar1 != *(long *)(in_FS_OFFSET + 0x28)) {\n                     /* WARNING: Subroutine does not return */\n     __stack_chk_fail();\n   }\n   return 0;\n }\n \n",
+        "diff_type": [
+          "code",
+          "length",
+          "address",
+          "called"
+        ],
+        "ratio": 0.97,
+        "i_ratio": 0.8,
+        "m_ratio": 0.98,
+        "b_ratio": 0.98,
+        "match_types": [
+          "SymbolsHash",
+          "BSIM"
+        ]
+      },
+      {
+        "old": {
+          "name": "calcular_subtotal",
+          "fullname": "calcular_subtotal",
+          "parent": "Global",
+          "refcount": 4,
+          "length": 94,
+          "called": [],
+          "calling": [
+            "mostrar_pedido"
+          ],
+          "paramcount": 2,
+          "address": "00101189",
+          "sig": "double __stdcall calcular_subtotal(double * precios, size_t cantidad)",
+          "code": "\ndouble calcular_subtotal(double *precios,size_t cantidad)\n\n{\n  size_t cantidad_local;\n  double *precios_local;\n  double subtotal;\n  size_t i;\n  \n  subtotal = 0.0;\n  for (i = 0; i < cantidad; i = i + 1) {\n    subtotal = precios[i] + subtotal;\n  }\n  return subtotal;\n}\n\n",
+          "instructions": -3708302157417568570,
+          "mnemonics": 7924628657227670401,
+          "blocks": 9216305613103698803,
+          "sym_type": "Function",
+          "sym_source": "IMPORTED",
+          "external": false
+        },
+        "new": {
+          "name": "calcular_descuento",
+          "fullname": "calcular_descuento",
+          "parent": "Global",
+          "refcount": 4,
+          "length": 47,
+          "called": [],
+          "calling": [
+            "mostrar_pedido"
+          ],
+          "paramcount": 2,
+          "address": "00101213",
+          "sig": "double __stdcall calcular_descuento(double subtotal, int cliente_vip)",
+          "code": "\ndouble calcular_descuento(double subtotal,int cliente_vip)\n\n{\n  double dVar1;\n  int cliente_vip_local;\n  double subtotal_local;\n  \n  if (cliente_vip == 0) {\n    dVar1 = 0.0;\n  }\n  else {\n    dVar1 = subtotal * 0.1;\n  }\n  return dVar1;\n}\n\n",
+          "instructions": 3145295318932419813,
+          "mnemonics": 1785914296703887588,
+          "blocks": 2611234833503192953,
+          "sym_type": "Function",
+          "sym_source": "IMPORTED",
+          "external": false
+        },
+        "diff": "--- calcular_subtotal\n+++ calcular_descuento\n@@ -1,16 +1,17 @@\n \n-double calcular_subtotal(double *precios,size_t cantidad)\n+double calcular_descuento(double subtotal,int cliente_vip)\n \n {\n-  size_t cantidad_local;\n-  double *precios_local;\n-  double subtotal;\n-  size_t i;\n+  double dVar1;\n+  int cliente_vip_local;\n+  double subtotal_local;\n   \n-  subtotal = 0.0;\n-  for (i = 0; i < cantidad; i = i + 1) {\n-    subtotal = precios[i] + subtotal;\n+  if (cliente_vip == 0) {\n+    dVar1 = 0.0;\n   }\n-  return subtotal;\n+  else {\n+    dVar1 = subtotal * 0.1;\n+  }\n+  return dVar1;\n }\n \n",
+        "diff_type": [
+          "code",
+          "name",
+          "fullname",
+          "length",
+          "sig",
+          "address"
+        ],
+        "ratio": 0.37,
+        "i_ratio": 0.32,
+        "m_ratio": 0.74,
+        "b_ratio": 0.47,
+        "match_types": [
+          "Implied Match"
+        ]
+      }
+    ]
+  },
+  "old_meta": {
+    "Program Name": "tienda-v1",
+    "Language ID": "x86:LE:64:default (4.6)",
+    "Compiler ID": "gcc",
+    "Processor": "x86",
+    "Endian": "Little",
+    "Address Size": "64",
+    "Minimum Address": "00100000",
+    "Maximum Address": "_elfSectionHeaders::0000093f",
+    "# of Bytes": "9682",
+    "# of Memory Blocks": "39",
+    "# of Instructions": "189",
+    "# of Defined Data": "214",
+    "# of Functions": "33",
+    "# of Symbols": "97",
+    "# of Data Types": "73",
+    "# of Data Type Categories": "5",
+    "Analyzed": "true",
+    "Created With Ghidra Version": "12.0.4",
+    "DWARF Loaded": "true",
+    "Date Created": "Wed Oct 21 00:30:05 CEST 2026",
+    "ELF File Type": "shared object",
+    "ELF GNU Program Prop[processor opt 0xc0000002]": "03 00 00 00",
+    "ELF GNU Program Prop[processor opt 0xc0008002]": "01 00 00 00",
+    "ELF Note[GNU BuildId]": "6ad51dffb6708703b28f2733e811a488e130a23b",
+    "ELF Note[required kernel ABI]": "Linux 3.2.0",
+    "ELF Original Image Base": "0x0",
+    "ELF Prelinked": "false",
+    "ELF Source File [   0]": "Scrt1.o",
+    "ELF Source File [   1]": "crtstuff.c",
+    "ELF Source File [   2]": "tienda-v1.c",
+    "ELF Source File [   3]": "crtstuff.c",
+    "ELF Source File [   4]": "",
+    "Elf Comment[0]": "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "Executable Format": "Executable and Linking Format (ELF)",
+    "Executable Location": "/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1",
+    "Executable MD5": "6425c4dc3ec921816bb2cdc91e22d088",
+    "Executable SHA256": "a1d1d64eee7f3e090385a8b6dbde27b4a9f29b128325b1f9bcb59c9299c599f7",
+    "FSRL": "file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1?MD5=6425c4dc3ec921816bb2cdc91e22d088",
+    "Preferred Root Namespace Category": "",
+    "Relocatable": "true",
+    "Required Library [    0]": "libc.so.6",
+    "Should Ask To Analyze": "false"
+  },
+  "new_meta": {
+    "Program Name": "tienda-v2",
+    "Language ID": "x86:LE:64:default (4.6)",
+    "Compiler ID": "gcc",
+    "Processor": "x86",
+    "Endian": "Little",
+    "Address Size": "64",
+    "Minimum Address": "00100000",
+    "Maximum Address": "_elfSectionHeaders::0000093f",
+    "# of Bytes": "10269",
+    "# of Memory Blocks": "39",
+    "# of Instructions": "259",
+    "# of Defined Data": "221",
+    "# of Functions": "33",
+    "# of Symbols": "104",
+    "# of Data Types": "73",
+    "# of Data Type Categories": "5",
+    "Analyzed": "true",
+    "Created With Ghidra Version": "12.0.4",
+    "DWARF Loaded": "true",
+    "Date Created": "Wed Oct 21 00:30:06 CEST 2026",
+    "ELF File Type": "shared object",
+    "ELF GNU Program Prop[processor opt 0xc0000002]": "03 00 00 00",
+    "ELF GNU Program Prop[processor opt 0xc0008002]": "01 00 00 00",
+    "ELF Note[GNU BuildId]": "c7f409fd4175c2e5fc7899ca1183c5efe9510719",
+    "ELF Note[required kernel ABI]": "Linux 3.2.0",
+    "ELF Original Image Base": "0x0",
+    "ELF Prelinked": "false",
+    "ELF Source File [   0]": "Scrt1.o",
+    "ELF Source File [   1]": "crtstuff.c",
+    "ELF Source File [   2]": "tienda-v2.c",
+    "ELF Source File [   3]": "crtstuff.c",
+    "ELF Source File [   4]": "",
+    "Elf Comment[0]": "GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "Executable Format": "Executable and Linking Format (ELF)",
+    "Executable Location": "/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2",
+    "Executable MD5": "ffce812e10dae4d29309efb74cfe4e72",
+    "Executable SHA256": "c09cfc150e9706aebadd116667f4b2a74bcb5438e3a1c5d95442ffc7c1444113",
+    "FSRL": "file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2?MD5=ffce812e10dae4d29309efb74cfe4e72",
+    "Preferred Root Namespace Category": "",
+    "Relocatable": "true",
+    "Required Library [    0]": "libc.so.6",
+    "Should Ask To Analyze": "false"
+  },
+  "md_credits": "\n<sub>Generated with `ghidriff` version: 1.0.0 on 2026-10-21T00:30:36</sub>",
+  "html_credits": "\n<sub>Generated with <code>ghidriff</code> version: 1.0.0 on 2026-10-21T00:30:36</sub>"
+}
