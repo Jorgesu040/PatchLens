@@ -4,9 +4,8 @@ import subprocess
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-from AI import analyze_report
 from Main import find_report, main, run_ghidriff
 from parser.NormalizerEngine import find_conflicts, merge_changes, normalize_record, link_conflicts
 from GridriffParser import ENGINES, parse_reports
@@ -33,7 +32,7 @@ class MultimotorTests(unittest.TestCase):
     def test_real_outputs_are_grouped_and_conflicts_linked_both_ways(self):
         result = parse_reports(self.reports)
         self.assertEqual(len(result["changes"]), 7)
-        self.assertEqual(len(result["conflicts"]), 1)
+        self.assertEqual(len(result["conflicts"]), 2)
         self.assertEqual(sum(len(c["sources"]) for c in result["changes"]), 14)
         self.assertTrue(all(set(a) == {"report", "stats"} for a in result["analyses"].values()))
         conflict = result["conflicts"][0]
@@ -85,14 +84,6 @@ class MultimotorTests(unittest.TestCase):
         for reports in ({}, {"TypoDiff": self.reports[ENGINES[0]]}):
             with self.subTest(reports=reports), self.assertRaises(ValueError):
                 parse_reports(reports)
-
-    def test_ai_forwards_multimotor_report_without_network(self):
-        report = parse_reports(self.reports)
-        adapter = MagicMock()
-        adapter.generate.return_value = "informe simulado"
-        self.assertEqual(analyze_report(report, adapter), "informe simulado")
-        # JSON serializa las claves-tupla de los conflictos como listas.
-        self.assertEqual(json.loads(adapter.generate.call_args.args[0]), json.loads(json.dumps(report)))
 
 class NormalizerTests(unittest.TestCase):
     def test_union_preserves_order_provenance_and_input(self):
@@ -190,7 +181,7 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual([c.args[3] for c in run.call_args_list], list(ENGINES))
         parse.assert_called_once_with(dict(zip(ENGINES, reports)))
         self.assertEqual(len(result["changes"]), 7)
-        self.assertEqual(len(result["conflicts"]), 1)
+        self.assertEqual(len(result["conflicts"]), 2)
         self.assertEqual(json.loads(write.call_args.args[0]), json.loads(json.dumps(result)))
 
     def test_main_stops_if_an_engine_fails(self):

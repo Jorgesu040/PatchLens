@@ -100,12 +100,29 @@ def get_changes(data: dict[str, Any], engine: str) -> list[dict[str, Any]]:
     return changes
 
 
+def get_matches(data: dict[str, Any], engine: str) -> list[dict[str, Any]]:
+    """Conservar cada pareja de direcciones con sus métodos y procedencia."""
+    return [
+        {
+            "old_function": {"address": old_address},
+            "new_function": {"address": new_address},
+            "sources": [{
+                "analysis": engine,
+                "json_path": f"$.matches.address_matches[{json.dumps(old_address)}][{index}]",
+                "match_types": list(dict.fromkeys(match_types)),
+            }],
+        }
+        for old_address, candidates in data["matches"]["address_matches"].items()
+        for index, (new_address, match_types) in enumerate(candidates)
+    ]
+
+
 def parse_json(json_file: str | Path, engine: str) -> dict[str, Any]:
     """Leer y adaptar el informe original de un único motor.
 
     json_file es la ruta al JSON de Ghidriff; engine identifica sus fuentes.
     Devuelve binaries (old/new), analysis (ruta absoluta y estadísticas)
-    y changes (lista de get_changes). Es el paso de lectura de parse_reports,
+    y las listas changes y matches. Es el paso de lectura de parse_reports,
     no el resultado multimotor final. No ejecuta Ghidra ni fusiona informes.
     Exige hashes no vacíos; fallos de lectura o campos necesarios se propagan.
     """
@@ -123,6 +140,7 @@ def parse_json(json_file: str | Path, engine: str) -> dict[str, Any]:
         "binaries": binaries,
         "analysis": {"report": str(path), "stats": data["stats"]},
         "changes": get_changes(data, engine),
+        "matches": get_matches(data, engine),
     }
 
 
@@ -132,7 +150,7 @@ def parse_reports(reports: dict[str, str | Path]) -> dict[str, Any]:
     reports relaciona identificador de motor con ruta a su JSON original.
     Lee cada informe con parse_json y exige que coincidan los hashes old/new.
     Después acumula propuestas, usa merge_changes y find_conflicts y enlaza IDs.
-    Devuelve schema_version, binaries, analyses, changes y conflicts.
+    Devuelve schema_version, binaries, analyses, changes, matches y conflicts.
     Conserva propuestas incompatibles para su revisión; no elige por mayoría.
     Rechaza entrada vacía, motor desconocido o hashes incompatibles. No ejecuta
     los motores: Main los ejecuta y entrega aquí las rutas de sus resultados.
@@ -141,6 +159,7 @@ def parse_reports(reports: dict[str, str | Path]) -> dict[str, Any]:
         raise ValueError("Se necesita al menos un informe")
 
     all_changes: list[dict[str, Any]] = []
+    all_matches: list[dict[str, Any]] = []
     analyses: dict[str, Any] = {}
     binaries: dict[str, Any] | None = None
 
@@ -156,15 +175,18 @@ def parse_reports(reports: dict[str, str | Path]) -> dict[str, Any]:
                     raise ValueError(f"Informe incompatible {engine}: SHA256 {side} no coincide")
         analyses[engine] = report["analysis"]
         all_changes.extend(report["changes"])
+        all_matches.extend(report["matches"])
 
     changes = merge_changes(all_changes)
-    conflicts = find_conflicts(changes)
-    link_conflicts(changes, conflicts)
+    matches = merge_changes(all_matches)
+    conflicts = find_conflicts(changes, matches)
+    link_conflicts(changes, conflicts, matches)
     return {
-        "schema_version": "2.0",
+        "schema_version": "2.1",
         "binaries": binaries,
         "analyses": analyses,
         "changes": changes,
+        "matches": matches,
         "conflicts": conflicts,
     }
 

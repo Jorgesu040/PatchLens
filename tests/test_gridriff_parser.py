@@ -29,6 +29,7 @@ class GridriffParserTests(unittest.TestCase):
                               "diff": ["-return 0;", "+return 1;"],
                               "match_types": ["FullName:Param"], "ratio": 0.5}],
             },
+            "matches": {"address_matches": {"00101020": [["00101030", ["FullName:Param"]]]}},
             "stats": {"modified_funcs_len": 1},
         }
 

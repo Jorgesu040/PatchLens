@@ -117,10 +117,11 @@ def change_key(
     El motor y el nombre no forman parte de la clave: varios motores pueden
     proponer el mismo cambio. Added y modified de la misma función nueva NO
     comparten clave y deben conservarse para detectar el conflicto posterior.
+    Los matches, sin type, usan el tipo interno match para agrupar sus parejas.
     No es un hash del pseudocódigo ni un ID global; no modifica la propuesta.
     """
 
-    change_type = change["type"]
+    change_type = change.get("type", "match")
 
     old_identity = function_key("old", change.get("old_function"))
 
@@ -135,7 +136,8 @@ def merge_changes(
 ) -> list[dict[str, Any]]:
     """Agrupar propuestas equivalentes conservando evidencia de cada fuente.
 
-    Recibe la lista plana de propuestas normalizadas de uno o varios motores.
+    Recibe cambios o matches normalizados de uno o varios motores; los matches
+    tienen old_function/new_function y sources, sin type ni aspects.
     Agrupa por change_key y devuelve copias en orden de primera aparición.
     Une aspects sin duplicados y conserva sources distintas; solo elimina
     fuentes totalmente iguales, no rutas distintas del mismo motor.
@@ -162,9 +164,10 @@ def merge_changes(
         ):
             raise ValueError(f"Exportaciones distintas para la misma propuesta: {key}")
 
-        existing["aspects"] = list(
-            dict.fromkeys(existing["aspects"] + change["aspects"])
-        )
+        if "aspects" in existing:
+            existing["aspects"] = list(
+                dict.fromkeys(existing["aspects"] + change["aspects"])
+            )
 
         for source in change["sources"]:
             source = copy.deepcopy(source)
@@ -176,19 +179,21 @@ def merge_changes(
 
 def find_conflicts(
     changes: list[dict[str, Any]],
+    matches=(),
 ) -> list[dict[str, Any]]:
     """Detectar propuestas incompatibles sobre las mismas identidades de función.
 
-    Recibe cambios ya fusionados, con lados válidos según su tipo. Indexa las
+    Recibe cambios y matches ya fusionados, con lados válidos. Indexa las
     funciones old/new para buscar added_vs_modified, deleted_vs_modified,
     added_modified_deleted, same_old_to_multiple_new y multiple_old_to_same_new.
-    Devuelve alertas con tipo, funciones implicadas y change_indices: posiciones
-    en la lista recibida, NO change_id. link_conflicts convierte esos índices
-    internos en enlaces públicos por ID. Se asume type validado en normalize_record.
+    Devuelve alertas con tipo, funciones y change_indices/match_indices: posiciones
+    en cada lista, no IDs. link_conflicts convierte esos índices en enlaces públicos.
+    Las correspondencias ambiguas se revisan juntas, sin duplicar alertas.
     No modifica entradas ni decide qué propuesta es correcta. Added y deleted
     sin una correspondencia modificada entre ellos no son un conflicto por sí
     solos. Una ausencia en un motor tampoco se interpreta como contradicción.
     """
+    records = [*changes, *matches]
     changes_by_old_function: dict[FunctionKey, dict[str, list[int]]] = {}
     changes_by_new_function: dict[FunctionKey, dict[str, list[int]]] = {}
 
@@ -200,8 +205,8 @@ def find_conflicts(
     }
 
     # 1. Agrupar los índices según las funciones a las que afectan.
-    for change_index, change in enumerate(changes):
-        kind = change["type"]
+    for change_index, change in enumerate(records):
+        kind = change.get("type", "match")
 
         old_function_key = function_key("old", change["old_function"])
         new_function_key = function_key("new", change["new_function"])
@@ -211,13 +216,13 @@ def find_conflicts(
 
         if old_function_key is not None:
             related_changes = changes_by_old_function.setdefault(
-                old_function_key, {"deleted": [], "modified": []}
+                old_function_key, {"deleted": [], "modified": [], "match": []}
             )
             related_changes[kind].append(change_index)
 
         if new_function_key is not None:
             related_changes = changes_by_new_function.setdefault(
-                new_function_key, {"added": [], "modified": []}
+                new_function_key, {"added": [], "modified": [], "match": []}
             )
             related_changes[kind].append(change_index)
 
@@ -246,58 +251,64 @@ def find_conflicts(
 
     # 3. Buscar una función antigua relacionada con varias nuevas.
     for old_function_key, related_changes in changes_by_old_function.items():
-        modified_indices = related_changes["modified"]
+        pair_indices = related_changes["modified"] + related_changes["match"]
 
         new_function_keys = {
-            function_key("new", changes[index]["new_function"])
-            for index in modified_indices
+            function_key("new", records[index]["new_function"])
+            for index in pair_indices
         }
 
         if len(new_function_keys) > 1:
             conflicts.append({
                 "type": "same_old_to_multiple_new",
                 "old_function": old_function_key,
-                "change_indices": modified_indices.copy(),
+                "change_indices": pair_indices,
             })
 
     # 4. Buscar varias funciones antiguas relacionadas con una misma nueva.
     for new_function_key, related_changes in changes_by_new_function.items():
-        modified_indices = related_changes["modified"]
+        pair_indices = related_changes["modified"] + related_changes["match"]
 
         old_function_keys = {
-            function_key("old", changes[index]["old_function"])
-            for index in modified_indices
+            function_key("old", records[index]["old_function"])
+            for index in pair_indices
         }
 
         if len(old_function_keys) > 1:
             conflicts.append({
                 "type": "multiple_old_to_same_new",
                 "new_function": new_function_key,
-                "change_indices": modified_indices.copy(),
+                "change_indices": pair_indices,
             })
 
+    for conflict in conflicts:
+        indices = conflict["change_indices"]
+        conflict["change_indices"] = [index for index in indices if index < len(changes)]
+        conflict["match_indices"] = [index - len(changes) for index in indices if index >= len(changes)]
     return conflicts
 
 
-def link_conflicts(changes: list[dict[str, Any]], conflicts: list[dict[str, Any]]) -> None:
-    """Asignar IDs finales y enlazar cambios y conflictos en ambos sentidos.
+def link_conflicts(changes: list[dict[str, Any]], conflicts: list[dict[str, Any]], matches=()) -> None:
+    """Asignar IDs finales y enlazar cambios, matches y conflictos en ambos sentidos.
 
     Recibe cambios ya fusionados y conflictos de find_conflicts cuyos
     change_indices apuntan a esa lista. Modifica ambas listas in situ:
-    inicializa change_id/conflict_ids y conflict_id/change_ids; retira los índices
+    inicializa change_id/match_id/conflict_ids y conflict_id/change_ids/match_ids; retira los índices
     internos de cada conflicto, dejando solo enlaces por ID. Devuelve None.
     Se usa después de la fusión para que registros agrupados compartan un ID.
     Los IDs dependen del orden; no son hashes ni identificadores globales.
     """
-    for index, change in enumerate(changes):
-        change["change_id"] = f"change_{index:04d}"
-        change["conflict_ids"] = []
+    for kind, records in (("change", changes), ("match", matches)):
+        for index, record in enumerate(records):
+            record[f"{kind}_id"] = f"{kind}_{index:04d}"
+            record["conflict_ids"] = []
 
     for index, conflict in enumerate(conflicts):
         conflict["conflict_id"] = f"conflict_{index:04d}"
-        conflict["change_ids"] = []
-        for change_index in conflict.pop("change_indices"):
-            change = changes[change_index]
-            conflict["change_ids"].append(change["change_id"])
-            change["conflict_ids"].append(conflict["conflict_id"])
+        for kind, records in (("change", changes), ("match", matches)):
+            conflict[f"{kind}_ids"] = []
+            for record_index in conflict.pop(f"{kind}_indices"):
+                record = records[record_index]
+                conflict[f"{kind}_ids"].append(record[f"{kind}_id"])
+                record["conflict_ids"].append(conflict["conflict_id"])
 
