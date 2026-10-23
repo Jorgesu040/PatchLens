@@ -3,7 +3,7 @@ import json
 import os
 from typing import Protocol
 from openai import APIError, OpenAI
-from openai.types.responses import Response
+from openai.types.responses import Response, ResponseFunctionToolCall
 
 from model_tools.tool_calling_test import getPassword, login, tools_schemas
 
@@ -26,6 +26,18 @@ class ResponsesAdapter:
                                    max_retries=5, timeout=120)
 
     def generate(self, history: list[dict], tools: list[dict], instructions: str = None) -> Response:
+        """Genera una respuesta del modelo, permite la llamada a herramientas
+        Args:
+            history (list[dict]): Historial de mensajes.
+            tools (list[dict]): Esquemas de herramientas.
+            instructions (str, optional): Instrucciones para el modelo. Defaults to None.
+        Returns:
+            Response: Respuesta del modelo.
+            
+        Nota: Se usan streams para permitir el uso de cuentas de OpenAI en vez de solo la API Keys
+        (Ref: https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference)
+        """
+
 
         final_response = None
         completed_items = []
@@ -41,13 +53,8 @@ class ResponsesAdapter:
             for event in stream:
                 if event.type == "response.output_item.done":
                     completed_items.append((event.output_index, event.item))
-                elif event.type in (
-                    "response.completed",
-                    "response.failed",
-                    "response.incomplete",
-                ):
+                elif event.type in ("response.completed", "response.failed", "response.incomplete",):
                     final_response = event.response
-
                 elif event.type == "error":
                     code = getattr(event, "code", None) or "stream_error"
                     raise RuntimeError(f"Error durante la inferencia: {code}")
@@ -55,6 +62,7 @@ class ResponsesAdapter:
         if final_response is None:
             raise RuntimeError("El stream terminó sin una respuesta terminal.")
 
+        # Reconstruir la salida final (eventos del stream + respuesta final)
         output = list(final_response.output)
         for index, item in completed_items:
             while len(output) <= index:
@@ -65,17 +73,30 @@ class ResponsesAdapter:
         return final_response
 
 
-    def register_response(self, response):
+    def register_response(self, response: Response) -> None:
+        """Registra la respuesta del modelo y el estado de las iteraciones.
+        Args:
+            response (Response): Respuesta del modelo.
+        """
         self.logs.append({"response": response, "iterations": self.iterations.copy()})
 
 
-    def check_limits(self):
+    def check_limits(self) -> str | None:
+        """Verifica si se han alcanzado los límites de iteración.
+        Returns:
+            str | None: Razón de detención si se alcanzan los límites, de lo contrario None.
+        """
         if self.iterations["iterations"] >= self.iterations["max_iterations"]:
             return "max_iterations_reached"
 
         return None
 
-    def error_detected(self, response) -> tuple[bool, list[str]]:
+    def error_detected(self, response: Response) -> tuple[bool, list[str]]:
+        """Busca errores en la respuesta del modelo.
+        Args:
+            response (Response): Respuesta del modelo.
+        Returns:
+            tuple[bool, list[str]]: (error_detected, error_info)"""
         if response.error is not None:
             return True, [response.error.code, response.error.message]
         if response.status == "incomplete":
@@ -87,11 +108,22 @@ class ResponsesAdapter:
             return True, ["empty_response", "La respuesta no contiene elementos de salida."]
         return False, []
 
-    def get_calls(self, response):
+
+    def get_calls(self, response: Response) -> list[ResponseFunctionToolCall]:
+        """Extrae las llamadas a herramientas de la respuesta del modelo.
+        Args:
+            response (Response): Respuesta del modelo.
+        Returns:
+            list[ResponseFunctionToolCall]: Lista de llamadas a herramientas."""
         return [item for item in response.output if item.type == "function_call"]
 
-    def classify_output(self, response) -> str | None:
-        """Sin llamadas pendientes: finalizar, continuar o señalar una salida inesperada."""
+    def classify_output(self, response: Response) -> str | None:
+        """Clasifica la salida del modelo.
+        Sin llamadas pendientes: finalizar, continuar o señalar una salida inesperada.
+        Args:
+            response (Response): Respuesta del modelo.
+        Returns:
+            str | None: Razón de detención si se alcanza, de lo contrario None."""
         messages = [item for item in response.output if item.type == "message"]
         if any(part.type == "refusal" for message in messages for part in message.content):
             return "refused"
@@ -101,8 +133,12 @@ class ResponsesAdapter:
             return None
         return "unexpected_output"
 
-    def make_tool_call(self, call): 
-
+    def make_tool_call(self, call: ResponseFunctionToolCall) -> str | bool:
+        """Ejecuta la llamada a la herramienta según el nombre de la función y los argumentos proporcionados.
+        Args:
+            call (ResponseFunctionToolCall): Llamada a la herramienta.
+        Returns:
+            str | bool: Resultado de la ejecución de la función."""
         # Find corresponding function name in call.name and execute it with the provided arguments.
         function_name = call.name
         arguments = json.loads(call.arguments)
@@ -118,10 +154,20 @@ class ResponsesAdapter:
             raise ValueError(f"Unknown function name: {function_name}") 
         
 
-    def agent_loop(self, prompt, instructions, tools, max_iterations):
-        
+    def agent_loop(self, prompt: str, instructions: str, tools: list[dict], max_iterations: int) -> str:
+        """Bucle principal del agente que genera respuestas, maneja llamadas a herramientas y registra el historial.
+        Args:
+            prompt (str): Mensaje inicial del usuario.
+            instructions (str): Instrucciones para el modelo.
+            tools (list[dict]): Esquemas de herramientas.
+            max_iterations (int): Número máximo de iteraciones.
+        Returns:
+            str: JSON con el historial de mensajes y resultados de herramientas
+                (history), la razón de finalización (stop_reason) y el contador
+                y límite de iteraciones (iterations).
+        """
         history = [{"role": "user", "content": prompt}]
-        stop_reason = None
+        stop_reason: str | None = None
         self.logs = []
         self.iterations["iterations"] = 0
         self.iterations["max_iterations"] = max_iterations
