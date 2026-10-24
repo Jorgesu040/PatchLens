@@ -7,7 +7,7 @@ from types import SimpleNamespace as Event
 import unittest
 from unittest.mock import MagicMock, patch
 
-from AI import analyze_report
+from AI import analyze_report, final_report, INSTRUCTIONS
 from AIAdapters import APIKeyAdapter, ChatGPTAdapter, create_adapter
 from ChatGPTAuth import ChatGPTSession, REQUIRED_SCOPES
 
@@ -16,32 +16,34 @@ class AdapterTests(unittest.TestCase):
     def stream(self, adapter, events):
         client = MagicMock()
         client.responses.create.return_value.__enter__.return_value = iter(events)
-        with patch("openai.OpenAI") as constructor:
-            constructor.return_value.__enter__.return_value = client
-            result = adapter.generate("evidence", "instructions")
-            return result, constructor.call_args, client.responses.create.call_args
+        adapter.client = client
+        result = adapter.generate(
+            history=[{"role": "user", "content": "evidence"}],
+            tools=[], instructions="instructions")
+        return result, client.responses.create.call_args
 
     def test_both_adapters_share_request_but_use_separate_credentials(self):
         session = MagicMock()
         session.access_token.return_value = "oauth-test"
-        with patch.dict(os.environ, {"OPENAI_API_KEY": "api-test"}):
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "api-test"}), patch("AIAdapters.OpenAI"):
             for adapter, key in ((APIKeyAdapter("test-model"), "api-test"),
                                  (ChatGPTAdapter("test-model", session), "oauth-test")):
-                result, auth, request = self.stream(adapter, [
+                response = Event(status="completed", error=None, output=[], output_text="report")
+                result, request = self.stream(adapter, [
                     Event(type="response.output_text.delta", delta="report"),
-                    Event(type="response.completed")])
-                self.assertEqual(result, "report")
-                self.assertEqual(auth.kwargs["api_key"], key)
+                    Event(type="response.completed", response=response)])
+                self.assertIs(result, response)
+                self.assertEqual(adapter.credential(), key)
                 self.assertEqual(request.kwargs["input"], [{"role": "user", "content": "evidence"}])
                 self.assertFalse(request.kwargs["store"])
                 self.assertTrue(request.kwargs["stream"])
 
-    def test_partial_failed_and_incomplete_streams_are_rejected(self):
-        for terminal in (None, "response.failed", "response.incomplete", "error"):
+    def test_stream_without_terminal_or_with_error_is_rejected(self):
+        for terminal in (None, "error"):
             events = [Event(type="response.output_text.delta", delta="partial")]
             if terminal:
                 events.append(Event(type=terminal))
-            with self.subTest(terminal=terminal), self.assertRaises(RuntimeError):
+            with self.subTest(terminal=terminal), patch("AIAdapters.OpenAI"), self.assertRaises(RuntimeError):
                 self.stream(ChatGPTAdapter("test", MagicMock()), events)
 
     def test_missing_api_key_does_not_use_chatgpt(self):
@@ -52,11 +54,28 @@ class AdapterTests(unittest.TestCase):
 
     def test_report_is_passed_as_untrusted_evidence(self):
         adapter = MagicMock()
-        adapter.generate.return_value = "report"
+        run = {"history": [], "stop_reason": "completed", "iterations": {}}
+        adapter.agent_loop.return_value = run
         report = {"schema_version": "2.0", "binaries": {}, "analyses": {},
                   "changes": [{"change_id": "change_0000"}], "conflicts": []}
-        self.assertEqual(analyze_report(report, adapter), "report")
-        self.assertEqual(json.loads(adapter.generate.call_args.args[0]), report)
+        self.assertEqual(analyze_report(report, adapter), run)
+        adapter.generate.assert_not_called()
+        request = adapter.agent_loop.call_args.kwargs
+        self.assertEqual(json.loads(request["prompt"]), report)
+        self.assertEqual(request["tools"], [])
+        self.assertEqual(request["instructions"], INSTRUCTIONS)
+
+    def test_final_report_shows_the_useful_trace(self):
+        run = {"stop_reason": "completed", "history": [
+            {"role": "user", "content": "entrada"},
+            {"type": "function_call", "name": "get_function", "call_id": "call_1", "arguments": "{}"},
+            {"type": "function_call_output", "call_id": "call_1", "output": "resultado"},
+            {"type": "message", "role": "assistant", "phase": "final_answer",
+             "content": [{"type": "output_text", "text": "conclusión"}]},
+        ]}
+        text = final_report(run)
+        for expected in ("entrada", "get_function", "resultado", "conclusión"):
+            self.assertIn(expected, text)
 
 
 class SessionTests(unittest.TestCase):

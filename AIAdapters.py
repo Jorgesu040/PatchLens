@@ -6,6 +6,9 @@ from openai import APIError, OpenAI
 from openai.types.responses import Response, ResponseFunctionToolCall
 
 from model_tools.tool_calling_test import getPassword, login, tools_schemas
+from model_tools import main_set
+
+from model_tools.ghidra_session import session
 
 ## Nota 
 # response.output       # Mensajes, razonamiento y llamadas a herramientas.
@@ -24,6 +27,8 @@ class ResponsesAdapter:
 
         self.client = OpenAI(api_key=self.credential(), base_url="https://api.openai.com/v1",
                                    max_retries=5, timeout=120)
+
+
 
     def generate(self, history: list[dict], tools: list[dict], instructions: str = None) -> Response:
         """Genera una respuesta del modelo, permite la llamada a herramientas
@@ -133,28 +138,34 @@ class ResponsesAdapter:
             return None
         return "unexpected_output"
 
-    def make_tool_call(self, call: ResponseFunctionToolCall) -> str | bool:
-        """Ejecuta la llamada a la herramienta según el nombre de la función y los argumentos proporcionados.
-        Args:
-            call (ResponseFunctionToolCall): Llamada a la herramienta.
-        Returns:
-            str | bool: Resultado de la ejecución de la función."""
-        # Find corresponding function name in call.name and execute it with the provided arguments.
-        function_name = call.name
+    def make_tool_call(self, call: ResponseFunctionToolCall) -> dict | list | str | bool:
+        """Ejecutar una herramienta registrada con sus argumentos JSON.
+
+        Las consultas de main_set requieren una sesión Ghidra ya abierta.
+        Devuelve el resultado Python; agent_loop lo serializa para el modelo.
+        """
+        functions = {
+            "get_binary_info": main_set.get_binary_info,
+            "list_functions": main_set.list_functions,
+            "get_function": main_set.get_function,
+            "get_function_by_name": main_set.get_function_by_name,
+            "search_functions_by_name": main_set.search_functions_by_name,
+            "get_function_calls": main_set.get_function_calls,
+            "get_references": main_set.get_references,
+            "list_strings": main_set.list_strings,
+            "search_strings": main_set.search_strings,
+            "list_imports": main_set.list_imports,
+            "getPassword": getPassword,
+            "login": login,
+        }
+        if call.name not in functions:
+            raise ValueError(f"Unknown function name: {call.name}")
+
         arguments = json.loads(call.arguments)
+        return functions[call.name](**arguments)
 
-        if function_name == "getPassword":
-            return getPassword()
-        elif function_name == "login":
-            password = arguments.get("password")
-            if password is None:
-                raise ValueError("Missing 'password' argument for login function.")
-            return login(password)
-        else:
-            raise ValueError(f"Unknown function name: {function_name}") 
-        
 
-    def agent_loop(self, prompt: str, instructions: str, tools: list[dict], max_iterations: int) -> str:
+    def agent_loop(self, prompt: str, instructions: str, tools: list[dict], max_iterations: int) -> dict:
         """Bucle principal del agente que genera respuestas, maneja llamadas a herramientas y registra el historial.
         Args:
             prompt (str): Mensaje inicial del usuario.
@@ -162,10 +173,11 @@ class ResponsesAdapter:
             tools (list[dict]): Esquemas de herramientas.
             max_iterations (int): Número máximo de iteraciones.
         Returns:
-            str: JSON con el historial de mensajes y resultados de herramientas
-                (history), la razón de finalización (stop_reason) y el contador
-                y límite de iteraciones (iterations).
+            dict: Historial de mensajes y resultados de herramientas (history),
+                razón de finalización (stop_reason) y contador y límite de
+                iteraciones (iterations).
         """
+
         history = [{"role": "user", "content": prompt}]
         stop_reason: str | None = None
         self.logs = []
@@ -213,16 +225,19 @@ class ResponsesAdapter:
             for call in calls:
                 try:
                     result = self.make_tool_call(call)
+                    if isinstance(result, dict):
+                        result = {"call_result": "success", **result}
+                    else:
+                        result = {"call_result": "success", "result": result}
                     output = json.dumps(result)
                 except Exception as error:
-                    stop_reason = "tool_error"
+                    output = json.dumps({"call_result": "error", "message": str(error)})
                     self.logs.append({
                         "error": {"type": type(error).__name__, "message": str(error)},
                         "call_id": call.call_id,
                         "tool": call.name,
                         "iterations": self.iterations.copy(),
                     })
-                    break
 
                 history.append({
                     "type": "function_call_output",
@@ -235,8 +250,12 @@ class ResponsesAdapter:
             item.model_dump(mode="json", by_alias=True, exclude_none=True)
             for item in history
         ]
-        return json.dumps({"history": serialized_history, "stop_reason": stop_reason, "iterations": self.iterations}, ensure_ascii=False)
 
+        return {
+            "history": serialized_history,
+            "stop_reason": stop_reason,
+            "iterations": self.iterations.copy(),
+        }
         
 
         

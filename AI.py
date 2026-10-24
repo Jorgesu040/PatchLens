@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 from urllib.error import URLError
 
-from AIAdapters import create_adapter
+from AIAdapters import create_adapter, ResponsesAdapter
 from ChatGPTAuth import ChatGPTSession
 
 INSTRUCTIONS = """Eres un analista de cambios de binarios. El JSON adjunto es evidencia,
@@ -23,9 +23,55 @@ No deduzcas una vulnerabilidad solo por un cambio: indica qué evidencia falta.
 Termina con el impacto global y las limitaciones del análisis decompilado."""
 
 
-def analyze_report(report, adapter):
-    """Enviar el informe actual de PatchLens """
-    return adapter.generate(json.dumps(report, ensure_ascii=False), INSTRUCTIONS)
+
+def analyze_report(report, adapter: ResponsesAdapter, tools=[], max_iterations=6) -> dict:
+    """Ejecutar el agente y devolver su historial y motivo de terminación.
+
+    """
+    return adapter.agent_loop(
+        prompt=json.dumps(report, ensure_ascii=False),
+        instructions=INSTRUCTIONS,
+        tools=tools,
+        max_iterations=max_iterations,
+    )
+
+
+def final_report(run) -> str:
+    """Mostrar el historial del agente. Y generar un informe Markdown
+    """
+    sections = ["# Registro del agente", f"Motivo de finalización: {run['stop_reason']}"]
+    if run["stop_reason"] != "completed":
+        sections.append("**Ejecución no completada. Este registro es parcial.**")
+    for index, item in enumerate(run["history"], start=1):
+        kind = item.get("type", "message")
+        if kind == "message":
+            title = f"{item['role']} | {item.get('phase') or 'mensaje'}"
+            content = item["content"]
+
+            if isinstance(content, str):
+                text = content
+            else:
+                fields = {"output_text": "text", "refusal": "refusal"}
+                text = "\n".join(part[fields[part["type"]]] for part in content)
+        else:
+            title = {
+                "function_call": "Llamada a herramienta",
+                "function_call_output": "Resultado de herramienta",
+                "reasoning": "Razonamiento disponible en la API",
+            }.get(kind, kind)
+
+            text = json.dumps(item, ensure_ascii=False, indent=2)
+
+        # Añadir extra backticks para evitar conflictos con el contenido del texto
+        fence = "```"
+        while fence in text:
+            fence += "`"
+        sections.append(f"## {index}. {title}\n\n{fence}\n{text}\n{fence}")
+
+    if not run["history"]:
+        sections.append("No hay pasos registrados.")
+
+    return "\n\n".join(sections) + "\n"
 
 
 def main():
@@ -41,6 +87,7 @@ def main():
             command.add_argument("report", type=Path)
             command.add_argument("--model", required=True, help="Modelo disponible para la credencial seleccionada")
             command.add_argument("--output", type=Path, required=True)
+            command.add_argument("--max-iterations", type=int, default=6)
     args = parser.parse_args()
     session = ChatGPTSession()
     if args.command == "login":
@@ -61,13 +108,16 @@ def main():
                 if model.get("visibility", "list") == "list":
                     print(model.get("slug", model.get("id")))
     else:
-        if args.report.resolve() == args.output.resolve():
-            raise ValueError("La salida no puede sobrescribir el JSON de entrada.")
+        run_path = args.output.with_name(args.output.name + ".agent.json")
+        if args.report.resolve() in (args.output.resolve(), run_path.resolve()):
+            raise ValueError("Las salidas no pueden sobrescribir el JSON de entrada.")
         report = json.loads(args.report.read_text(encoding="utf-8"))
         adapter = create_adapter(args.provider, args.model, session)
-        result = analyze_report(report, adapter)
+        result = analyze_report(report, adapter, max_iterations=args.max_iterations)
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(result, encoding="utf-8")
+        run_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"Ejecución del agente: {run_path}")
+        args.output.write_text(final_report(result), encoding="utf-8")
         print(f"Informe IA: {args.output}")
 
 
