@@ -222,3 +222,4 @@ __marimo__/
 .venv-ai/
 experiments/
 resultados/
+!example/execution/run.log

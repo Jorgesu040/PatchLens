@@ -1,0 +1,45 @@
+{
+  "execution": "tienda_intermedia_20261025_104416",
+  "performed_by": "Jorge",
+  "code_commit": "a764a5d",
+  "schema_version": "2.0",
+  "engines": [
+    "VersionTrackingDiff",
+    "SimpleDiff",
+    "StructualGraphDiff"
+  ],
+  "counts": {
+    "changes": 7,
+    "matches": 23,
+    "conflicts": 2,
+    "rounds": 4,
+    "tool_calls": 14,
+    "tool_errors": 0
+  },
+  "stop_reason": "completed",
+  "max_iterations": 20,
+  "reproduction_model": "gpt-6.1-sol",
+  "model_recorded_in_agent_json": false,
+  "provider_in_reproduction_command": "chatgpt",
+  "ghidriff_base_commit": "4f5d895fcbb1eacd65efd81145922c15bb7e741d",
+  "environment": {
+    "os": "Ubuntu/WSL Linux x86-64",
+    "python": "3.12.3",
+    "ghidra": "12.0.4",
+    "java": "21.0.12.1",
+    "ghidriff": "1.0.0 + patches/ghidriff/ghidriff-local.patch",
+    "pyghidra": "3.1.0",
+    "JPype1": "1.5.2",
+    "openai": "3.35.1",
+    "PyJWT": "2.15.1",
+    "rapidfuzz": "3.14.6"
+  },
+  "inputs_sha256": {
+    "src/tienda-v1.c": "df71016ab26ad465543fc2c36712483acd4e47022169e62f9d14b1203c18f98d",
+    "src/tienda-v2.c": "993bb6d2dda39a45fb43091213c96bc6617ede54d0c11863d6b2aaca905690d6",
+    "bin/tienda-v1": "a1d1d64eee7f3e090385a8b6dbde27b4a9f29b128325b1f9bcb59c9299c599f7",
+    "bin/tienda-v2": "c09cfc150e9706aebadd116667f4b2a74bcb5438e3a1c5d95442ffc7c1444113"
+  },
+  "normalization_note": "normalized.json uses schema 2.0 and repository-relative report paths. Both normalized files preserve the same findings.",
+  "compilation_note": "GCC 13.3.0; -std=c11 -Wall -Wextra -O0 -g -fno-inline. Recompiled bytes may differ; original binaries are retained."
+}

@@ -1,0 +1,980 @@
+Analizando con VersionTrackingDiff...
+INFO | ghidriff | Init Ghidra Diff Engine...
+INFO | ghidriff | Engine Console Log: INFO
+INFO | ghidriff | Engine File Log:  /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/ghidriff.log INFO
+INFO | ghidriff | Starting Ghidra...
+INFO  Using log config file: jar:file:/home/jorge/PatchLens/ghidra_12.0.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)
+INFO  Using log file: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/ghidriff.log (LoggingInitialization)
+INFO  Loading user preferences: /home/jorge/.config/ghidra/ghidra_12.0.4_PUBLIC/preferences (Preferences)
+INFO  Searching for classes... (ClassSearcher)
+INFO  Class search complete (924 ms) (ClassSearcher)
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)
+INFO  Initializing Random Number Generator... (SecureRandomFactory)
+INFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)
+INFO | ghidriff | GHIDRA_INSTALL_DIR: /home/jorge/PatchLens/ghidra_12.0.4_PUBLIC
+INFO | ghidriff | GHIDRA 12.0.4  Build Date: 2026-Mar-03 1410 EST Release: PUBLIC
+INFO | ghidriff | Engine Args:
+INFO | ghidriff | 	old:                ['/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1']
+INFO | ghidriff | 	new:                [['/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2']]
+INFO | ghidriff | 	engine:             VersionTrackingDiff
+INFO | ghidriff | 	output_path:        /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_
+INFO | ghidriff | 	summary:            False
+INFO | ghidriff | 	project_location:   ghidra_projects
+INFO | ghidriff | 	project_name:       tienda_intermedia_20261025_104416
+INFO | ghidriff | 	symbols_path:       symbols
+INFO | ghidriff | 	gzfs_path:          gzfs
+INFO | ghidriff | 	base_address:       None
+INFO | ghidriff | 	program_options:    None
+INFO | ghidriff | 	threaded:           True
+INFO | ghidriff | 	force_analysis:     False
+INFO | ghidriff | 	force_diff:         False
+INFO | ghidriff | 	no_symbols:         False
+INFO | ghidriff | 	log_level:          INFO
+INFO | ghidriff | 	file_log_level:     INFO
+INFO | ghidriff | 	log_path:           ghidriff.log
+INFO | ghidriff | 	va:                 False
+INFO | ghidriff | 	min_func_len:       10
+INFO | ghidriff | 	use_calling_counts: False
+INFO | ghidriff | 	gdt:                []
+INFO | ghidriff | 	bsim:               True
+INFO | ghidriff | 	bsim_full:          True
+INFO | ghidriff | 	max_ram_percent:    60.0
+INFO | ghidriff | 	print_flags:        False
+INFO | ghidriff | 	jvm_args:           []
+INFO | ghidriff | 	decompiler_timeout: 60
+INFO | ghidriff | 	side_by_side:       True
+INFO | ghidriff | 	max_section_funcs:  200
+INFO | ghidriff | 	md_title:           PatchLens-tienda-v1-vs-tienda-v2.md
+INFO | ghidriff | Setting Up Ghidra Project...
+INFO  Creating project: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/ghidra_projects/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2 (DefaultProject)
+INFO | ghidriff | Created project: tienda_intermedia_20261025_104416-tienda-v1-tienda-v2
+INFO | ghidriff | Project Location: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/ghidra_projects/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2/
+INFO | ghidriff | Importing /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1 as tienda-v1-6964e9
+INFO  Using Loader: Executable and Linking Format (ELF) (ProgramLoader)
+INFO  Using Language/Compiler: x86:LE:64:default:gcc (ProgramLoader)
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib/x86_64-linux-gnu/jni, /usr/lib/x86_64-linux-gnu, /usr/lib/jni] (ProgramLoader)
+INFO  Additional info:
+Loading file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1?MD5=6425c4dc3ec921816bb2cdc91e22d088...
+Setting block .init_array to read-only
+Setting block .fini_array to read-only
+Setting block .dynamic to read-only
+------------------------------------------------
+
+Linking the External Programs of 'tienda-v1' to imported libraries...
+  [libc.so.6] -> not found in project
+------------------------------------------------
+
+Resolving External Symbols of [/tienda-v1] - 5 unresolved symbols, no external libraries configured - skipping
+ (ProgramLoader)
+INFO  /tienda-v1-6964e9: file created (jorge) (LocalFileSystem)
+INFO | ghidriff | Loaded tienda-v1 - .ProgramDB
+INFO | ghidriff | Image base address: 0x00100000
+INFO | ghidriff | Importing /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2 as tienda-v2-77f03a
+INFO  Using Loader: Executable and Linking Format (ELF) (ProgramLoader)
+INFO  Using Language/Compiler: x86:LE:64:default:gcc (ProgramLoader)
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib/x86_64-linux-gnu/jni, /usr/lib/x86_64-linux-gnu, /usr/lib/jni] (ProgramLoader)
+INFO  Additional info:
+Loading file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2?MD5=ffce812e10dae4d29309efb74cfe4e72...
+Setting block .init_array to read-only
+Setting block .fini_array to read-only
+Setting block .dynamic to read-only
+------------------------------------------------
+
+Linking the External Programs of 'tienda-v2' to imported libraries...
+  [libc.so.6] -> not found in project
+------------------------------------------------
+
+Resolving External Symbols of [/tienda-v2] - 5 unresolved symbols, no external libraries configured - skipping
+ (ProgramLoader)
+INFO  /tienda-v2-77f03a: file created (jorge) (LocalFileSystem)
+INFO | ghidriff | Loaded tienda-v2 - .ProgramDB
+INFO | ghidriff | Image base address: 0x00100000
+INFO | ghidriff | Project Files:
+INFO | ghidriff | tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v1-6964e9
+INFO | ghidriff | tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v2-77f03a
+INFO | ghidriff | Setting up Symbol Server for symbols...
+INFO | ghidriff | path: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/symbols level: 0
+INFO | ghidriff | Symbol Server Configured path: SymbolServerService:
+	symbolStore: LocalSymbolStore: [ rootDir: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/symbols, storageLevel: -1],
+	symbolServers:
+		HttpSymbolServer: [ url: https://msdl.microsoft.com/download/symbols/, trusted: false, storageLevel: -1]
+		HttpSymbolServer: [ url: https://chromium-browser-symsrv.commondatastorage.googleapis.com/, trusted: false, storageLevel: -1]
+		HttpSymbolServer: [ url: https://symbols.mozilla.org/, trusted: false, storageLevel: -1]
+WARNING| ghidriff | PDB not found for tienda-v1!
+WARNING| ghidriff | PDB not found for tienda-v2!
+INFO | ghidriff | Program: tienda-v1-6964e9 imported: True has_pdb: False pdb_loaded: False analyzed False
+INFO | ghidriff | Program: tienda-v2-77f03a imported: True has_pdb: False pdb_loaded: False analyzed False
+INFO | ghidriff | Starting analysis for 2 binaries
+INFO | ghidriff | Analyzing: tienda-v2 - .ProgramDB
+INFO | ghidriff | Analyzing: tienda-v1 - .ProgramDB
+INFO | ghidriff | Starting Ghidra analysis of tienda-v1 - .ProgramDB...
+INFO  Added 31 source map entries (DWARFImporter)
+INFO  DWARF ver[5], 1 compUnits, 43 DIES, import - total elapsed: 115ms (DWARFImportSummary)
+INFO  DWARF data type import - elapsed: 20ms (DWARFImportSummary)
+INFO  DWARF func & symbol import - elapsed: 76ms (DWARFImportSummary)
+INFO  DWARF types imported: 15 (DWARFImportSummary)
+INFO  DWARF enums from macros - elapsed: 2ms (DWARFImportSummary)
+INFO  DWARF compile dirs: [/home/jorge/PatchLens/ghidriff-material] (DWARFImportSummary)
+INFO  DWARF producers: [GNU C11 13.3.0 -mtune=generic -march=x86-64 -g -O0 -std=c11 -fno-inline -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection] (DWARFImportSummary)
+INFO  DWARF source languages: [DW_LANG_C11] (DWARFImportSummary)
+INFO  DWARF compUnit: tienda-v1.c (DWARFImportSummary)
+INFO | ghidriff | Starting Ghidra analysis of tienda-v2 - .ProgramDB...
+INFO  hit non-returning function, restarting decompiler switch analyzer later (DecompilerSwitchAnalyzer)
+WARN  Decompiling 00101100, pcode error at 00105030: Unable to disassemble EXTERNAL block location: 00105030 (DecompileCallback)
+WARN  Decompiling 001010d0, pcode error at 00105008: Unable to disassemble EXTERNAL block location: 00105008 (DecompileCallback)
+INFO  Packed database cache: /var/tmp/jorge-ghidra/packed-db-cache (PackedDatabaseCache)
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)
+INFO  Resolving External Symbols of [/tienda-v1-6964e9] - 8 unresolved symbols, no external libraries configured - skipping (ExternalSymbolResolverAnalyzer)
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.273 secs
+    Apply Data Archives                        0.318 secs
+    Call Convention ID                         0.915 secs
+    Call-Fixup Installer                       0.002 secs
+    Create Address Tables                      0.003 secs
+    Create Function                            0.002 secs
+    DWARF                                      0.183 secs
+    Data Reference                             0.003 secs
+    Decompiler Switch Analysis                 0.030 secs
+    Decompiler Switch Analysis - One Time      0.950 secs
+    Demangler GNU                              0.038 secs
+    Disassemble Entry Points                   0.075 secs
+    ELF Scalar Operand References              0.005 secs
+    Embedded Media                             0.003 secs
+    External Entry References                  0.001 secs
+    External Symbol Resolver                   0.001 secs
+    Function ID                                0.089 secs
+    Function Start Pre Search                  0.006 secs
+    Function Start Search                      0.037 secs
+    Function Start Search After Code           0.002 secs
+    Function Start Search After Data           0.000 secs
+    GCC Exception Handlers                     0.074 secs
+    Non-Returning Functions - Discovered       0.003 secs
+    Non-Returning Functions - Known            0.006 secs
+    Reference                                  0.011 secs
+    Shared Return Calls                        0.006 secs
+    Stack                                      0.024 secs
+    Subroutine References                      0.003 secs
+    Subroutine References - One Time           0.000 secs
+    x86 Constant Reference Analyzer            0.050 secs
+-----------------------------------------------------
+     Total Time   3 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)
+INFO  Added 52 source map entries (DWARFImporter)
+INFO  DWARF ver[5], 1 compUnits, 49 DIES, import - total elapsed: 41ms (DWARFImportSummary)
+INFO  DWARF data type import - elapsed: 10ms (DWARFImportSummary)
+INFO  DWARF func & symbol import - elapsed: 25ms (DWARFImportSummary)
+INFO  DWARF types imported: 15 (DWARFImportSummary)
+INFO  DWARF compile dirs: [/home/jorge/PatchLens/ghidriff-material] (DWARFImportSummary)
+INFO  DWARF producers: [GNU C11 13.3.0 -mtune=generic -march=x86-64 -g -O0 -std=c11 -fno-inline -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection] (DWARFImportSummary)
+INFO  DWARF source languages: [DW_LANG_C11] (DWARFImportSummary)
+INFO  DWARF compUnit: tienda-v2.c (DWARFImportSummary)
+INFO | ghidriff | Analysis for tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v1-6964e9 complete
+INFO | ghidriff | Analyis % complete: 50.0
+INFO  hit non-returning function, restarting decompiler switch analyzer later (DecompilerSwitchAnalyzer)
+WARN  Decompiling 00101100, pcode error at 00105030: Unable to disassemble EXTERNAL block location: 00105030 (DecompileCallback)
+WARN  Decompiling 001010d0, pcode error at 00105008: Unable to disassemble EXTERNAL block location: 00105008 (DecompileCallback)
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)
+INFO  Resolving External Symbols of [/tienda-v2-77f03a] - 8 unresolved symbols, no external libraries configured - skipping (ExternalSymbolResolverAnalyzer)
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.004 secs
+    Apply Data Archives                        0.217 secs
+    Call Convention ID                         1.249 secs
+    Call-Fixup Installer                       0.003 secs
+    Create Address Tables                      0.002 secs
+    Create Function                            0.001 secs
+    DWARF                                      0.049 secs
+    Data Reference                             0.005 secs
+    Decompiler Switch Analysis                 0.005 secs
+    Decompiler Switch Analysis - One Time      0.886 secs
+    Demangler GNU                              0.014 secs
+    Disassemble Entry Points                   0.038 secs
+    ELF Scalar Operand References              0.005 secs
+    Embedded Media                             0.005 secs
+    External Entry References                  0.000 secs
+    External Symbol Resolver                   0.001 secs
+    Function ID                                0.032 secs
+    Function Start Pre Search                  0.006 secs
+    Function Start Search                      0.087 secs
+    Function Start Search After Code           0.001 secs
+    Function Start Search After Data           0.002 secs
+    GCC Exception Handlers                     0.019 secs
+    Non-Returning Functions - Discovered       0.001 secs
+    Non-Returning Functions - Known            0.002 secs
+    Reference                                  0.010 secs
+    Shared Return Calls                        0.005 secs
+    Stack                                      0.028 secs
+    Subroutine References                      0.002 secs
+    Subroutine References - One Time           0.000 secs
+    x86 Constant Reference Analyzer            0.031 secs
+-----------------------------------------------------
+     Total Time   2 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)
+INFO | ghidriff | Analysis for tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v2-77f03a complete
+INFO | ghidriff | Analyis % complete: 100.0
+INFO | ghidriff | Diffing bins: /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1 - /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2
+INFO | ghidriff | Setup 64 decompliers
+INFO | ghidriff | Loaded old program: tienda-v1
+INFO | ghidriff | Loaded new program: tienda-v2
+INFO | ghidriff | p1 sym count: reported: 97 analyzed: 26
+INFO | ghidriff | p2 sym count: reported: 104 analyzed: 32
+INFO | ghidriff | Found unmatched: 10 matched: 24 symbols
+INFO  Hashing symbols in tienda-v1 (ConsoleTaskMonitor)
+INFO  Hashing symbols in tienda-v2 (ConsoleTaskMonitor)
+INFO  Eliminate non-unique matches (ConsoleTaskMonitor)
+INFO  Finding symbol matches (ConsoleTaskMonitor)
+INFO | ghidriff | Exec time: 0.0061 secs
+INFO | ghidriff | Match count 51
+INFO | ghidriff | Counter({('SymbolsHash',): 19})
+INFO | ghidriff | Running correlator: ExactBytesFunctionHasher
+INFO | ghidriff | name: ExactBytesFunctionHasher one_to_one: True one_to_many: False
+INFO  Hashing functions in tienda-v1 (ConsoleTaskMonitor)
+INFO  Hashing functions in tienda-v2 (ConsoleTaskMonitor)
+INFO  Finding function matches (ConsoleTaskMonitor)
+INFO | ghidriff | Match count: 1
+INFO | ghidriff | ExactBytesFunctionHasher Exec time: 0.0033 secs
+INFO | ghidriff | Running correlator: ExactInstructionsFunctionHasher
+INFO | ghidriff | name: ExactInstructionsFunctionHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | ExactInstructionsFunctionHasher Exec time: 0.0014 secs
+INFO | ghidriff | Running correlator: StructuralGraphExactHash
+INFO | ghidriff | name: StructuralGraphExactHash one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | StructuralGraphExactHash Exec time: 0.0243 secs
+INFO | ghidriff | Running correlator: ExactMnemonicsFunctionHasher
+INFO | ghidriff | name: ExactMnemonicsFunctionHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | ExactMnemonicsFunctionHasher Exec time: 0.0029 secs
+INFO | ghidriff | Running correlator: BSIM
+INFO | ghidriff | name: BSIM one_to_one: True one_to_many: False
+INFO | ghidriff | Starting BSIM correlator
+INFO | ghidriff | Match Set 0 - 20 matches [Correlator=Manual Match]
+INFO | ghidriff | Match Set -1 - 0 matches [Correlator=Implied Match]
+INFO | ghidriff | Match Set 1 - 13 matches [Correlator=BSim Function Matching]
+INFO | ghidriff | BSIM Exec time: 6.0255 secs
+INFO | ghidriff | Running correlator: BulkInstructionHash
+INFO | ghidriff | name: BulkInstructionHash one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | BulkInstructionHash Exec time: 0.0014 secs
+INFO | ghidriff | Running correlator: SigCallingCalledHasher
+INFO | ghidriff | name: SigCallingCalledHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | SigCallingCalledHasher Exec time: 0.0153 secs
+INFO | ghidriff | Running correlator: StringsRefsHasher
+INFO | ghidriff | name: StringsRefsHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | StringsRefsHasher Exec time: 0.0820 secs
+INFO | ghidriff | Running correlator: StrUniqueFuncRefsHasher
+INFO | ghidriff | name: StrUniqueFuncRefsHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | StrUniqueFuncRefsHasher Exec time: 0.0018 secs
+INFO | ghidriff | Running correlator: SwitchSigHasher
+INFO | ghidriff | name: SwitchSigHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | SwitchSigHasher Exec time: 0.0041 secs
+INFO | ghidriff | Running correlator: StructuralGraphHash
+INFO | ghidriff | name: StructuralGraphHash one_to_one: True one_to_many: True
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | StructuralGraphHash Exec time: 0.0024 secs
+INFO | ghidriff | Running correlator: BulkBasicBlockMnemonicHash
+INFO | ghidriff | name: BulkBasicBlockMnemonicHash one_to_one: True one_to_many: True
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | BulkBasicBlockMnemonicHash Exec time: 0.0021 secs
+INFO | ghidriff | Running correlator: SigCallingCalledHasher
+INFO | ghidriff | name: SigCallingCalledHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | SigCallingCalledHasher Exec time: 0.0008 secs
+INFO | ghidriff | Running correlator: StringsRefsHasher
+INFO | ghidriff | name: StringsRefsHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | StringsRefsHasher Exec time: 0.0005 secs
+INFO | ghidriff | Running correlator: StrUniqueFuncRefsHasher
+INFO | ghidriff | name: StrUniqueFuncRefsHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | StrUniqueFuncRefsHasher Exec time: 0.0019 secs
+INFO | ghidriff | Running correlator: SwitchSigHasher
+INFO | ghidriff | name: SwitchSigHasher one_to_one: True one_to_many: False
+INFO | ghidriff | Match count: 0
+INFO | ghidriff | SwitchSigHasher Exec time: 0.0009 secs
+INFO | ghidriff | Counter({('SymbolsHash', 'BSIM'): 12, ('SymbolsHash',): 7, ('ExactBytesFunctionHasher', 'BSIM'): 1})
+INFO | ghidriff | Running correlator: Implied matches on p1:1 p2:1
+INFO | ghidriff | p1 missing = 1
+INFO | ghidriff | p2 missing = 0
+INFO | ghidriff | Externs - deleted: 0 added: 0 matched:8
+INFO | ghidriff | Generating matches json...
+INFO | ghidriff | Deduping symbols and functions...
+INFO | ghidriff | Sorting symbols and strings...
+INFO | ghidriff | Sorting functions...
+INFO | ghidriff | Starting esym lookups for 18 symbols using 32 threads
+INFO | ghidriff | Completed 1 at 5%
+INFO | ghidriff | Completed 2 at 11%
+INFO | ghidriff | Completed 3 at 16%
+INFO | ghidriff | Completed 4 at 22%
+INFO | ghidriff | Completed 5 at 27%
+INFO | ghidriff | Completed 6 at 33%
+INFO | ghidriff | Completed 7 at 38%
+INFO | ghidriff | Completed 8 at 44%
+INFO | ghidriff | Completed 9 at 50%
+INFO | ghidriff | Completed 10 at 55%
+INFO | ghidriff | Completed 11 at 61%
+INFO | ghidriff | Completed 12 at 66%
+INFO | ghidriff | Completed 13 at 72%
+INFO | ghidriff | Completed 14 at 77%
+INFO | ghidriff | Completed 15 at 83%
+INFO | ghidriff | Completed 16 at 88%
+INFO | ghidriff | Completed 17 at 94%
+INFO | ghidriff | Completed 18 at 100%
+INFO | ghidriff | Finished diffing old program: tienda-v1
+INFO | ghidriff | Finished diffing program: tienda-v2
+INFO | ghidriff | Writing md diff...
+INFO | ghidriff | Generating markdown from {'added_funcs_len': 0, 'deleted_funcs_len': 1, 'modified_funcs_len': 3, 'added_symbols_len': 0, 'deleted_symbols_len': 0, 'diff_time': 25.523701667785645, 'deleted_strings_len': 2, 'added_strings_len': 8, 'match_types': Counter({'SymbolsHash': 19, 'BSIM': 13, 'ExternalsName': 8, 'ExactBytesFunctionHasher': 1, 'Implied Match': 1}), 'items_to_process': 4, 'diff_types': Counter({'code': 3, 'length': 3, 'address': 3, 'called': 2, 'name': 1, 'fullname': 1, 'sig': 1}), 'unmatched_funcs_len': 1, 'total_funcs_len': 66, 'matched_funcs_len': 65, 'matched_funcs_with_code_changes_len': 3, 'matched_funcs_with_non_code_changes_len': 0, 'matched_funcs_no_changes_len': 62, 'match_func_similarity_percent': '95.3846%', 'func_match_overall_percent': '98.4848%', 'first_matches': Counter({'SymbolsHash': 19, 'ExactBytesFunctionHasher': 1, 'Implied Match': 1})}
+INFO | ghidriff | Known Command line: ghidriff --project-location ghidra_projects --project-name tienda_intermedia_20261025_104416 --symbols-path symbols --gzfs-path gzfs --threaded --log-level INFO --file-log-level INFO --log-path ghidriff.log --min-func-len 10 --gdt [] --bsim --bsim-full --max-ram-percent 60.0 --jvm-args [] --decompiler-timeout 60 --side-by-side --max-section-funcs 200 --md-title PatchLens-tienda-v1-vs-tienda-v2.md tienda-v1 tienda-v2
+INFO | ghidriff | Extra Command line: --engine VersionTrackingDiff --output-path /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_
+INFO | ghidriff | Writing pdiff json...
+INFO | ghidriff | Writing matches json...
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/tienda-v1-tienda-v2.ghidriff.md (size: 55K)
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/json/tienda-v1-tienda-v2.ghidriff.json (size: 48K)
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/json/tienda-v1-tienda-v2.ghidriff.matches.json (size: 6K)
+INFO | ghidriff | Wrote 3 sxs hmtl diffs to /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/VersionTrackingDiff-ct1dsej_/sxs_html
+Analizando con SimpleDiff...
+INFO | ghidriff | Init Ghidra Diff Engine...
+INFO | ghidriff | Engine Console Log: INFO
+INFO | ghidriff | Engine File Log:  /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/ghidriff.log INFO
+INFO | ghidriff | Starting Ghidra...
+INFO  Using log config file: jar:file:/home/jorge/PatchLens/ghidra_12.0.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)
+INFO  Using log file: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/ghidriff.log (LoggingInitialization)
+INFO  Loading user preferences: /home/jorge/.config/ghidra/ghidra_12.0.4_PUBLIC/preferences (Preferences)
+INFO  Searching for classes... (ClassSearcher)
+INFO  Class search complete (959 ms) (ClassSearcher)
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)
+INFO  Initializing Random Number Generator... (SecureRandomFactory)
+INFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)
+INFO | ghidriff | GHIDRA_INSTALL_DIR: /home/jorge/PatchLens/ghidra_12.0.4_PUBLIC
+INFO | ghidriff | GHIDRA 12.0.4  Build Date: 2026-Mar-03 1410 EST Release: PUBLIC
+INFO | ghidriff | Engine Args:
+INFO | ghidriff | 	old:                ['/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1']
+INFO | ghidriff | 	new:                [['/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2']]
+INFO | ghidriff | 	engine:             SimpleDiff
+INFO | ghidriff | 	output_path:        /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm
+INFO | ghidriff | 	summary:            False
+INFO | ghidriff | 	project_location:   ghidra_projects
+INFO | ghidriff | 	project_name:       tienda_intermedia_20261025_104416
+INFO | ghidriff | 	symbols_path:       symbols
+INFO | ghidriff | 	gzfs_path:          gzfs
+INFO | ghidriff | 	base_address:       None
+INFO | ghidriff | 	program_options:    None
+INFO | ghidriff | 	threaded:           True
+INFO | ghidriff | 	force_analysis:     False
+INFO | ghidriff | 	force_diff:         False
+INFO | ghidriff | 	no_symbols:         False
+INFO | ghidriff | 	log_level:          INFO
+INFO | ghidriff | 	file_log_level:     INFO
+INFO | ghidriff | 	log_path:           ghidriff.log
+INFO | ghidriff | 	va:                 False
+INFO | ghidriff | 	min_func_len:       10
+INFO | ghidriff | 	use_calling_counts: False
+INFO | ghidriff | 	gdt:                []
+INFO | ghidriff | 	bsim:               True
+INFO | ghidriff | 	bsim_full:          True
+INFO | ghidriff | 	max_ram_percent:    60.0
+INFO | ghidriff | 	print_flags:        False
+INFO | ghidriff | 	jvm_args:           []
+INFO | ghidriff | 	decompiler_timeout: 60
+INFO | ghidriff | 	side_by_side:       True
+INFO | ghidriff | 	max_section_funcs:  200
+INFO | ghidriff | 	md_title:           PatchLens-tienda-v1-vs-tienda-v2.md
+INFO | ghidriff | Setting Up Ghidra Project...
+INFO  Creating project: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/ghidra_projects/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2 (DefaultProject)
+INFO | ghidriff | Created project: tienda_intermedia_20261025_104416-tienda-v1-tienda-v2
+INFO | ghidriff | Project Location: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/ghidra_projects/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2/
+INFO | ghidriff | Importing /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1 as tienda-v1-6964e9
+INFO  Using Loader: Executable and Linking Format (ELF) (ProgramLoader)
+INFO  Using Language/Compiler: x86:LE:64:default:gcc (ProgramLoader)
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib/x86_64-linux-gnu/jni, /usr/lib/x86_64-linux-gnu, /usr/lib/jni] (ProgramLoader)
+INFO  Additional info:
+Loading file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1?MD5=6425c4dc3ec921816bb2cdc91e22d088...
+Setting block .init_array to read-only
+Setting block .fini_array to read-only
+Setting block .dynamic to read-only
+------------------------------------------------
+
+Linking the External Programs of 'tienda-v1' to imported libraries...
+  [libc.so.6] -> not found in project
+------------------------------------------------
+
+Resolving External Symbols of [/tienda-v1] - 5 unresolved symbols, no external libraries configured - skipping
+ (ProgramLoader)
+INFO  /tienda-v1-6964e9: file created (jorge) (LocalFileSystem)
+INFO | ghidriff | Loaded tienda-v1 - .ProgramDB
+INFO | ghidriff | Image base address: 0x00100000
+INFO | ghidriff | Importing /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2 as tienda-v2-77f03a
+INFO  Using Loader: Executable and Linking Format (ELF) (ProgramLoader)
+INFO  Using Language/Compiler: x86:LE:64:default:gcc (ProgramLoader)
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib/x86_64-linux-gnu/jni, /usr/lib/x86_64-linux-gnu, /usr/lib/jni] (ProgramLoader)
+INFO  Additional info:
+Loading file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2?MD5=ffce812e10dae4d29309efb74cfe4e72...
+Setting block .init_array to read-only
+Setting block .fini_array to read-only
+Setting block .dynamic to read-only
+------------------------------------------------
+
+Linking the External Programs of 'tienda-v2' to imported libraries...
+  [libc.so.6] -> not found in project
+------------------------------------------------
+
+Resolving External Symbols of [/tienda-v2] - 5 unresolved symbols, no external libraries configured - skipping
+ (ProgramLoader)
+INFO  /tienda-v2-77f03a: file created (jorge) (LocalFileSystem)
+INFO | ghidriff | Loaded tienda-v2 - .ProgramDB
+INFO | ghidriff | Image base address: 0x00100000
+INFO | ghidriff | Project Files:
+INFO | ghidriff | tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v1-6964e9
+INFO | ghidriff | tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v2-77f03a
+INFO | ghidriff | Setting up Symbol Server for symbols...
+INFO | ghidriff | path: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/symbols level: 0
+INFO | ghidriff | Symbol Server Configured path: SymbolServerService:
+	symbolStore: LocalSymbolStore: [ rootDir: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/symbols, storageLevel: -1],
+	symbolServers:
+		HttpSymbolServer: [ url: https://msdl.microsoft.com/download/symbols/, trusted: false, storageLevel: -1]
+		HttpSymbolServer: [ url: https://chromium-browser-symsrv.commondatastorage.googleapis.com/, trusted: false, storageLevel: -1]
+		HttpSymbolServer: [ url: https://symbols.mozilla.org/, trusted: false, storageLevel: -1]
+WARNING| ghidriff | PDB not found for tienda-v1!
+WARNING| ghidriff | PDB not found for tienda-v2!
+INFO | ghidriff | Program: tienda-v1-6964e9 imported: True has_pdb: False pdb_loaded: False analyzed False
+INFO | ghidriff | Program: tienda-v2-77f03a imported: True has_pdb: False pdb_loaded: False analyzed False
+INFO | ghidriff | Starting analysis for 2 binaries
+INFO | ghidriff | Analyzing: tienda-v2 - .ProgramDB
+INFO | ghidriff | Analyzing: tienda-v1 - .ProgramDB
+INFO | ghidriff | Starting Ghidra analysis of tienda-v1 - .ProgramDB...
+INFO  Added 31 source map entries (DWARFImporter)
+INFO  DWARF ver[5], 1 compUnits, 43 DIES, import - total elapsed: 139ms (DWARFImportSummary)
+INFO  DWARF data type import - elapsed: 21ms (DWARFImportSummary)
+INFO  DWARF func & symbol import - elapsed: 96ms (DWARFImportSummary)
+INFO  DWARF types imported: 15 (DWARFImportSummary)
+INFO  DWARF enums from macros - elapsed: 2ms (DWARFImportSummary)
+INFO  DWARF compile dirs: [/home/jorge/PatchLens/ghidriff-material] (DWARFImportSummary)
+INFO  DWARF producers: [GNU C11 13.3.0 -mtune=generic -march=x86-64 -g -O0 -std=c11 -fno-inline -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection] (DWARFImportSummary)
+INFO  DWARF source languages: [DW_LANG_C11] (DWARFImportSummary)
+INFO  DWARF compUnit: tienda-v1.c (DWARFImportSummary)
+INFO | ghidriff | Starting Ghidra analysis of tienda-v2 - .ProgramDB...
+INFO  hit non-returning function, restarting decompiler switch analyzer later (DecompilerSwitchAnalyzer)
+WARN  Decompiling 001010d0, pcode error at 00105008: Unable to disassemble EXTERNAL block location: 00105008 (DecompileCallback)
+WARN  Decompiling 00101100, pcode error at 00105030: Unable to disassemble EXTERNAL block location: 00105030 (DecompileCallback)
+INFO  Packed database cache: /var/tmp/jorge-ghidra/packed-db-cache (PackedDatabaseCache)
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)
+INFO  Resolving External Symbols of [/tienda-v1-6964e9] - 8 unresolved symbols, no external libraries configured - skipping (ExternalSymbolResolverAnalyzer)
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.295 secs
+    Apply Data Archives                        0.181 secs
+    Call Convention ID                         0.977 secs
+    Call-Fixup Installer                       0.002 secs
+    Create Address Tables                      0.003 secs
+    Create Function                            0.003 secs
+    DWARF                                      0.200 secs
+    Data Reference                             0.002 secs
+    Decompiler Switch Analysis                 0.030 secs
+    Decompiler Switch Analysis - One Time      0.924 secs
+    Demangler GNU                              0.028 secs
+    Disassemble Entry Points                   0.102 secs
+    ELF Scalar Operand References              0.004 secs
+    Embedded Media                             0.005 secs
+    External Entry References                  0.001 secs
+    External Symbol Resolver                   0.001 secs
+    Function ID                                0.039 secs
+    Function Start Pre Search                  0.008 secs
+    Function Start Search                      0.027 secs
+    Function Start Search After Code           0.001 secs
+    Function Start Search After Data           0.001 secs
+    GCC Exception Handlers                     0.089 secs
+    Non-Returning Functions - Discovered       0.003 secs
+    Non-Returning Functions - Known            0.006 secs
+    Reference                                  0.011 secs
+    Shared Return Calls                        0.015 secs
+    Stack                                      0.037 secs
+    Subroutine References                      0.008 secs
+    Subroutine References - One Time           0.000 secs
+    x86 Constant Reference Analyzer            0.051 secs
+-----------------------------------------------------
+     Total Time   3 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)
+INFO  Added 52 source map entries (DWARFImporter)
+INFO  DWARF ver[5], 1 compUnits, 49 DIES, import - total elapsed: 52ms (DWARFImportSummary)
+INFO | ghidriff | Analysis for tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v1-6964e9 complete
+INFO  DWARF data type import - elapsed: 13ms (DWARFImportSummary)
+INFO | ghidriff | Analyis % complete: 50.0
+INFO  DWARF func & symbol import - elapsed: 29ms (DWARFImportSummary)
+INFO  DWARF types imported: 15 (DWARFImportSummary)
+INFO  DWARF compile dirs: [/home/jorge/PatchLens/ghidriff-material] (DWARFImportSummary)
+INFO  DWARF producers: [GNU C11 13.3.0 -mtune=generic -march=x86-64 -g -O0 -std=c11 -fno-inline -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection] (DWARFImportSummary)
+INFO  DWARF source languages: [DW_LANG_C11] (DWARFImportSummary)
+INFO  DWARF compUnit: tienda-v2.c (DWARFImportSummary)
+INFO  hit non-returning function, restarting decompiler switch analyzer later (DecompilerSwitchAnalyzer)
+WARN  Decompiling 001010d0, pcode error at 00105008: Unable to disassemble EXTERNAL block location: 00105008 (DecompileCallback)
+WARN  Decompiling 00101100, pcode error at 00105030: Unable to disassemble EXTERNAL block location: 00105030 (DecompileCallback)
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)
+INFO  Resolving External Symbols of [/tienda-v2-77f03a] - 8 unresolved symbols, no external libraries configured - skipping (ExternalSymbolResolverAnalyzer)
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.003 secs
+    Apply Data Archives                        0.106 secs
+    Call Convention ID                         1.257 secs
+    Call-Fixup Installer                       0.002 secs
+    Create Address Tables                      0.003 secs
+    Create Function                            0.002 secs
+    DWARF                                      0.061 secs
+    Data Reference                             0.003 secs
+    Decompiler Switch Analysis                 0.008 secs
+    Decompiler Switch Analysis - One Time      0.920 secs
+    Demangler GNU                              0.015 secs
+    Disassemble Entry Points                   0.059 secs
+    ELF Scalar Operand References              0.003 secs
+    Embedded Media                             0.005 secs
+    External Entry References                  0.000 secs
+    External Symbol Resolver                   0.001 secs
+    Function ID                                0.011 secs
+    Function Start Pre Search                  0.007 secs
+    Function Start Search                      0.026 secs
+    Function Start Search After Code           0.001 secs
+    Function Start Search After Data           0.000 secs
+    GCC Exception Handlers                     0.028 secs
+    Non-Returning Functions - Discovered       0.002 secs
+    Non-Returning Functions - Known            0.002 secs
+    Reference                                  0.009 secs
+    Shared Return Calls                        0.005 secs
+    Stack                                      0.026 secs
+    Subroutine References                      0.003 secs
+    Subroutine References - One Time           0.000 secs
+    x86 Constant Reference Analyzer            0.032 secs
+-----------------------------------------------------
+     Total Time   2 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)
+INFO | ghidriff | Analysis for tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v2-77f03a complete
+INFO | ghidriff | Analyis % complete: 100.0
+INFO | ghidriff | Diffing bins: /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1 - /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2
+INFO | ghidriff | Setup 64 decompliers
+INFO | ghidriff | Loaded old program: tienda-v1
+INFO | ghidriff | Loaded new program: tienda-v2
+INFO | ghidriff | p1 sym count: reported: 97 analyzed: 26
+INFO | ghidriff | p2 sym count: reported: 104 analyzed: 32
+INFO | ghidriff | Found unmatched: 10 matched: 24 symbols
+INFO | ghidriff |
+deleted symbols
+
+INFO | ghidriff | fde_00102120
+INFO | ghidriff | fde_00102158
+INFO | ghidriff | mensaje_bienvenida
+INFO | ghidriff | fde_00102138
+INFO | ghidriff | fde_001021b8
+INFO | ghidriff | cie_001020b0
+INFO | ghidriff | fde_00102108
+INFO | ghidriff | fde_00102178
+INFO | ghidriff | fde_00102198
+INFO | ghidriff | fde_001020c8
+INFO | ghidriff | fde_001020e0
+INFO | ghidriff |
+added symbols
+
+INFO | ghidriff | fde_00102168
+INFO | ghidriff | fde_001021c0
+INFO | ghidriff | calcular_descuento
+INFO | ghidriff | total
+INFO | ghidriff | fde_00102240
+INFO | ghidriff | fde_00102220
+INFO | ghidriff | cie_00102138
+INFO | ghidriff | fde_00102150
+INFO | ghidriff | fde_001021a8
+INFO | ghidriff | fde_00102200
+INFO | ghidriff | descuento
+INFO | ghidriff | fde_001021e0
+INFO | ghidriff | fde_00102190
+INFO | ghidriff | mensaje_bienvenida 00101288 Global
+INFO | ghidriff | cie_001020b0 001020b0 Global
+INFO | ghidriff | fde_001020c8 001020c8 Global
+INFO | ghidriff | fde_001020e0 001020e0 Global
+INFO | ghidriff | fde_00102108 00102108 Global
+INFO | ghidriff | fde_00102120 00102120 Global
+INFO | ghidriff | fde_00102138 00102138 Global
+INFO | ghidriff | fde_00102158 00102158 Global
+INFO | ghidriff | fde_00102178 00102178 Global
+INFO | ghidriff | fde_00102198 00102198 Global
+INFO | ghidriff | fde_001021b8 001021b8 Global
+INFO | ghidriff | calcular_descuento 00101213
+INFO | ghidriff | descuento VARIABLE:00000005
+INFO | ghidriff | total VARIABLE:00000007
+INFO | ghidriff | cie_00102138 00102138
+INFO | ghidriff | fde_00102150 00102150
+INFO | ghidriff | fde_00102168 00102168
+INFO | ghidriff | fde_00102190 00102190
+INFO | ghidriff | fde_001021a8 001021a8
+INFO | ghidriff | fde_001021c0 001021c0
+INFO | ghidriff | fde_001021e0 001021e0
+INFO | ghidriff | fde_00102200 00102200
+INFO | ghidriff | fde_00102220 00102220
+INFO | ghidriff | fde_00102240 00102240
+INFO | ghidriff |
+modified_old_modified
+INFO | ghidriff | ('<EXTERNAL>', '<EXTERNAL>::printf', 1, 10, 1, '')
+INFO | ghidriff | ('<EXTERNAL>', '<EXTERNAL>::puts', 4, 10, 1, '')
+INFO | ghidriff | ('Global', 'main', 4, 130, 0, '4cefbffc53e885f4a6ee0947f546d0cd9e03db14c8524aa57a37afc324dbcf1a')
+INFO | ghidriff | ('Global', 'mensaje_bienvenida', 4, 26, 0, 'b3299d1d08c426123a09d60624a573f81da6d1502ac55b3fc7ea506902ede0da')
+INFO | ghidriff | ('Global', 'mostrar_pedido', 4, 117, 3, '75148e3262310a8871729564e46720e6a3ab4be3e7f7fdd78592195b03f9433d')
+INFO | ghidriff |
+modified_new_modified
+INFO | ghidriff | ('<EXTERNAL>', '<EXTERNAL>::printf', 6, 10, 1, '')
+INFO | ghidriff | ('<EXTERNAL>', '<EXTERNAL>::puts', 5, 10, 1, '')
+INFO | ghidriff | ('Global', 'calcular_descuento', 4, 47, 2, 'f6ce9c139956f95c4450ee1bf8825483a0c9881ad6c098097ae6d3c7f493fd89')
+INFO | ghidriff | ('Global', 'main', 4, 125, 0, 'c99b5ae537add5932620f7381164c6d967de03c5a87605ae3e4067fbb50447be')
+INFO | ghidriff | ('Global', 'mostrar_pedido', 4, 414, 3, '3287cc187f2f91814c0e7772b3145ae9b32b1c1c5540487986983e11ae3aaf68')
+INFO | ghidriff |
+modified_old_modified
+INFO | ghidriff | ('mensaje_bienvenida', 0)
+INFO | ghidriff | ('mostrar_pedido', 3)
+INFO | ghidriff | ('main', 0)
+INFO | ghidriff | ('<EXTERNAL>::puts', 1)
+INFO | ghidriff | ('<EXTERNAL>::printf', 1)
+INFO | ghidriff |
+modified_new_modified
+INFO | ghidriff | ('mostrar_pedido', 3)
+INFO | ghidriff | ('calcular_descuento', 2)
+INFO | ghidriff | ('main', 0)
+INFO | ghidriff | ('<EXTERNAL>::puts', 1)
+INFO | ghidriff | ('<EXTERNAL>::printf', 1)
+INFO | ghidriff |
+Matching functions...
+INFO | ghidriff | FullName + Paramcount mostrar_pedido mostrar_pedido
+INFO | ghidriff | FullName + Paramcount main main
+INFO | ghidriff | FullName + Paramcount <EXTERNAL>::puts <EXTERNAL>::puts
+INFO | ghidriff | FullName + Paramcount <EXTERNAL>::printf <EXTERNAL>::printf
+INFO | ghidriff | Deleted func found: mensaje_bienvenida
+INFO | ghidriff | Added func found: calcular_descuento
+INFO | ghidriff | 5
+INFO | ghidriff | 5
+INFO | ghidriff | main main ['FullName:Param']
+INFO | ghidriff | mostrar_pedido mostrar_pedido ['FullName:Param']
+INFO | ghidriff | <EXTERNAL>::printf <EXTERNAL>::printf ['FullName:Param']
+INFO | ghidriff | <EXTERNAL>::puts <EXTERNAL>::puts ['FullName:Param']
+INFO | ghidriff | Generating matches json...
+INFO | ghidriff | Deduping symbols and functions...
+INFO | ghidriff | Sorting symbols and strings...
+INFO | ghidriff | Sorting functions...
+INFO | ghidriff | Starting esym lookups for 22 symbols using 32 threads
+INFO | ghidriff | Completed 2 at 9%
+INFO | ghidriff | Completed 4 at 18%
+INFO | ghidriff | Completed 6 at 27%
+INFO | ghidriff | Completed 8 at 36%
+INFO | ghidriff | Completed 10 at 45%
+INFO | ghidriff | Completed 12 at 54%
+INFO | ghidriff | Completed 14 at 63%
+INFO | ghidriff | Completed 16 at 72%
+INFO | ghidriff | Completed 18 at 81%
+INFO | ghidriff | Completed 20 at 90%
+INFO | ghidriff | Completed 22 at 100%
+INFO | ghidriff | Finished diffing old program: tienda-v1
+INFO | ghidriff | Finished diffing program: tienda-v2
+INFO | ghidriff | Writing md diff...
+INFO | ghidriff | Generating markdown from {'added_funcs_len': 1, 'deleted_funcs_len': 1, 'modified_funcs_len': 4, 'added_symbols_len': 0, 'deleted_symbols_len': 0, 'diff_time': 20.05351996421814, 'deleted_strings_len': 2, 'added_strings_len': 8, 'match_types': Counter({'FullName:Param': 4}), 'items_to_process': 6, 'diff_types': Counter({'code': 2, 'length': 2, 'address': 2, 'called': 2, 'refcount': 2, 'calling': 1}), 'unmatched_funcs_len': 2, 'total_funcs_len': 66, 'matched_funcs_len': 64, 'matched_funcs_with_code_changes_len': 2, 'matched_funcs_with_non_code_changes_len': 2, 'matched_funcs_no_changes_len': 60, 'match_func_similarity_percent': '93.7500%', 'func_match_overall_percent': '96.9697%', 'first_matches': Counter({'FullName:Param': 4})}
+INFO | ghidriff | Known Command line: ghidriff --project-location ghidra_projects --project-name tienda_intermedia_20261025_104416 --symbols-path symbols --gzfs-path gzfs --threaded --log-level INFO --file-log-level INFO --log-path ghidriff.log --min-func-len 10 --gdt [] --bsim --bsim-full --max-ram-percent 60.0 --jvm-args [] --decompiler-timeout 60 --side-by-side --max-section-funcs 200 --md-title PatchLens-tienda-v1-vs-tienda-v2.md tienda-v1 tienda-v2
+INFO | ghidriff | Extra Command line: --engine SimpleDiff --output-path /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm
+INFO | ghidriff | Writing pdiff json...
+INFO | ghidriff | Writing matches json...
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/tienda-v1-tienda-v2.ghidriff.md (size: 49K)
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/json/tienda-v1-tienda-v2.ghidriff.json (size: 44K)
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/json/tienda-v1-tienda-v2.ghidriff.matches.json (size: 1K)
+INFO | ghidriff | Wrote 2 sxs hmtl diffs to /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/SimpleDiff-42lx_3rm/sxs_html
+Analizando con StructualGraphDiff...
+INFO | ghidriff | Init Ghidra Diff Engine...
+INFO | ghidriff | Engine Console Log: INFO
+INFO | ghidriff | Engine File Log:  /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/ghidriff.log INFO
+INFO | ghidriff | Starting Ghidra...
+INFO  Using log config file: jar:file:/home/jorge/PatchLens/ghidra_12.0.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)
+INFO  Using log file: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/ghidriff.log (LoggingInitialization)
+INFO  Loading user preferences: /home/jorge/.config/ghidra/ghidra_12.0.4_PUBLIC/preferences (Preferences)
+INFO  Searching for classes... (ClassSearcher)
+INFO  Class search complete (906 ms) (ClassSearcher)
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)
+INFO  Initializing Random Number Generator... (SecureRandomFactory)
+INFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)
+INFO | ghidriff | GHIDRA_INSTALL_DIR: /home/jorge/PatchLens/ghidra_12.0.4_PUBLIC
+INFO | ghidriff | GHIDRA 12.0.4  Build Date: 2026-Mar-03 1410 EST Release: PUBLIC
+INFO | ghidriff | Engine Args:
+INFO | ghidriff | 	old:                ['/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1']
+INFO | ghidriff | 	new:                [['/home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2']]
+INFO | ghidriff | 	engine:             StructualGraphDiff
+INFO | ghidriff | 	output_path:        /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm
+INFO | ghidriff | 	summary:            False
+INFO | ghidriff | 	project_location:   ghidra_projects
+INFO | ghidriff | 	project_name:       tienda_intermedia_20261025_104416
+INFO | ghidriff | 	symbols_path:       symbols
+INFO | ghidriff | 	gzfs_path:          gzfs
+INFO | ghidriff | 	base_address:       None
+INFO | ghidriff | 	program_options:    None
+INFO | ghidriff | 	threaded:           True
+INFO | ghidriff | 	force_analysis:     False
+INFO | ghidriff | 	force_diff:         False
+INFO | ghidriff | 	no_symbols:         False
+INFO | ghidriff | 	log_level:          INFO
+INFO | ghidriff | 	file_log_level:     INFO
+INFO | ghidriff | 	log_path:           ghidriff.log
+INFO | ghidriff | 	va:                 False
+INFO | ghidriff | 	min_func_len:       10
+INFO | ghidriff | 	use_calling_counts: False
+INFO | ghidriff | 	gdt:                []
+INFO | ghidriff | 	bsim:               True
+INFO | ghidriff | 	bsim_full:          True
+INFO | ghidriff | 	max_ram_percent:    60.0
+INFO | ghidriff | 	print_flags:        False
+INFO | ghidriff | 	jvm_args:           []
+INFO | ghidriff | 	decompiler_timeout: 60
+INFO | ghidriff | 	side_by_side:       True
+INFO | ghidriff | 	max_section_funcs:  200
+INFO | ghidriff | 	md_title:           PatchLens-tienda-v1-vs-tienda-v2.md
+INFO | ghidriff | Setting Up Ghidra Project...
+INFO  Creating project: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/ghidra_projects/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2 (DefaultProject)
+INFO | ghidriff | Created project: tienda_intermedia_20261025_104416-tienda-v1-tienda-v2
+INFO | ghidriff | Project Location: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/ghidra_projects/tienda_intermedia_20261025_104416-tienda-v1-tienda-v2/
+INFO | ghidriff | Importing /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1 as tienda-v1-6964e9
+INFO  Using Loader: Executable and Linking Format (ELF) (ProgramLoader)
+INFO  Using Language/Compiler: x86:LE:64:default:gcc (ProgramLoader)
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib/x86_64-linux-gnu/jni, /usr/lib/x86_64-linux-gnu, /usr/lib/jni] (ProgramLoader)
+INFO  Additional info:
+Loading file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1?MD5=6425c4dc3ec921816bb2cdc91e22d088...
+Setting block .init_array to read-only
+Setting block .fini_array to read-only
+Setting block .dynamic to read-only
+------------------------------------------------
+
+Linking the External Programs of 'tienda-v1' to imported libraries...
+  [libc.so.6] -> not found in project
+------------------------------------------------
+
+Resolving External Symbols of [/tienda-v1] - 5 unresolved symbols, no external libraries configured - skipping
+ (ProgramLoader)
+INFO  /tienda-v1-6964e9: file created (jorge) (LocalFileSystem)
+INFO | ghidriff | Loaded tienda-v1 - .ProgramDB
+INFO | ghidriff | Image base address: 0x00100000
+INFO | ghidriff | Importing /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2 as tienda-v2-77f03a
+INFO  Using Loader: Executable and Linking Format (ELF) (ProgramLoader)
+INFO  Using Language/Compiler: x86:LE:64:default:gcc (ProgramLoader)
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib/x86_64-linux-gnu/jni, /usr/lib/x86_64-linux-gnu, /usr/lib/jni] (ProgramLoader)
+INFO  Additional info:
+Loading file:///home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2?MD5=ffce812e10dae4d29309efb74cfe4e72...
+Setting block .init_array to read-only
+Setting block .fini_array to read-only
+Setting block .dynamic to read-only
+------------------------------------------------
+
+Linking the External Programs of 'tienda-v2' to imported libraries...
+  [libc.so.6] -> not found in project
+------------------------------------------------
+
+Resolving External Symbols of [/tienda-v2] - 5 unresolved symbols, no external libraries configured - skipping
+ (ProgramLoader)
+INFO  /tienda-v2-77f03a: file created (jorge) (LocalFileSystem)
+INFO | ghidriff | Loaded tienda-v2 - .ProgramDB
+INFO | ghidriff | Image base address: 0x00100000
+INFO | ghidriff | Project Files:
+INFO | ghidriff | tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v1-6964e9
+INFO | ghidriff | tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v2-77f03a
+INFO | ghidriff | Setting up Symbol Server for symbols...
+INFO | ghidriff | path: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/symbols level: 0
+INFO | ghidriff | Symbol Server Configured path: SymbolServerService:
+	symbolStore: LocalSymbolStore: [ rootDir: /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/symbols, storageLevel: -1],
+	symbolServers:
+		HttpSymbolServer: [ url: https://msdl.microsoft.com/download/symbols/, trusted: false, storageLevel: -1]
+		HttpSymbolServer: [ url: https://chromium-browser-symsrv.commondatastorage.googleapis.com/, trusted: false, storageLevel: -1]
+		HttpSymbolServer: [ url: https://symbols.mozilla.org/, trusted: false, storageLevel: -1]
+WARNING| ghidriff | PDB not found for tienda-v1!
+WARNING| ghidriff | PDB not found for tienda-v2!
+INFO | ghidriff | Program: tienda-v1-6964e9 imported: True has_pdb: False pdb_loaded: False analyzed False
+INFO | ghidriff | Program: tienda-v2-77f03a imported: True has_pdb: False pdb_loaded: False analyzed False
+INFO | ghidriff | Starting analysis for 2 binaries
+INFO | ghidriff | Analyzing: tienda-v2 - .ProgramDB
+INFO | ghidriff | Analyzing: tienda-v1 - .ProgramDB
+INFO | ghidriff | Starting Ghidra analysis of tienda-v1 - .ProgramDB...
+INFO  Added 31 source map entries (DWARFImporter)
+INFO  DWARF ver[5], 1 compUnits, 43 DIES, import - total elapsed: 132ms (DWARFImportSummary)
+INFO  DWARF data type import - elapsed: 23ms (DWARFImportSummary)
+INFO  DWARF func & symbol import - elapsed: 87ms (DWARFImportSummary)
+INFO  DWARF types imported: 15 (DWARFImportSummary)
+INFO  DWARF enums from macros - elapsed: 2ms (DWARFImportSummary)
+INFO  DWARF compile dirs: [/home/jorge/PatchLens/ghidriff-material] (DWARFImportSummary)
+INFO  DWARF producers: [GNU C11 13.3.0 -mtune=generic -march=x86-64 -g -O0 -std=c11 -fno-inline -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection] (DWARFImportSummary)
+INFO  DWARF source languages: [DW_LANG_C11] (DWARFImportSummary)
+INFO  DWARF compUnit: tienda-v1.c (DWARFImportSummary)
+INFO | ghidriff | Starting Ghidra analysis of tienda-v2 - .ProgramDB...
+INFO  hit non-returning function, restarting decompiler switch analyzer later (DecompilerSwitchAnalyzer)
+WARN  Decompiling 001010d0, pcode error at 00105008: Unable to disassemble EXTERNAL block location: 00105008 (DecompileCallback)
+WARN  Decompiling 00101100, pcode error at 00105030: Unable to disassemble EXTERNAL block location: 00105030 (DecompileCallback)
+INFO  Packed database cache: /var/tmp/jorge-ghidra/packed-db-cache (PackedDatabaseCache)
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)
+INFO  Resolving External Symbols of [/tienda-v1-6964e9] - 8 unresolved symbols, no external libraries configured - skipping (ExternalSymbolResolverAnalyzer)
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.351 secs
+    Apply Data Archives                        0.340 secs
+    Call Convention ID                         0.962 secs
+    Call-Fixup Installer                       0.004 secs
+    Create Address Tables                      0.003 secs
+    Create Function                            0.003 secs
+    DWARF                                      0.196 secs
+    Data Reference                             0.004 secs
+    Decompiler Switch Analysis                 0.033 secs
+    Decompiler Switch Analysis - One Time      0.985 secs
+    Demangler GNU                              0.027 secs
+    Disassemble Entry Points                   0.109 secs
+    ELF Scalar Operand References              0.006 secs
+    Embedded Media                             0.006 secs
+    External Entry References                  0.000 secs
+    External Symbol Resolver                   0.002 secs
+    Function ID                                0.047 secs
+    Function Start Pre Search                  0.010 secs
+    Function Start Search                      0.029 secs
+    Function Start Search After Code           0.001 secs
+    Function Start Search After Data           0.001 secs
+    GCC Exception Handlers                     0.082 secs
+    Non-Returning Functions - Discovered       0.005 secs
+    Non-Returning Functions - Known            0.008 secs
+    Reference                                  0.012 secs
+    Shared Return Calls                        0.009 secs
+    Stack                                      0.031 secs
+    Subroutine References                      0.004 secs
+    Subroutine References - One Time           0.000 secs
+    x86 Constant Reference Analyzer            0.062 secs
+-----------------------------------------------------
+     Total Time   3 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)
+INFO  Added 52 source map entries (DWARFImporter)
+INFO  DWARF ver[5], 1 compUnits, 49 DIES, import - total elapsed: 46ms (DWARFImportSummary)
+INFO | ghidriff | Analysis for tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v1-6964e9 complete
+INFO  DWARF data type import - elapsed: 11ms (DWARFImportSummary)
+INFO | ghidriff | Analyis % complete: 50.0
+INFO  DWARF func & symbol import - elapsed: 29ms (DWARFImportSummary)
+INFO  DWARF types imported: 15 (DWARFImportSummary)
+INFO  DWARF compile dirs: [/home/jorge/PatchLens/ghidriff-material] (DWARFImportSummary)
+INFO  DWARF producers: [GNU C11 13.3.0 -mtune=generic -march=x86-64 -g -O0 -std=c11 -fno-inline -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection] (DWARFImportSummary)
+INFO  DWARF source languages: [DW_LANG_C11] (DWARFImportSummary)
+INFO  DWARF compUnit: tienda-v2.c (DWARFImportSummary)
+INFO  hit non-returning function, restarting decompiler switch analyzer later (DecompilerSwitchAnalyzer)
+WARN  Decompiling 001010d0, pcode error at 00105008: Unable to disassemble EXTERNAL block location: 00105008 (DecompileCallback)
+WARN  Decompiling 00101100, pcode error at 00105030: Unable to disassemble EXTERNAL block location: 00105030 (DecompileCallback)
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)
+INFO  Resolving External Symbols of [/tienda-v2-77f03a] - 8 unresolved symbols, no external libraries configured - skipping (ExternalSymbolResolverAnalyzer)
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.004 secs
+    Apply Data Archives                        0.275 secs
+    Call Convention ID                         1.237 secs
+    Call-Fixup Installer                       0.005 secs
+    Create Address Tables                      0.004 secs
+    Create Function                            0.002 secs
+    DWARF                                      0.054 secs
+    Data Reference                             0.004 secs
+    Decompiler Switch Analysis                 0.008 secs
+    Decompiler Switch Analysis - One Time      0.978 secs
+    Demangler GNU                              0.015 secs
+    Disassemble Entry Points                   0.057 secs
+    ELF Scalar Operand References              0.004 secs
+    Embedded Media                             0.007 secs
+    External Entry References                  0.000 secs
+    External Symbol Resolver                   0.001 secs
+    Function ID                                0.012 secs
+    Function Start Pre Search                  0.008 secs
+    Function Start Search                      0.037 secs
+    Function Start Search After Code           0.001 secs
+    Function Start Search After Data           0.001 secs
+    GCC Exception Handlers                     0.029 secs
+    Non-Returning Functions - Discovered       0.002 secs
+    Non-Returning Functions - Known            0.003 secs
+    Reference                                  0.011 secs
+    Shared Return Calls                        0.004 secs
+    Stack                                      0.036 secs
+    Subroutine References                      0.001 secs
+    Subroutine References - One Time           0.000 secs
+    x86 Constant Reference Analyzer            0.036 secs
+-----------------------------------------------------
+     Total Time   2 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)
+INFO | ghidriff | Analysis for tienda_intermedia_20261025_104416-tienda-v1-tienda-v2:/tienda-v2-77f03a complete
+INFO | ghidriff | Analyis % complete: 100.0
+INFO | ghidriff | Diffing bins: /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v1 - /home/jorge/PatchLens/PatchLens-repo/experiments/2026-10-20-tienda/inputs/tienda-v2
+INFO | ghidriff | Setup 64 decompliers
+INFO | ghidriff | Loaded old program: tienda-v1
+INFO | ghidriff | Loaded new program: tienda-v2
+INFO | ghidriff | p1 sym count: reported: 97 analyzed: 26
+INFO | ghidriff | p2 sym count: reported: 104 analyzed: 32
+INFO | ghidriff | Found unmatched: 10 matched: 24 symbols
+INFO | ghidriff | Calculating initial structural signature for all
+INFO | ghidriff | p1 structural signature time: 0.041745901107788086
+INFO | ghidriff | p2 structural signature time: 0.01372981071472168
+INFO | ghidriff | non-unique p1: 6
+INFO | ghidriff | non-unique p2: 6
+INFO | ghidriff | modified_old: 3
+INFO | ghidriff | modified_new: 3
+INFO | ghidriff | matching_compare_keys: 16
+INFO | ghidriff |
+modified_old_modified
+INFO | ghidriff | mensaje_bienvenida
+INFO | ghidriff | mostrar_pedido
+INFO | ghidriff | main
+INFO | ghidriff |
+modified_new_modified
+INFO | ghidriff | mostrar_pedido
+INFO | ghidriff | calcular_descuento
+INFO | ghidriff | main
+INFO | ghidriff |
+Matching functions...
+INFO | ghidriff | FullName + Paramcount mostrar_pedido mostrar_pedido
+INFO | ghidriff | FullName + Paramcount main main
+INFO | ghidriff | Deleted func found: mensaje_bienvenida
+INFO | ghidriff | Deleted func found: (9, 4, 26, 0, 'b3299d1d08c426123a09d60624a573f81da6d1502ac55b3fc7ea506902ede0da')
+INFO | ghidriff | Added func found: calcular_descuento
+INFO | ghidriff | 3
+INFO | ghidriff | 3
+INFO | ghidriff | Generating matches json...
+INFO | ghidriff | Deduping symbols and functions...
+INFO | ghidriff | Sorting symbols and strings...
+INFO | ghidriff | Sorting functions...
+INFO | ghidriff | Starting esym lookups for 18 symbols using 32 threads
+INFO | ghidriff | Completed 1 at 5%
+INFO | ghidriff | Completed 2 at 11%
+INFO | ghidriff | Completed 3 at 16%
+INFO | ghidriff | Completed 4 at 22%
+INFO | ghidriff | Completed 5 at 27%
+INFO | ghidriff | Completed 6 at 33%
+INFO | ghidriff | Completed 7 at 38%
+INFO | ghidriff | Completed 8 at 44%
+INFO | ghidriff | Completed 9 at 50%
+INFO | ghidriff | Completed 10 at 55%
+INFO | ghidriff | Completed 11 at 61%
+INFO | ghidriff | Completed 12 at 66%
+INFO | ghidriff | Completed 13 at 72%
+INFO | ghidriff | Completed 14 at 77%
+INFO | ghidriff | Completed 15 at 83%
+INFO | ghidriff | Completed 16 at 88%
+INFO | ghidriff | Completed 17 at 94%
+INFO | ghidriff | Completed 18 at 100%
+INFO | ghidriff | Finished diffing old program: tienda-v1
+INFO | ghidriff | Finished diffing program: tienda-v2
+INFO | ghidriff | Writing md diff...
+INFO | ghidriff | Generating markdown from {'added_funcs_len': 1, 'deleted_funcs_len': 1, 'modified_funcs_len': 2, 'added_symbols_len': 0, 'deleted_symbols_len': 0, 'diff_time': 19.421423196792603, 'deleted_strings_len': 2, 'added_strings_len': 8, 'match_types': Counter({'FullName:Param': 2}), 'items_to_process': 4, 'diff_types': Counter({'code': 2, 'length': 2, 'address': 2, 'called': 2}), 'unmatched_funcs_len': 2, 'total_funcs_len': 66, 'matched_funcs_len': 64, 'matched_funcs_with_code_changes_len': 2, 'matched_funcs_with_non_code_changes_len': 0, 'matched_funcs_no_changes_len': 62, 'match_func_similarity_percent': '96.8750%', 'func_match_overall_percent': '96.9697%', 'first_matches': Counter({'FullName:Param': 2})}
+INFO | ghidriff | Known Command line: ghidriff --project-location ghidra_projects --project-name tienda_intermedia_20261025_104416 --symbols-path symbols --gzfs-path gzfs --threaded --log-level INFO --file-log-level INFO --log-path ghidriff.log --min-func-len 10 --gdt [] --bsim --bsim-full --max-ram-percent 60.0 --jvm-args [] --decompiler-timeout 60 --side-by-side --max-section-funcs 200 --md-title PatchLens-tienda-v1-vs-tienda-v2.md tienda-v1 tienda-v2
+INFO | ghidriff | Extra Command line: --engine StructualGraphDiff --output-path /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm
+INFO | ghidriff | Writing pdiff json...
+INFO | ghidriff | Writing matches json...
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/tienda-v1-tienda-v2.ghidriff.md (size: 47K)
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/json/tienda-v1-tienda-v2.ghidriff.json (size: 40K)
+INFO | ghidriff | Wrote /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/json/tienda-v1-tienda-v2.ghidriff.matches.json (size: 0K)
+INFO | ghidriff | Wrote 2 sxs hmtl diffs to /home/jorge/PatchLens/PatchLens-repo/resultados/tienda_intermedia_20261025_104416/StructualGraphDiff-hco6obtm/sxs_html
+Motores procesados: VersionTrackingDiff, SimpleDiff, StructualGraphDiff
+Cambios agrupados: 7; alertas: 2
+JSON normalizado: resultados/tienda_intermedia_20261025_104416.json
+Agente: [ResponseFunctionToolCall(arguments='{"version":"old"}', call_id='call_AAu6DzdEyR9iSq3g4mGBYzV0', name='get_binary_info', type='function_call', id='fc_02f8ea0b88788d2f016ade40680c0887d2a14f12379eb659e7', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new"}', call_id='call_h1RHOeBxKVGcybWJyiVF21UR', name='get_binary_info', type='function_call', id='fc_02f8ea0b88788d2f016ade40680c1c87d29d31ea14ad655ed5', async_=None, caller=None, namespace=None, status='completed')]
+Agente: [ResponseFunctionToolCall(arguments='{"version":"old","address":"00101189"}', call_id='call_IbdgOL1YCeT3Zph6VxoNEOQB', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade406e8fcc87d2879c58dc748b95e2', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new","address":"00101189"}', call_id='call_J79xkLfFQfRNFszBO93z54gX', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade406e8fe487d29dcfb5878b72f0af', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"old","address":"001011e7"}', call_id='call_qtkvTybARIGNkVm678Qxt9OF', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade406e8fec87d2a79f19a7605ebaee', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new","address":"001011e7"}', call_id='call_eeqoswwnCPS8YMzW7VPXfSur', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade406e8ff887d2baad4b8188b35593', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new","address":"00101213"}', call_id='call_iU7gacB8dvbL6maHXxMnQfOd', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade406e900087d29eb8bbc96832ff88', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new","address":"00101242"}', call_id='call_jYgM27lrQZG8jIESnLXpKDUk', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade406e900c87d2b6a3530bec2d778f', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"old","address":"00101213"}', call_id='call_LO1VAXusodxveXvXOYM31xQe', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade406e901487d29cb5c315b0732f9e', async_=None, caller=None, namespace=None, status='completed')]
+Agente: [ResponseFunctionToolCall(arguments='{"version":"old","address":"001012a2"}', call_id='call_wNrQMklKQbFBZiWt6TGhdVKH', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade4076096087d28bb5a49ce2c4a330', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new","address":"001013e0"}', call_id='call_B6EECu3QuxztST11gB4lK8WP', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade4076097c87d2b648b0a8e0ec289c', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new","offset":0,"limit":30}', call_id='call_atXz9PMC8YA7zVi4YdJ8Oeph', name='list_functions', type='function_call', id='fc_02f8ea0b88788d2f016ade4076098c87d2af37ee55b0d6460c', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"old","address":"00101288"}', call_id='call_U4pcvhJ1q7AjErrYFaOpSuMj', name='get_function', type='function_call', id='fc_02f8ea0b88788d2f016ade4076099887d2bb9f1713baaa196d', async_=None, caller=None, namespace=None, status='completed'), ResponseFunctionToolCall(arguments='{"version":"new"}', call_id='call_oklbLS8GZudhDKMBHeYVuYmK', name='list_imports', type='function_call', id='fc_02f8ea0b88788d2f016ade407609a887d2ba7f7d8c35d5f2b6', async_=None, caller=None, namespace=None, status='completed')]
+Agente: [ResponseReasoningItem(id='rs_02f8ea0b88788d2f016ade407a4b7087d28b5cedbefd0a7574', summary=[], type='reasoning', content=[], encrypted_content='gAAAAABq3kB8oFQPcdoht57aOpFIHFbVzjP9PAhenBt9Wck8bCcEvf3HfacKSJLwSqQ_hLf_0gagkMl8ZSWcH0SYhQz0yxjgvmrdf8YuWPGGclaZmCWoS9sBSft0WRyc9R6gQx2b1vsQX-VqHhNFia7bf9nBFEAAZAfZaBmjWzDw4F1QmvpE3LG1-ppr8t_EDvSR7tBtjcTM-P21hQxTU8dUgU7rgePm4AI0KBcv8hUCuii_aZppNsRh4BzGA89CrP3cetYHZcMgInAP4bCdKhtUklHorN43eRZfhsJOdgpAUYEkwJJHQNKkeFlgHMJyPgqIIlz1FBsMPQHMqLhY9xNli3-EXvCONVdtezdvVws5TsnQNMfMKbyAMuGBqlKiKzrDRchK_PJc1JNCMlWGgzjsNI75nMOZXBX0JNVXkwipZ62-RYEhjUL3pJ67BzatbxhwnW-R79yUwqhK8rOgyQjznW8MVHEozPkLZYM4q9JWjxHtfWZV6lhiO8OgDWB1f19BemTMZU1DxkhpFHlfo8xsvAxnJClcZlsw00VccKJ2tvQm-sG9awHBaeIvAEFYDVU5JIpmq6j3Z-DMEZvLBhGDFm6AUU0k7BlZjCCJAavd75Mn_ieTdYE1FuwnN_uO_asDjulKhl4u7--80bY4rJlqut-D7i3a2Ud56EOXQY6MMz_d_sQwpu7O364qYTDUJc1vABSsVeWyMA2vzKlABFwyabEY6xVwjSgfB9ohjuOEH-ZkYBSpulIgus56B1qgD8dMeoCTHcQCardbbH1uvg9XKODLQM2-cUJ1rdQxSC2BM2kxp9n2SeviQDj0DXSTyjcAqovh7z-rEAEVieO0oQrkRONAqEsSLlP0-eaWTTn-NKXbLwX8r5-uONIV7lkTCFVJzNrf7k7xzvZC9haX_7Blmvb55wu7kJSzAWuSrIqxEcRGPnsT-CTkPCLaJ9BRA8wDdyTCUQL_IySb4lyz1wNBHCUp8JHsLcqrYpINYePhg_G_3fYxQhS1j8mF3GgYoQZzuG5uiAZBxX7N6vFW3mNYsWSocIPsS5qGMfBVxYa8Y-e0ED0DsotJWM9WNH5eIUT8BMhT8RZ3H9s9oZ1u5J3ke3Tz4q_Ris6DNHzMtXa-IqAu0DtYNYO4sS1K-x6vPwtCSiwdN6CJyHh9a8C7-LAIoNsZUYsuOqWyEE1Ojxsi4LfLbPzIL_duW-aH1TUxmqUDYoH8LBDJ9eublL28btUWNywdhIg1mzZ5k0ITlh2CRG68lJyF_SMYNP5eJsexFZF5dTXOJnOcel2LU6DKMRmn92jTvlGuvkKQiu7ajKegOZ70ghwEMR1y7iWJY2bFWblbsZJbmjzAY7EvoQj1PQB1E9WuOvsdUPlVDV8BdgEsrTnuVy6GyNarBYv9gB2o8QOsXVTL4ZMv4GF9UwHQHFpgwicFm_Nle9Au1ptigTMW7kJIk-PRdp04d34VVMFcQrmI4gD8BBfVlISNg1es1yqEfKZgyQFzj3Mn1iaEhX3nXat0XmdN2Q4apAwJXEqjAiocBMBVwIXxUMnGLAzhGDMC-bxpUfjrV0TAz7QNvKlJCN6Rj3ZLxlgTWjtFl1vctl5iQDNtRfzdL3tro65cfJHjkNhRGLug69Z8DQSzPFE3I4py92lTWZ7CcXExPiXgSsQJBzp8bp6ocqD0Tac_Twldjfiq36OMWn7q5aWwkA6sj5sk7RbxuA14OtjgAFmT4O9m8swDslPvh2CzX9wLJXHGaIJzNH7lwXYS8MfvDEbjGlQCHgbEDwI_zi4NCYbYBO9WazrLJ3qViTJmWrETphFaRyNOeTQ3EVaqUzjVh5k2OuT0sFvOhvwNumEwNCvL04RF5Y7yKr2UmdemG13EN4d4E-AP4PCbr3foUwEd7AFODbNCWs-v2GnxEcA5v4uXdopJWtEuGJg4IbMtsJH7fHqFY1jsRssq8EXQu7cXMACbDa8BcNXJrDFLwnvWfrEH_bGZqeu8FYtH6wf3uUf2DVoUgeUw9504VujYAvB2fGgYgYlFo5EvbBccUlqFaEtupOJ2INUJ4LvrmYTibq1eBC-H7xv3TPiD_0SEiZofyG6iXyyebbP_MpHQWxbh6BXPr2xjho1w3UFawj5PkNMauvb7oeT7vg7USQ==', status=None), ResponseOutputMessage(id='msg_02f8ea0b88788d2f016ade407c508087d28f1defabcad68680', content=[ResponseOutputText(annotations=[], text='# Informe semántico: `tienda-v1` → `tienda-v2`\n\n## Conclusión principal\n\nLa actualización amplía el cálculo y la presentación de pedidos: **activa un descuento VIP del 10 %, valida entradas básicas y muestra un desglose completo**. También elimina el saludo inicial.\n\nHay un cambio adicional importante que **no figura en `changes`**: `calcular_envio` eleva el umbral de envío gratuito de **50 a 75 EUR**. La consulta de ambas versiones en Ghidra lo confirma, pese a existir una correspondencia propuesta para esa función (`match_0016`).\n\nPara el pedido fijo de `main` —20 + 15 + 25 EUR, cliente VIP— el resultado pasa de **60 EUR a 59 EUR**, no a 54 EUR: los 6 EUR de descuento se compensan parcialmente con los nuevos 5 EUR de envío.\n\nLos metadatos consultados coinciden con los nombres, SHA-256, formato ELF y arquitectura indicados en la entrada.\n\n## Tabla resumen\n\n| Referencias | Función y direcciones old → new | Antes | Después | Impacto |\n|---|---|---|---|---|\n| `change_0001`, `change_0004`; propuesta alternativa `change_0003` | `mostrar_pedido`: `00101213` → `00101242`; `calcular_descuento`: nueva en `00101213` | Ignora `cliente_vip`; total = subtotal + envío | Descuento del 10 % si VIP es distinto de cero; total = subtotal − descuento + envío | Cambia la política de precios |\n| `change_0001` | `mostrar_pedido`: `00101213` → `00101242` | Sin comprobaciones de pedido vacío ni precios negativos | Rechaza puntero nulo, cantidad cero y precios negativos | Mayor robustez, con límites |\n| `change_0001`, `change_0005`, `change_0006` | `mostrar_pedido`; thunks `printf` (`00101090`) y `puts` (`00101070`) | Imprime solo el total | Imprime productos, subtotal, descuento, envío y total; añade mensajes de validación | Cambia el formato de salida |\n| **Hallazgo adicional**, sin `change_id`; `match_0016` | `calcular_envio`: `001011e7` en ambas versiones | 5 EUR si subtotal < 50; gratis en otro caso | 5 EUR si subtotal < 75; gratis en otro caso | Los subtotales de 50 a menos de 75 EUR dejan de tener envío gratuito |\n| `change_0000`, `change_0002`, `change_0006` | `mensaje_bienvenida`: old `00101288`, eliminada; `main`: `001012a2` → `001013e0` | Saludo seguido del pedido | Sin saludo; conserva el mismo pedido de ejemplo | Cambio visible de interfaz |\n| `change_0003`, conflictos `conflict_0000` y `conflict_0001` | `calcular_subtotal`: `00101189` en ambas versiones | Suma los precios | Conserva el mismo pseudocódigo de suma | No se observa su sustitución por el descuento; la correspondencia alternativa resulta inadecuada para explicar el comportamiento |\n\n## 1. Cambio conjunto del cálculo del pedido\n\n**Referencias:** `change_0001`, `change_0004` y propuesta conflictiva `change_0003`. Contexto adicional comprobado: `calcular_subtotal`, old/new `00101189`, y `calcular_envio`, old/new `001011e7`.\n\n```mermaid\nflowchart TB\n  subgraph OLD["old"]\n    O1["mostrar_pedido"]\n    O2["Subtotal: suma de precios"]\n    O3["Envío: 5 si subtotal < 50; si no, 0"]\n    O4["Total = subtotal + envío"]\n    O1 --> O2 --> O3 --> O4\n  end\n  subgraph NEW["new"]\n    N1["mostrar_pedido"]\n    N2["Validar pedido y precios"]\n    N3["Subtotal: suma de precios"]\n    N4["Descuento: 10 % si VIP; si no, 0"]\n    N5["Envío: 5 si subtotal < 75; si no, 0"]\n    N6["Total = subtotal - descuento + envío"]\n    N1 --> N2\n    N2 -->|"Válido"| N3\n    N2 -->|"Vacío o negativo"| N7["Mensaje y fin"]\n    N3 --> N4 --> N5 --> N6\n  end\n```\n\nEl diagrama representa el orden observado en `mostrar_pedido` —old `00101213`, new `00101242`— y las reglas recuperadas de sus auxiliares. **El envío se calcula sobre el subtotal original, no sobre el importe tras el descuento.**\n\n### Consecuencias económicas\n\nPara un subtotal finito y no negativo \\(S\\):\n\n- **Old:** `total = S + (S < 50 ? 5 : 0)`.\n- **New:** `total = S − (VIP != 0 ? 0.1 × S : 0) + (S < 75 ? 5 : 0)`.\n\nEsto implica:\n\n- Un cliente no VIP con subtotal entre **50 y menos de 75 EUR** paga **5 EUR más**.\n- Un VIP recibe descuento en todas las franjas, pero en esa franja también soporta el nuevo envío.\n- Cualquier valor entero **distinto de cero**, no solo `1`, activa el descuento. El código no verifica identidad ni derechos VIP; recibe esa condición del llamador. Esto no demuestra un fallo de autorización.\n\nEl aumento del umbral de envío es una observación confirmada en Ghidra, **no una inferencia basada en el resultado del ejemplo**. Puede ser una decisión comercial o una regresión respecto a requisitos desconocidos; no hay especificación para decidirlo.\n\n### Resultado del programa suministrado\n\nSe consultaron `main` old `001012a2` y new `001013e0`. Ambas versiones conservan los precios `[20, 15, 25]`, cantidad `3` y VIP `1`.\n\n| Concepto | old | new |\n|---|---:|---:|\n| Subtotal | 60 EUR | 60 EUR |\n| Descuento aplicado | 0 EUR | 6 EUR |\n| Envío | 0 EUR | 5 EUR |\n| **Total** | **60 EUR** | **59 EUR** |\n\nEs un resultado deducido del código, no de una ejecución. En este recorrido, las nuevas ramas de rechazo no se activan. La salida pierde el saludo y gana el resumen desglosado (`change_0000`, `change_0001`, `change_0002`).\n\n## 2. Validaciones: mejora real, pero acotada\n\n**Referencia:** `change_0001`, `mostrar_pedido`, old `00101213` → new `00101242`.\n\nLa versión nueva añade dos niveles de validación:\n\n1. Si `precios == NULL` **o** `cantidad == 0`, imprime `Pedido vacio` y no calcula importes.\n2. Recorre los precios; ante el primero menor que cero, imprime su posición **desde 1** y termina sin resumen.\n\nLa diferencia para una cantidad cero es funcional: antes `calcular_subtotal` devolvía cero y el programa calculaba un total de **5 EUR de envío**; ahora solo informa de que el pedido está vacío. Un puntero nulo con cantidad positiva antes se desreferenciaba en la suma y ahora se rechaza antes de leerlo.\n\n### Límites observables\n\n- **No se comprueba la longitud real del arreglo.** Un puntero no nulo no garantiza que existan `cantidad` elementos accesibles. Una cantidad incorrecta podría provocar lecturas fuera de límites; esa precondición ya existía en la versión anterior.\n- La condición `precio < 0.0` **no garantiza que el precio sea finito**: no añade una comprobación de NaN o infinito. Valores no finitos o una suma desbordada podrían propagarse al total.\n- `calcular_subtotal` sigue sin validaciones propias en new `00101189`; la protección está en su llamador.\n- `mostrar_pedido` sigue devolviendo `void`: comunica los rechazos por salida textual, no mediante un estado de error.\n\nEstas son limitaciones de la interfaz observada, **no vulnerabilidades explotables demostradas**. El único llamador identificado por Ghidra es `main`, que pasa un arreglo fijo válido; no se ha establecido una vía de entrada controlada por un atacante.\n\n## 3. Resolución de las propuestas incompatibles\n\n**Referencias:** `change_0003`, `change_0004`, `match_0001`, `match_0002`, `conflict_0000` y `conflict_0001`.\n\nLas propuestas tienen distinta procedencia:\n\n| Propuesta | Procedencia del JSON | Interpretación propuesta |\n|---|---|---|\n| `change_0003` | `VersionTrackingDiff`, `$.functions.modified[2]`, `Implied Match` | `calcular_subtotal` old se transforma en `calcular_descuento` new |\n| `change_0004` | `SimpleDiff` y `StructualGraphDiff`, `$.functions.added[0]` | Se añade `calcular_descuento` |\n| `match_0001` | `VersionTrackingDiff`, `$.matches.address_matches["00101189"][0]` | Subtotal old corresponde a subtotal new |\n| `match_0002` | `VersionTrackingDiff`, `$.matches.address_matches["00101189"][1]` | El mismo subtotal old corresponde al descuento new |\n\nLa inspección directa aclara la interpretación semántica:\n\n- Old `calcular_subtotal` `00101189` y new `calcular_subtotal` `00101189` presentan la misma firma y el mismo pseudocódigo de acumulación.\n- New `calcular_descuento` `00101213` es una función distinta, con parámetros y operación diferentes.\n- New `mostrar_pedido` `00101242` **llama a ambas**.\n\nPor tanto, la explicación respaldada es **conservación del subtotal y adición del descuento**, no sustitución de una operación por otra. La conclusión se apoya en los cuerpos y llamadas consultados, no en una votación entre motores. No permite reconstruir por sí sola la historia del código fuente.\n\nAdemás, `match_0016` —`VersionTrackingDiff`, `$.matches.address_matches["001011e7"][0]`— no implica equivalencia: la función de envío conserva identidad y dirección, pero cambia su umbral. La ausencia de una propuesta en `changes` no excluía este cambio.\n\n## 4. Salida e importaciones: cambios derivados, no nuevas primitivas\n\n**Referencias:** `change_0000`, `change_0001`, `change_0002`, `change_0005` y `change_0006`.\n\nLa eliminación de `mensaje_bienvenida` old `00101288` y de su llamada desde `main` explica la desaparición del saludo. El inventario completo de funciones no externas de new no contiene esa función.\n\nLos registros de `printf` y `puts` reflejan el nuevo uso de la salida:\n\n- `printf` pasa de una referencia a seis: cinco llamadas en el resumen y una en la rama de precio inválido. **No son seis llamadas ejecutadas en cada pedido.**\n- `puts` deja de usarse para el saludo y se utiliza desde `mostrar_pedido` para el resumen o el pedido vacío.\n\nGhidra identifica `printf` new `00101090` y `puts` new `00101070` como **thunks**. El pseudocódigo aparentemente autorreferente de estos registros no demuestra recursión ni una reimplementación de libc. Los formatos observados en `mostrar_pedido` son constantes.\n\nLas importaciones consultadas de new contienen salida estándar y soporte de ejecución; no aportan evidencia de operaciones de red, lanzamiento de procesos o persistencia. Esta observación no constituye una auditoría exhaustiva de todo el binario.\n\n## Efecto conjunto y limitaciones\n\n**La actualización modifica la política de cobro, endurece parcialmente la entrada y cambia la interfaz textual.** El descuento VIP y el aumento del umbral de envío deben interpretarse juntos: para el ejemplo incluido, la mejora neta es de solo **1 EUR**. También podrían romperse consumidores que esperasen el saludo o una salida formada únicamente por el total.\n\nSe comprobaron en Ghidra las funciones centrales, sus llamadas, los auxiliares de subtotal y envío en ambas versiones, el inventario de funciones de new y sus importaciones. Quedan sin determinar la intención comercial, la compatibilidad esperada de la salida y la alcanzabilidad de entradas inválidas fuera del `main` observado.\n\nEl análisis es estático y utiliza pseudocódigo descompilado: **no se ejecutaron pruebas, no se verificó equivalencia byte a byte y no se realizó una auditoría completa del arranque o de todas las funciones auxiliares**. La evidencia permite afirmar los cambios descritos, pero no atribuir intención maliciosa ni demostrar explotabilidad.', type='output_text', logprobs=[])], role='assistant', status='completed', type='message', phase='final_answer')]
+Informe IA: resultados/tienda_intermedia_20261025_104416.md; finalización: completed
