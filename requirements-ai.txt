@@ -1,2 +1,4 @@
-openai>=1.66,<3
-PyJWT[crypto]>=2.10,<3
+# Dependencias de IA y autenticación. La instalación completa usa requirements.txt.
+openai==3.35.1
+PyJWT[crypto]==2.15.1
+cryptography==50.0.2

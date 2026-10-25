@@ -1,0 +1,342 @@
+--- a/ghidriff/ghidra_diff_engine.py
++++ b/ghidriff/ghidra_diff_engine.py
+@@ -159,6 +159,8 @@
+ 
+         # Global instance var to store symbol lookup results
+         self.esym_memo = {}
++        self.esym_memo_options = {}
++        self.esym_memo_locks = {}
+ 
+         # set instance preferences
+         self.force_analysis = force_analysis
+@@ -386,125 +388,132 @@
+ 
+         from ghidra.program.model.symbol import SymbolType
+ 
+-        # key = f'{sym.iD}-{sym.program.name}-{get_decomp_info}-{use_calling_counts}'
+         key = f'{sym.iD}-{sym.program.name}'
++        # Serializar solo las consultas de un mismo símbolo, no todos los símbolos.
++        with self.esym_memo_locks.setdefault(key, Lock()):
++            cached_options = self.esym_memo_options.get(key, (False, False))
++            get_decomp_info = get_decomp_info or cached_options[0]
++            use_calling_counts = use_calling_counts or cached_options[1]
+ 
+-        if key not in self.esym_memo:
++            # Una entrada de metadatos no satisface una petición de descompilación.
++            if key not in self.esym_memo or cached_options != (get_decomp_info, use_calling_counts):
+ 
+-            from ghidra.util.task import ConsoleTaskMonitor
++                from ghidra.util.task import ConsoleTaskMonitor
+ 
+-            monitor = ConsoleTaskMonitor()
+-            prog = sym.program
+-            func: 'ghidra.program.model.listing.Function' = prog.functionManager.getFunctionAt(sym.address)
+-
+-            if not sym.symbolType == SymbolType.FUNCTION:
++                monitor = ConsoleTaskMonitor()
++                prog = sym.program
++                func: 'ghidra.program.model.listing.Function' = prog.functionManager.getFunctionAt(sym.address)
+ 
+-                # process symbol
++                if not sym.symbolType == SymbolType.FUNCTION:
+ 
+-                calling = set()
+-                ref_types = set()
++                    # process symbol
+ 
+-                for ref in sym.references:
+-                    ref_types.add(ref.getReferenceType().toString())
+-                    f = prog.getFunctionManager().getFunctionContaining(ref.getFromAddress())
+-                    if f:
+-                        calling.add(f.getName())
++                    calling = set()
++                    ref_types = set()
+ 
+-                calling = list(calling)
+-                ref_types = list(ref_types)
++                    for ref in sym.references:
++                        ref_types.add(ref.getReferenceType().toString())
++                        f = prog.getFunctionManager().getFunctionContaining(ref.getFromAddress())
++                        if f:
++                            calling.add(f.getName())
++
++                    calling = list(calling)
++                    ref_types = list(ref_types)
++
++                    if sym.parentSymbol is not None:
++                        parent = str(sym.parentSymbol)
++                    else:
++                        parent = None
+ 
+-                if sym.parentSymbol is not None:
+-                    parent = str(sym.parentSymbol)
++                    self.esym_memo[key] = {'name': sym.getName(), 'fullname': sym.getName(True), 'parent':  parent, 'refcount': sym.getReferenceCount(), 'reftypes': ref_types,  'calling': calling,
++                                           'address': str(sym.getAddress()), 'sym_type': str(sym.getSymbolType()), 'sym_source': str(sym.source), 'external': sym.external}
+                 else:
+-                    parent = None
+-
+-                self.esym_memo[key] = {'name': sym.getName(), 'fullname': sym.getName(True), 'parent':  parent, 'refcount': sym.getReferenceCount(), 'reftypes': ref_types,  'calling': calling,
+-                                       'address': str(sym.getAddress()), 'sym_type': str(sym.getSymbolType()), 'sym_source': str(sym.source), 'external': sym.external}
+-            else:
+-                # proces function
+-
+-                instructions = []
+-                mnemonics = []
+-                blocks = []
+-                called_funcs = []
+-                calling_funcs = []
+-                code = ''
+-
+-                if get_decomp_info:
+-
+-                    code_units = func.getProgram().getListing().getCodeUnits(func.getBody(), True)
++                    # proces function
+ 
+-                    # instruction and mnemonic bulker
+-                    for code in code_units:
+-                        instructions.append(str(code))
+-                        mnemonics.append(str(code.getMnemonicString))
++                    instructions = []
++                    mnemonics = []
++                    blocks = []
++                    called_funcs = []
++                    calling_funcs = []
++                    code = ''
+ 
+-                    from ghidra.program.model.block import BasicBlockModel
++                    if get_decomp_info:
+ 
+-                    # Basic Block Bulker
+-                    basic_model = BasicBlockModel(func.getProgram(), True)
+-                    basic_blocks = basic_model.getCodeBlocksContaining(func.getBody(), monitor)
++                        code_units = func.getProgram().getListing().getCodeUnits(func.getBody(), True)
+ 
+-                    for block in basic_blocks:
+-                        code_units = func.getProgram().getListing().getCodeUnits(block, True)
+-                        units = []
++                        # instruction and mnemonic bulker
+                         for code in code_units:
+-                            units.append(str(code.mnemonicString))
++                            instructions.append(str(code))
++                            mnemonics.append(str(code.getMnemonicString))
+ 
+-                        # sort - This case handles the case for compiler optimizations
+-                        blocks.extend(sorted(units))
++                        from ghidra.program.model.block import BasicBlockModel
+ 
+-                    if not func.external:
+-                        error, code = self.decompile_func(func.program, func, timeout,)
+-
+-                        if error:
+-                            err = f'Failed to decompile {func.program} {func} : {error}'
+-                            self.logger.warn(err)
+-                            code = err
++                        # Basic Block Bulker
++                        basic_model = BasicBlockModel(func.getProgram(), True)
++                        basic_blocks = basic_model.getCodeBlocksContaining(func.getBody(), monitor)
++
++                        for block in basic_blocks:
++                            code_units = func.getProgram().getListing().getCodeUnits(block, True)
++                            units = []
++                            for code in code_units:
++                                units.append(str(code.mnemonicString))
++
++                            # sort - This case handles the case for compiler optimizations
++                            blocks.extend(sorted(units))
++
++                        if not func.external:
++                            error, code = self.decompile_func(func.program, func, timeout,)
++
++                            if error:
++                                err = f'Failed to decompile {func.program} {func} : {error}'
++                                self.logger.warn(err)
++                                code = err
++
++                    if use_calling_counts:
++                        MAX_FUNC_REFS = 200
++
++                        for f in func.getCalledFunctions(monitor):
++                            count = 0
++                            ref_count = len(f.symbol.references)
++
++                            if ref_count > MAX_FUNC_REFS:
++                                self.logger.debug(f'Skipping {func} count calling, too many refs: {ref_count}')
++                                called_funcs.append(f'{f}')
++                            else:
++                                for ref in f.symbol.references:
++                                    if func.getBody().contains(ref.getFromAddress(), ref.getFromAddress()):
++                                        count += 1
++                                called_funcs.append(f'{f}-{count}')
++
++                        for f in func.getCallingFunctions(monitor):
++                            count = 0
++                            ref_count = len(f.symbol.references)
++
++                            if ref_count > MAX_FUNC_REFS:
++                                self.logger.debug(f'Skipping {func} count calling, too many refs: {ref_count}')
++                                calling_funcs.append(f'{f}')
++                            else:
++                                for ref in func.symbol.references:
++                                    if f.getBody().contains(ref.getFromAddress(), ref.getFromAddress()):
++                                        count += 1
++                                calling_funcs.append(f'{f}-{count}')
++                    else:
++                        for f in func.getCalledFunctions(monitor):
++                            called_funcs.append(f'{f}')
++                        for f in func.getCallingFunctions(monitor):
++                            calling_funcs.append(f'{f}')
+ 
+-                if use_calling_counts:
+-                    MAX_FUNC_REFS = 200
++                    called_funcs = sorted(called_funcs)
++                    calling_funcs = sorted(calling_funcs)
++                    parent_namespace = sym.getParentNamespace().toString().split('@')[0]
+ 
+-                    for f in func.getCalledFunctions(monitor):
+-                        count = 0
+-                        ref_count = len(f.symbol.references)
++                    self.esym_memo[key] = {'name': sym.getName(), 'fullname': sym.getName(True),  'parent':  parent_namespace, 'refcount': sym.getReferenceCount(), 'length': func.body.numAddresses, 'called': called_funcs,
++                                           'calling': calling_funcs, 'paramcount': func.parameterCount, 'address': str(sym.getAddress()), 'sig': str(func.getSignature(False)), 'code': code,
++                                           'instructions': instructions, 'mnemonics': mnemonics, 'blocks': blocks, 'sym_type': str(sym.getSymbolType()), 'sym_source': str(sym.source), 'external': sym.external}
+ 
+-                        if ref_count > MAX_FUNC_REFS:
+-                            self.logger.debug(f'Skipping {func} count calling, too many refs: {ref_count}')
+-                            called_funcs.append(f'{f}')
+-                        else:
+-                            for ref in f.symbol.references:
+-                                if func.getBody().contains(ref.getFromAddress(), ref.getFromAddress()):
+-                                    count += 1
+-                            called_funcs.append(f'{f}-{count}')
+-
+-                    for f in func.getCallingFunctions(monitor):
+-                        count = 0
+-                        ref_count = len(f.symbol.references)
+-
+-                        if ref_count > MAX_FUNC_REFS:
+-                            self.logger.debug(f'Skipping {func} count calling, too many refs: {ref_count}')
+-                            calling_funcs.append(f'{f}')
+-                        else:
+-                            for ref in func.symbol.references:
+-                                if f.getBody().contains(ref.getFromAddress(), ref.getFromAddress()):
+-                                    count += 1
+-                            calling_funcs.append(f'{f}-{count}')
+-                else:
+-                    for f in func.getCalledFunctions(monitor):
+-                        called_funcs.append(f'{f}')
+-                    for f in func.getCallingFunctions(monitor):
+-                        calling_funcs.append(f'{f}')
+-
+-                called_funcs = sorted(called_funcs)
+-                calling_funcs = sorted(calling_funcs)
+-                parent_namespace = sym.getParentNamespace().toString().split('@')[0]
+-
+-                self.esym_memo[key] = {'name': sym.getName(), 'fullname': sym.getName(True),  'parent':  parent_namespace, 'refcount': sym.getReferenceCount(), 'length': func.body.numAddresses, 'called': called_funcs,
+-                                       'calling': calling_funcs, 'paramcount': func.parameterCount, 'address': str(sym.getAddress()), 'sig': str(func.getSignature(False)), 'code': code,
+-                                       'instructions': instructions, 'mnemonics': mnemonics, 'blocks': blocks, 'sym_type': str(sym.getSymbolType()), 'sym_source': str(sym.source), 'external': sym.external}
++                self.esym_memo_options[key] = (get_decomp_info, use_calling_counts)
+ 
+-        return self.esym_memo[key]
++            return self.esym_memo[key]
+ 
+     def setup_project(
+             self,
+@@ -1833,6 +1842,8 @@
+ 
+         # reset global esym OTHERWISE this gets big
+         self.esym_memo = {}
++        self.esym_memo_options = {}
++        self.esym_memo_locks = {}
+ 
+         self.project.close(p1)
+         self.project.close(p2)
+--- a/ghidriff/simple_diff.py
++++ b/ghidriff/simple_diff.py
+@@ -202,7 +202,7 @@
+                 match_type = 'FullName:Param'
+                 matched.append(sym)
+                 matched.append(sym2)
+-                matches.append([sym, sym2, match_type])
++                matches.append([sym, sym2, [match_type]])
+ 
+         for sym in p1_modified.values():
+             found = False
+@@ -231,7 +231,7 @@
+             if found:
+                 matched.append(sym)
+                 matched.append(sym2)
+-                matches.append([sym, sym2, match_type])
++                matches.append([sym, sym2, [match_type]])
+             else:
+                 self.logger.info(f"Deleted func found: {sym}")
+                 unmatched.append(sym)
+@@ -264,7 +264,7 @@
+             if found:
+                 matched.append(sym)
+                 matched.append(sym2)
+-                matches.append([sym, sym2, match_type])
++                matches.append([sym, sym2, [match_type]])
+             else:
+                 self.logger.info(f"Added func found: {sym}")
+                 unmatched.append(sym)
+--- a/ghidriff/structural_graph_diff.py
++++ b/ghidriff/structural_graph_diff.py
+@@ -198,21 +198,8 @@
+         for sym in p2_modified:
+             self.logger.info(sym)
+ 
+-        # Find modified functions based on compare_key
+-        for sym in p1.getSymbolTable().getDefinedSymbols():
+-
+-            if "function".lower() in sym.getSymbolType().toString().lower():
+-                func = p1.functionManager.getFunctionAt(sym.getAddress())
+-                if (_get_compare_key2(sym, func)) in modified_old:
+-                    p1_modified.append(sym)
+-
+-        for sym in p2.getSymbolTable().getDefinedSymbols():
+-
+-            if "function".lower() in sym.getSymbolType().toString().lower():
+-                func = p2.functionManager.getFunctionAt(sym.getAddress())
+-                if (_get_compare_key2(sym, func)) in modified_new:
+-                    p2_modified.append(sym)
+-
++        # Las candidatas ya se recogieron desde p1_funcs/p2_funcs.
++        # Repetir el recorrido duplicaba las funciones sin correspondencia.
+         matched = []
+         unmatched = []
+         matches = []
+@@ -257,7 +244,7 @@
+                                 match_type = 'FullName:Param:NumCalls'
+                                 matched.append(sym)
+                                 matched.append(sym2)
+-                                matches.append([sym, sym2, match_type])
++                                matches.append([sym, sym2, [match_type]])
+ 
+                 else:
+                     sym2 = func2.getSymbol()
+@@ -265,7 +252,7 @@
+                     match_type = 'FullName:Param'
+                     matched.append(sym)
+                     matched.append(sym2)
+-                    matches.append([sym, sym2, match_type])
++                    matches.append([sym, sym2, [match_type]])
+ 
+         for sym in p1_modified:
+             found = False
+@@ -301,7 +288,7 @@
+             if found:
+                 matched.append(sym)
+                 matched.append(sym2)
+-                matches.append([sym, sym2, match_type])
++                matches.append([sym, sym2, [match_type]])
+             else:
+                 self.logger.info(f"Deleted func found: {sym}")
+                 self.logger.info(
+@@ -337,7 +324,7 @@
+             if found:
+                 matched.append(sym)
+                 matched.append(sym2)
+-                matches.append([sym, sym2, match_type])
++                matches.append([sym, sym2, [match_type]])
+             else:
+                 self.logger.info(f"Added func found: {sym}")
+                 unmatched.append(sym)

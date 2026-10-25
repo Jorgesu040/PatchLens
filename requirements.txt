@@ -1,0 +1,11 @@
+# Entorno de referencia: Linux x86-64 / WSL Ubuntu, Python 3.12.
+# Requisitos externos: Ghidra 12.0.4, JDK 21, git y patch; ver README.md.
+-r requirements-ai.txt
+
+# Fijar el código original; después aplicar patches/ghidriff/ghidriff-local.patch.
+ghidriff @ git+https://github.com/clearbluejar/ghidriff.git@4f5d895fcbb1eacd65efd81145922c15bb7e741d
+pyghidra==3.1.0
+JPype1==1.5.2
+rapidfuzz==3.14.6
+mdutils==1.6.0
+packaging==26.3
