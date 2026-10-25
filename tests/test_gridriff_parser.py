@@ -4,10 +4,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from GridriffParser import get_changes, get_functions, parse_json
+from GhidriffParser import get_changes, get_functions, parse_json
 
 
-class GridriffParserTests(unittest.TestCase):
+class GhidriffParserTests(unittest.TestCase):
     """Fixtures sintéticas para el único parser; no son salidas de Ghidriff."""
 
     def setUp(self):

@@ -182,7 +182,7 @@ def parse_reports(reports: dict[str, str | Path]) -> dict[str, Any]:
     conflicts = find_conflicts(changes, matches)
     link_conflicts(changes, conflicts, matches)
     return {
-        "schema_version": "2.1",
+        "schema_version": "2.0",
         "binaries": binaries,
         "analyses": analyses,
         "changes": changes,

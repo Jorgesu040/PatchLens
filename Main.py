@@ -6,7 +6,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from GridriffParser import ENGINES, parse_reports
+from GhidriffParser import ENGINES, parse_reports
 
 
 def run_ghidriff(old_binary, new_binary, project_name, engine="VersionTrackingDiff", timeout=300):

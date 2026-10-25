@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from Main import find_report, main, run_ghidriff
 from parser.NormalizerEngine import find_conflicts, merge_changes, normalize_record, link_conflicts
-from GridriffParser import ENGINES, parse_reports
+from GhidriffParser import ENGINES, parse_reports
 
 
 FIXTURES = Path(__file__).parent / "fixtures" / "tienda"

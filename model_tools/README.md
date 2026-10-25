@@ -2,7 +2,7 @@
 
 `GhidraSession` abre un proyecto existente y mantiene dos `Program` disponibles:
 `old` es la versión antigua y `new` la nueva. No ejecuta el análisis de nuevo.
-Es un singleton por proceso: ambos sets importan el mismo objeto `session`.
+Es un singleton por proceso: las consultas de `main_set` usan el mismo `session`.
 Importar el paquete no arranca Java; `session.open(...)` abre la sesión.
 
 Para el caso tienda usamos el proyecto de **VersionTrackingDiff** de la ejecución
@@ -51,7 +51,7 @@ finally:
     session.close()
 ```
 
-Los dos sets importan `session` desde `.ghidra_session`; sus funciones pueden
+`main_set` importa `session` desde `.ghidra_session`; sus funciones pueden
 usar directamente `session[version]`, `session.flat_old` o `session.flat_new`.
 `GhidraSession()` devuelve ese mismo objeto y no reinicia sus campos.
 Solo el punto de entrada debe llamar a `open`: una segunda apertura sin cerrar
@@ -70,8 +70,15 @@ se detiene la JVM. El singleton está pensado para el bucle secuencial: no ofrec
 sincronización entre hilos ni comparte memoria con otros procesos. Si el proyecto
 está abierto en otra aplicación, puede ser necesario cerrarlo allí.
 
-Esto configura el acceso a Ghidra; las funciones de consulta anunciadas en
-`main_set.py` y `companion_set.py` todavía deben implementarse y conectarse al agente.
+Las diez consultas de `main_set.py` están implementadas, descritas en
+`schema_tools/main_set_schemas.py` y conectadas desde `Main.py --model`.
+`companion_set.py` es un borrador pendiente y no se importa en el flujo de esta
+entrega. Sus funciones previstas son get_disassembly, read_data, list_segments
+y list_data_items; el comienzo de get_disassembly todavía no devuelve un resultado.
+
+La instalación y ejecución portátil se describen en el README de la raíz.
+La ruta de tienda_ghidriff_dedup de esta guía es una referencia histórica local;
+Main abre el proyecto generado en cada ejecución y sus nombres internos.
 
 ## Orientación para elegir API · 2026-10-24
 
