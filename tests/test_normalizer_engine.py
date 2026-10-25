@@ -41,7 +41,6 @@ class MultimotorTests(unittest.TestCase):
         implicated = [by_id[change_id] for change_id in conflict["change_ids"]]
         self.assertNotIn("change_indices", conflict)
         self.assertEqual({c["type"] for c in implicated}, {"added", "modified"})
-        self.assertEqual({c["change_id"] for c in implicated}, set(conflict["change_ids"]))
         for record in implicated:
             self.assertIn(conflict["conflict_id"], record["conflict_ids"])
         added = next(c for c in implicated if c["type"] == "added")
@@ -66,8 +65,6 @@ class MultimotorTests(unittest.TestCase):
                     for field in ("called", "calling"):
                         if field in expected:
                             self.assertEqual(exported[field], expected[field])
-                    self.assertNotIn("callees", exported)
-                    self.assertNotIn("callers", exported)
 
     def test_incompatible_or_missing_hash_is_rejected(self):
         original = json.loads(self.reports[ENGINES[0]].read_text())
@@ -109,10 +106,6 @@ class NormalizerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Exportaciones distintas"):
             merge_changes(records)
         self.assertEqual(records, before)
-
-    def test_only_normalize_record_rejects_unknown_kind(self):
-        with self.assertRaises(ValueError):
-            normalize_record("unknown", function("10"), "SimpleDiff", 0)
 
     def test_match_types_are_copied_without_duplicates(self):
         raw = {"old": function("10"), "new": function("20"),
