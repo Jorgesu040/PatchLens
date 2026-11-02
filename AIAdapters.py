@@ -6,7 +6,7 @@ from openai import APIError, OpenAI
 from openai.types.responses import Response, ResponseFunctionToolCall
 
 from model_tools.tool_calling_test import getPassword, login, tools_schemas
-from model_tools import main_set
+from model_tools import companion_set, main_set
 
 from model_tools.ghidra_session import session
 
@@ -155,6 +155,12 @@ class ResponsesAdapter:
             "list_strings": main_set.list_strings,
             "search_strings": main_set.search_strings,
             "list_imports": main_set.list_imports,
+            "get_disassembly": companion_set.get_disassembly,
+            "read_data": companion_set.read_data,
+            "read_memory": companion_set.read_memory,
+            "list_memory_blocks": companion_set.list_memory_blocks,
+            "list_data_items": companion_set.list_data_items,
+            "list_exports": companion_set.list_exports,
             "getPassword": getPassword,
             "login": login,
         }

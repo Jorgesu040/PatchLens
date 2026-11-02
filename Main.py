@@ -110,7 +110,7 @@ def main():
         from AI import analyze_report, final_report
         from AIAdapters import create_adapter
         from model_tools.ghidra_session import session
-        from model_tools.schema_tools.main_set_schemas import tools_schemas
+        from model_tools.schema_tools import tools_schemas
 
         project_file = next(project_dir.rglob("*.gpr"))
         # Misma convención que Ghidriff para los nombres internos de los programas.

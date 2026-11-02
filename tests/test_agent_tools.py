@@ -6,6 +6,9 @@ from unittest.mock import MagicMock, patch
 from openai.types.responses import Response, ResponseFunctionToolCall, ResponseOutputMessage, ResponseOutputText
 
 from AIAdapters import ResponsesAdapter
+from model_tools import companion_set
+from model_tools.schema_tools import tools_schemas
+from model_tools.schema_tools.companion_set_schemas import tools_schemas as companion_schemas
 
 
 class AgentToolTests(unittest.TestCase):
@@ -104,3 +107,47 @@ class AgentToolTests(unittest.TestCase):
         error = json.loads(output["output"])
         self.assertEqual(error["call_result"], "error")
         self.assertIn("not JSON serializable", error["message"])
+
+    def test_companion_calls_are_dispatched_and_returned_to_the_next_turn(self):
+        arguments = {
+            "get_disassembly": {"version": "old", "address": "00101000", "instruction_count": 3},
+            "read_data": {"version": "new", "address": "00102000"},
+            "read_memory": {"version": "new", "address": "00102000", "size": 16},
+            "list_memory_blocks": {"version": "old"},
+            "list_data_items": {"version": "new", "block_name": ".rodata", "offset": 0, "limit": 25},
+            "list_exports": {"version": "new"},
+        }
+        for name, args in arguments.items():
+            with self.subTest(name=name):
+                call = ResponseFunctionToolCall(
+                    type="function_call", name=name, arguments=json.dumps(args), call_id="companion",
+                )
+                adapter = self.adapter([self.response([call]), self.response([self.final_message()])])
+                with patch.object(companion_set, name, return_value=["evidence"]) as function:
+                    result = adapter.agent_loop("analiza", "instrucciones", tools_schemas, 2)
+                function.assert_called_once_with(**args)
+                self.assertEqual(result["stop_reason"], "completed")
+                requests = adapter.client.responses.create.call_args_list
+                self.assertEqual(requests[0].kwargs["tools"], tools_schemas)
+                output = next(item for item in requests[1].kwargs["input"]
+                              if isinstance(item, dict) and item.get("type") == "function_call_output")
+                self.assertEqual(output["call_id"], "companion")
+                self.assertEqual(json.loads(output["output"]), {
+                    "call_result": "success", "result": ["evidence"],
+                })
+
+    def test_companion_schemas_match_signatures_and_strict_requirements(self):
+        import inspect
+
+        names = [schema["name"] for schema in tools_schemas]
+        self.assertEqual(len(names), 16)
+        self.assertEqual(len(names), len(set(names)))
+        for schema in companion_schemas:
+            with self.subTest(name=schema["name"]):
+                self.assertEqual(schema["type"], "function")
+                self.assertTrue(schema["strict"])
+                parameters = schema["parameters"]
+                self.assertFalse(parameters["additionalProperties"])
+                self.assertEqual(set(parameters["required"]), set(parameters["properties"]))
+                signature = inspect.signature(getattr(companion_set, schema["name"]))
+                self.assertEqual(set(parameters["properties"]), set(signature.parameters))

@@ -70,11 +70,29 @@ se detiene la JVM. El singleton está pensado para el bucle secuencial: no ofrec
 sincronización entre hilos ni comparte memoria con otros procesos. Si el proyecto
 está abierto en otra aplicación, puede ser necesario cerrarlo allí.
 
-Las diez consultas de `main_set.py` están implementadas, descritas en
-`schema_tools/main_set_schemas.py` y conectadas desde `Main.py --model`.
-`companion_set.py` es un borrador pendiente y no se importa en el flujo de esta
-entrega. Sus funciones previstas son get_disassembly, read_data, list_segments
-y list_data_items; el comienzo de get_disassembly todavía no devuelve un resultado.
+Las diez consultas de `main_set.py` y las seis de `companion_set.py` están
+descritas en `schema_tools/main_set_schemas.py` y
+`schema_tools/companion_set_schemas.py`. El catálogo conjunto se importa desde
+`model_tools.schema_tools` y se pasa al agente en `Main.py --model`.
+Companion añade get_disassembly, read_data, read_memory, list_memory_blocks,
+list_data_items y list_exports; reutiliza `_resolve_address` de main_set y la misma sesión.
+Los esquemas usan Responses con `strict=True`, todos los argumentos explícitos
+y `additionalProperties=False`, según la
+[documentación de OpenAI](https://developers.openai.com/api/docs/guides/function-calling).
+`read_data(version, address)` devuelve el objeto Data completo que contiene la
+dirección, incluso si es un dato sin definir, y su valor como texto o null.
+`read_memory(version, address, size)` lee `size` bytes mediante la instancia
+existente de `FlatProgramAPI` y devuelve versión, dirección, tamaño,
+hexadecimal y ASCII (punto para bytes no imprimibles). Comprueba que el rango
+esté inicializado para evitar el relleno con ceros en lecturas parciales de
+`FlatProgramAPI.getBytes` y propaga los errores de acceso al bucle del agente.
+Consulta la memoria del programa cargado en Ghidra, no la de un proceso en ejecución.
+
+Las consultas usan `toString()` para objetos Java y conservan directamente
+las cadenas devueltas por la API (PyGhidra activa `convertStrings=True`).
+`read_data.value` usa `str(value)` para convertir el valor a texto.
+Solo se representan como null resultados que la API permite que sean null;
+`Data.getDefaultValueRepresentation()` devuelve una cadena.
 
 La instalación y ejecución portátil se describen en el README de la raíz.
 La ruta de tienda_ghidriff_dedup de esta guía es una referencia histórica local;
