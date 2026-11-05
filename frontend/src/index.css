@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Tokens de marca (brand/tokens.css). Se elimina la paleta por defecto de Tailwind. */
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-ink: #12141b;
+  --color-bg: #12141b;
+  --color-surface: #1d202b;
+  --color-raised: #272b37;
+  --color-fg: #f3f4ea;
+  --color-muted: #aeb2c1;
+  --color-border: #697081;
+  --color-accent: #b9beff;
+  --color-action: #ffdb5a;
+  --color-action-hover: #e8c443;
+  --color-selection: #3b405f;
+  --color-add: #84d9b1;
+  --color-delete: #ff9688;
+  --color-add-bg: #213a35;
+  --color-delete-bg: #3b2a32;
+
+  --font-display: "Segoe UI Black", "Aptos Display", "Segoe UI", sans-serif;
+  --font-body: "Segoe UI", "Aptos", sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", ui-monospace, monospace;
+
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+}
+
+@layer base {
+  body {
+    @apply bg-bg font-body text-[15px] leading-normal text-fg;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+
+  :focus-visible {
+    @apply outline-3 outline-offset-3 outline-action;
+  }
+}

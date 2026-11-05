@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 64" role="img" aria-label="PatchLens">
+  <path fill="#FFDB5A" transform="translate(0 8) scale(1.5)" d="M2 2h12v4H6v20h8v4H2V2Zm16 0h12v12h-4V6h-8V2Zm8 16h4v12H18v-4h8v-8Z"/>
+  <path fill="none" stroke="#F3F4EA" stroke-width="2.3" stroke-linejoin="miter" stroke-linecap="square" transform="translate(70 14) scale(3)" d="M1 11V1H6L7 2V5L6 6H1 M12 11V3L14 1H17L19 3V11M12 7H19 M23 1H30M26.5 1V11 M41 1H35L34 2V10L35 11H41 M45 1V11M52 1V11M45 6H52 M56 1V11H63 M74 1H67V11H74M67 6H73 M78 11V1L85 11V1 M96 1H90L89 2V5L90 6H95L96 7V10L95 11H89"/>
+</svg>
