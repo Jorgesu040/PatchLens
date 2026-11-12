@@ -1,0 +1,561 @@
+openapi: 3.1.0
+info:
+  title: PatchLens API
+  version: 0.1.0
+  description: Especificación OpenAPI del backend de PatchLens para análisis binario e inferencia con agente.
+servers:
+  - url: /api
+
+paths:
+  /auth/status:
+    get:
+      summary: Estado actual de autenticación (ChatGPT OAuth y OpenAI API Key)
+      operationId: getAuthStatus
+      tags: [auth]
+      responses:
+        "200":
+          description: Estado de las credenciales configuradas en el servidor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthStatusResponse"
+
+  /auth/chatgpt/login:
+    post:
+      summary: Inicia el flujo OAuth PKCE de ChatGPT
+      description: >
+        Ejecuta ChatGPTSession.login(). Abre el navegador (o devuelve authorizeUrl)
+        y espera el callback OAuth local hasta completar el login.
+      operationId: loginChatGPT
+      tags: [auth]
+      responses:
+        "200":
+          description: Inicio de sesión completado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatGPTLoginResponse"
+        "401":
+          description: El usuario denegó el acceso o no autorizó los scopes requeridos.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "408":
+          description: Se agotó el tiempo de espera (180 s) para completar el login en el navegador.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/chatgpt/logout:
+    post:
+      summary: Cierra y revoca la sesión OAuth de ChatGPT
+      description: Ejecuta ChatGPTSession.logout(), revocando el refresh_token en OpenAI.
+      operationId: logoutChatGPT
+      tags: [auth]
+      responses:
+        "200":
+          description: Resultado del cierre de sesión.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogoutResponse"
+
+  /auth/api-key:
+    put:
+      summary: Guarda y valida la OPENAI_API_KEY en el servidor
+      operationId: setApiKey
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiKeyRequest"
+      responses:
+        "200":
+          description: Operación completada; indica si la clave proporcionada es válida.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiKeyMutationResponse"
+    delete:
+      summary: Elimina la OPENAI_API_KEY configurada en el servidor
+      operationId: clearApiKey
+      tags: [auth]
+      responses:
+        "200":
+          description: Clave eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiKeyResponse"
+
+  /models:
+    get:
+      summary: Lista los modelos disponibles para el proveedor indicado
+      description: Si no se especifica provider (o no hay nada configurado), usa 'api-key' por defecto.
+      operationId: listModels
+      tags: [models]
+      parameters:
+        - name: provider
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [chatgpt, api-key]
+            default: api-key
+      responses:
+        "200":
+          description: Lista de slugs de modelos visibles en el catálogo.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                examples: [["gpt-6.1-sol", "gpt-5", "o4-mini"]]
+        "401":
+          description: Credencial no configurada o inválida para el proveedor seleccionado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /analyses:
+    get:
+      summary: Lista todos los análisis guardados
+      operationId: listAnalyses
+      tags: [analyses]
+      responses:
+        "200":
+          description: Historial de análisis ordenados del más reciente al más antiguo.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AnalysisSummary"
+
+    post:
+      summary: Crea e inicia un nuevo análisis de un par de binarios
+      operationId: createAnalysis
+      tags: [analyses]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [old, new, engines]
+              properties:
+                old:
+                  type: string
+                  format: binary
+                  description: Binario de la versión anterior (01 / ANTES).
+                new:
+                  type: string
+                  format: binary
+                  description: Binario de la versión nueva (02 / DESPUÉS).
+                project_name:
+                  type: string
+                  description: Nombre del proyecto en resultados/.
+                engines:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/EngineName"
+                provider:
+                  type: string
+                  enum: [chatgpt, api-key]
+                  default: api-key
+                model:
+                  type: string
+                  description: Slug del modelo. Si se omite, solo ejecuta motores sin agente IA.
+                max_iterations:
+                  type: integer
+                  minimum: 1
+                  default: 6
+                timeout:
+                  type: integer
+                  minimum: 1
+                  default: 1800
+      responses:
+        "201":
+          description: Análisis registrado e iniciado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisSummary"
+        "400":
+          description: Parámetros inválidos o archivos vacíos.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /analyses/{id}/report:
+    get:
+      summary: Obtiene el informe del análisis y los cambios normalizados
+      operationId: getReport
+      tags: [analyses]
+      parameters:
+        - $ref: "#/components/parameters/AnalysisId"
+      responses:
+        "200":
+          description: Informe del análisis.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisReport"
+        "404":
+          description: Análisis o informe no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /analyses/{id}/traces:
+    get:
+      summary: Obtiene las trazas de ejecución (logs de motores y consultas del agente)
+      operationId: getTraces
+      tags: [analyses]
+      parameters:
+        - $ref: "#/components/parameters/AnalysisId"
+      responses:
+        "200":
+          description: Trazas técnicas de la ejecución.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisTraces"
+
+  /analyses/{id}/chat:
+    post:
+      summary: Envía un mensaje al agente sobre el análisis abierto
+      description: >
+        Ejecuta un turno del agente con acceso a las herramientas de Ghidra del proyecto
+        y devuelve los elementos generados en ese turno (llamadas a herramientas y respuesta).
+      operationId: sendMessage
+      tags: [analyses]
+      parameters:
+        - $ref: "#/components/parameters/AnalysisId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+                  minLength: 1
+      responses:
+        "200":
+          description: Mensajes generados por el agente en este turno, categorizados por kind.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [messages, stopReason]
+                properties:
+                  stopReason:
+                    $ref: "#/components/schemas/StopReason"
+                  messages:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ChatMessage"
+
+components:
+  parameters:
+    AnalysisId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    ChatGPTAccount:
+      type: object
+      required: [logged, expired]
+      properties:
+        logged:
+          type: boolean
+          description: Indica si existe una sesión OAuth activa en .patchlens-auth.
+        expired:
+          type: boolean
+          description: Indica si la sesión ha caducado y requiere iniciar sesión de nuevo.
+        expiresAt:
+          type: [number, "null"]
+          description: Timestamp Unix (segundos) de expiración.
+          examples: [1794512200]
+        email:
+          type: [string, "null"]
+          description: Correo de la cuenta asociada (si está disponible).
+          examples: ["usuario@ejemplo.es"]
+
+    AuthStatusResponse:
+      type: object
+      required: [logged, account, apiKey]
+      properties:
+        logged:
+          type: boolean
+          description: True si al menos un método (ChatGPT OAuth o API Key válida) está listo para usar.
+        account:
+          $ref: "#/components/schemas/ChatGPTAccount"
+        apiKey:
+          type: object
+          required: [configured, valid]
+          properties:
+            configured:
+              type: boolean
+            valid:
+              type: [boolean, "null"]
+              description: True/False si se ha verificado, null si no hay clave configurada.
+
+    ChatGPTLoginResponse:
+      type: object
+      required: [logged, account]
+      properties:
+        logged:
+          type: boolean
+          examples: [true]
+        account:
+          $ref: "#/components/schemas/ChatGPTAccount"
+
+    LogoutResponse:
+      type: object
+      required: [completed]
+      properties:
+        completed:
+          type: boolean
+          description: True si se cerró y revocó la sesión correctamente.
+          examples: [true]
+
+    ApiKeyRequest:
+      type: object
+      required: [apiKey]
+      properties:
+        apiKey:
+          type: string
+          minLength: 1
+          examples: ["sk-proj-..."]
+
+    ApiKeyMutationResponse:
+      type: object
+      required: [completed, valid]
+      properties:
+        completed:
+          type: boolean
+          description: True si la operación se procesó.
+        valid:
+          type: boolean
+          description: True si la clave se verificó con éxito contra la API de OpenAI.
+
+    DeleteApiKeyResponse:
+      type: object
+      required: [completed]
+      properties:
+        completed:
+          type: boolean
+          examples: [true]
+
+    EngineName:
+      type: string
+      enum: ["Version Tracking", "Simple Diff", "Structural Graph"]
+
+    AnalysisStatus:
+      type: string
+      enum: [running, complete, stopped, error]
+
+    StopReason:
+      type: [string, "null"]
+      enum:
+        - completed
+        - max_iterations_reached
+        - api_error
+        - incomplete_response
+        - model_error
+        - refused
+        - unexpected_output
+        - null
+
+    BinaryMeta:
+      type: object
+      required: [name, size]
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+        sha256:
+          type: string
+
+    AnalysisSummary:
+      type: object
+      required: [id, name, status, createdAt, config]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          examples: ["tienda-v1 → tienda-v2"]
+        status:
+          $ref: "#/components/schemas/AnalysisStatus"
+        stopReason:
+          $ref: "#/components/schemas/StopReason"
+        createdAt:
+          type: number
+          description: Timestamp Unix en milisegundos.
+        startedAt:
+          type: number
+        endedAt:
+          type: [number, "null"]
+        config:
+          type: object
+          required: [oldFile, newFile, engines]
+          properties:
+            projectName:
+              type: string
+            oldFile:
+              $ref: "#/components/schemas/BinaryMeta"
+            newFile:
+              $ref: "#/components/schemas/BinaryMeta"
+            engines:
+              type: array
+              items:
+                $ref: "#/components/schemas/EngineName"
+            provider:
+              type: string
+              enum: [chatgpt, api-key]
+            model:
+              type: [string, "null"]
+            maxIterations:
+              type: integer
+            timeout:
+              type: integer
+        summary:
+          type: object
+          properties:
+            changes:
+              type: integer
+            matches:
+              type: integer
+            conflicts:
+              type: integer
+
+    AnalysisReport:
+      type: object
+      required: [id, stopReason, content, changes]
+      properties:
+        id:
+          type: string
+        stopReason:
+          $ref: "#/components/schemas/StopReason"
+        content:
+          type: string
+          description: Informe redactado por el agente (Markdown / HTML).
+        changes:
+          type: array
+          items:
+            type: object
+            required: [id, kind, functionName, before, after]
+            properties:
+              id:
+                type: string
+              kind:
+                type: string
+                enum: [add, delete, modify]
+              functionName:
+                type: string
+              before:
+                type: array
+                items:
+                  type: string
+              after:
+                type: array
+                items:
+                  type: string
+
+    ToolCall:
+      type: object
+      required: [id, name, status, args, result]
+      properties:
+        id:
+          type: string
+          description: call_id devuelto por el modelo.
+        name:
+          type: string
+          examples: ["get_function_by_name"]
+        target:
+          type: string
+          description: Resumen corto del objetivo (ej. función y versión).
+          examples: ["calcular_envio · new"]
+        status:
+          type: string
+          enum: [ok, running, error]
+        args:
+          type: object
+          additionalProperties: true
+        result:
+          type: [object, array, string, number, boolean, "null"]
+
+    ChatMessage:
+      type: object
+      required: [id, role, kind]
+      properties:
+        id:
+          type: string
+        role:
+          type: string
+          enum: [user, agent]
+        kind:
+          type: string
+          enum: [text, tool]
+          description: Categoría del elemento ('text' se renderiza con TextBox, 'tool' con ToolCallBox).
+        phase:
+          type: string
+          enum: [commentary, final_answer]
+          description: Fase del mensaje de texto según ResponsesAdapter.
+        text:
+          type: string
+          description: Presente cuando kind == 'text'.
+        tool:
+          $ref: "#/components/schemas/ToolCall"
+          description: Presente cuando kind == 'tool'.
+
+    AnalysisTraces:
+      type: object
+      required: [logs, toolCalls]
+      properties:
+        iterations:
+          type: object
+          properties:
+            iterations:
+              type: integer
+            maxIterations:
+              type: integer
+        logs:
+          type: array
+          items:
+            type: object
+            required: [at, text]
+            properties:
+              at:
+                type: number
+              text:
+                type: string
+        toolCalls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolCall"
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: Mensaje legible describiendo el motivo del fallo.
