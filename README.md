@@ -154,6 +154,30 @@ propuestas incompatibles. Si distintas fuentes de una misma propuesta exportan
 datos incompatibles, se detiene con `ValueError`. Los IDs dependen del orden de
 entrada. `schema_version` es una etiqueta, no un validador de todos los campos.
 
+## Instrucciones y formato del informe
+
+El prompt de investigación y redacción está en
+[`prompts/analysis.md`](prompts/analysis.md). `AI.py` lo carga en UTF-8 usando una
+ruta relativa al propio módulo, por lo que se puede ejecutar desde otra carpeta.
+Conservar `prompts/` junto a `AI.py` al copiar o distribuir el proyecto.
+
+Las instrucciones combinan la interpretación del JSON y las consultas a Ghidra
+con seis apartados comunes: identificación y alcance, resumen y valoración,
+análisis detallado, relaciones y efecto conjunto, limitaciones y cuestiones
+abiertas, y evidencias y datos para repetir el análisis. Cada apartado tiene un
+propósito breve y una descripción detallada para guiar al agente; esas
+descripciones no son texto de relleno para el informe.
+
+El agente puede emitir juicios fundamentados, agrupar cambios lógicos y añadir
+secciones, contexto conservado o hallazgos fuera de `changes`. Las referencias
+`C-...` y `E-...` pertenecen al informe y conservan la procedencia de los IDs del
+normalizador y de las consultas cuando estén disponibles. El prompt no impone
+un esquema de salida validado por código ni garantiza calidad semántica.
+
+El Markdown guardado por `final_report()` sigue siendo el registro del agente;
+el informe se encuentra en su respuesta final. El ejemplo conservado se generó
+con instrucciones anteriores y no se ha regenerado con este formato.
+
 ## Revisar el ejemplo sin Ghidra ni nuevas llamadas al modelo
 
 Abrir [el informe final guardado](example/execution/report.md) y consultar su
@@ -186,13 +210,14 @@ No equivale a una evaluación sobre aplicaciones reales variadas.
 
 Componentes principales: `Main.py` orquesta; `GhidriffParser.py` adapta;
 `parser/NormalizerEngine.py` correlaciona; `AIAdapters.py` ejecuta el bucle;
-`AI.py` define instrucciones y registro; `model_tools/` consulta ambos programas.
+`AI.py` carga las instrucciones y genera el registro; `prompts/analysis.md`
+define la investigación y el informe; `model_tools/` consulta ambos programas.
 Ghidra/Ghidriff realizan descompilación y matching.
 
 ## Próximos pasos
 
 - Implementar las consultas pendientes de `companion_set.py`.
-- Definir el informe con una visión general y el detalle de cada cambio.
+- Evaluar el formato del informe en casos variados y ejecuciones parciales.
 - Permitir preguntas posteriores al mismo agente y desarrollar la interfaz gráfica.
 - Evaluar casos variados y un parche público de seguridad.
 - Investigar la incorporación de análisis dinámico. El ranking de cambios es opcional.
